@@ -1,0 +1,14 @@
+/src/generated
+/coverage
+/typings
+jspm_packages
+*.iml
+.awcache
+/node_modules
+.idea
+.tmp
+npm-debug.log*
+jspm.browser.js
+/test-results
+/dist
+yarn-error.log
