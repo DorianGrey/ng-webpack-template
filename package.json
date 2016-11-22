@@ -18,8 +18,10 @@
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=production karma start karma.conf.js",
-    "start": "npm run dev-dll && concurrently -r \"npm run translations:dev\" \"npm run stylelint:dev\" \"npm run tslint:dev\" \"wait-for-change src/generated/translations.ts && npm run dev-server\"",
-    "dist": "npm run tslint:dist && npm run stylelint:dist && npm run translations:dist && npm run test && cross-env NODE_ENV=production webpack --config config/webpack.dist.config.js",
+    "start": "npm run create-index:dev && npm run dev-dll && concurrently -r \"npm run translations:dev\" \"npm run stylelint:dev\" \"npm run tslint:dev\" \"wait-for-change src/generated/translations.ts && npm run dev-server\"",
+    "dist": "npm run create-index:dist && npm run tslint:dist && npm run stylelint:dist && npm run translations:dist && npm run test && npm run dist-bundle",
+    "dist-bundle": "cross-env NODE_ENV=production webpack --config config/webpack.dist.config.js",
+    "dist-server": "cross-env NO_ANALYZE_PLUGIN=true npm run dist && node example-dist-server/server.js",
     "dev-bundle": "cross-env NODE_ENV=development webpack --config config/webpack.config.js",
     "dev-server": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.config.js --inline --hot",
     "dev-dll": "webpack --config config/webpack.dll.config.js",
@@ -29,7 +31,9 @@
     "tslint:dist": "node bin/lint-scripts.js \"src/**/*.ts\" -e \"src/generated/**/*.ts\"",
     "tslint:dev": "npm run tslint:dist -- -w",
     "translations:dist": "node bin/compile-translations.js \"src/**/*.i18n.yml\" src/generated/translations.ts",
-    "translations:dev": "npm run translations:dist -- -w"
+    "translations:dev": "npm run translations:dist -- -w",
+    "create-index:dev": "node bin/create-index-template.js dev",
+    "create-index:dist": "node bin/create-index-template.js dist"
   },
   "devDependencies": {
     "@angularclass/hmr": "1.2.2",
@@ -45,7 +49,8 @@
     "concurrently": "3.1.0",
     "cross-env": "3.1.3",
     "css-loader": "0.26.0",
-    "html-webpack-plugin": "2.24.1",
+    "express": "^4.14.0",
+    "http-proxy": "^1.15.2",
     "istanbul-instrumenter-loader": "0.2.0",
     "jasmine-core": "2.5.2",
     "jasmine-reporters": "2.2.0",

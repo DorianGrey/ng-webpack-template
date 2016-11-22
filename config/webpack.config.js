@@ -1,8 +1,8 @@
-const path                = require("path");
-const webpack             = require("webpack");
-const DefinePlugin        = require("webpack/lib/DefinePlugin");
+const path              = require("path");
+const webpack           = require("webpack");
+const DefinePlugin      = require("webpack/lib/DefinePlugin");
 const {ForkCheckerPlugin} = require("awesome-typescript-loader");
-const commons             = require("./constants");
+const commons           = require("./constants");
 
 module.exports = {
   entry: commons.root("src/main.ts"),

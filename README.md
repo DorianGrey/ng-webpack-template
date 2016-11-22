@@ -56,6 +56,6 @@ which will create a production build in the `dist` folder.
 - Properly configure Travis CI.
 - Add more docs to the various webpack configs and their `constants` file.
 - Add more docs to the code itself, esp. the state maintenance via [ngrx/store](https://github.com/ngrx/store).
-- Set up a minimal production server.
+- ~~Set up a minimal production server~~.
 - Drop unused code, scripts and dependencies.
 - Add a lazy loading example for effort comparison with https://github.com/flaviait/ng2-jspm-template/pull/38 .
