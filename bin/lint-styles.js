@@ -15,16 +15,16 @@ program.files = program.args[0];
 
 const printError = e => {
   if (e.code === "ELINT") {
-    logger.error(`There are ${e.count} linting errors:` + "\n" + e.output);
+    logger.error(`There are ${e.count} linting errors:` + "\n" + e.output + "\n");
   } else {
-    logger.error(e.stack);
+    logger.error(e.stack, "\n");
   }
 };
 
 utils.getFiles(program.files)
   .then(lintStyles)
   .then(
-    () => logger.info("No linting errors"),
+    () => logger.info("No linting errors\n"),
     e => {
       printError(e);
       if (!program.watch) {
@@ -37,7 +37,7 @@ if (program.watch) {
   const watch = require("../dev/watch");
   watch(program.files, files => {
     lintStyles(files).then(
-      () => logger.info("No linting errors"),
+      () => logger.info("No linting errors\n"),
       printError
     )
   });

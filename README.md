@@ -52,7 +52,7 @@ which will create a production build in the `dist` folder.
 
 # TODOs
 
-- Add the linters back into development mode.
+- ~~Add the linters back into development and production mode~~.
 - Properly configure Travis CI.
 - Add more docs to the various webpack configs and their `constants` file.
 - Add more docs to the code itself, esp. the state maintenance via [ngrx/store](https://github.com/ngrx/store).

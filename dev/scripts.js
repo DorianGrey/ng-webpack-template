@@ -6,30 +6,40 @@ const _ = require("lodash");
 // Because of this we simply store all errors in this object.
 const lintingErrors = {};
 
+function groupFailures(allFailures) {
+  return _.groupBy(allFailures, f => f.fileName);
+}
+
+// Note: The construct below was adopted to work with TSLint > 4.0, and will NOT WORK with earlier versions!
+
 exports.lint = (files) => {
-  const Linter = require("tslint");
-  const utils = require("./utils");
+  const Linter        = require("tslint").Linter;
+  const utils         = require("./utils");
   const configuration = require("../tslint.json");
-  const lintOptions = {configuration, formatter: "verbose"};
+  const lintOptions   = {formatter: "verbose"};
 
   return Promise
     .all(files.map(file => utils.readFile(file).then(content => ({file, content}))))
     .then(fileObjs =>
       new Promise((resolve, reject) => {
+        // TODO: Check if we might optimize this ...
         for (let fileObj of fileObjs) {
-          const lintingResult = new Linter(fileObj.file, fileObj.content, lintOptions).lint();
-          if(lintingResult.failureCount > 0) {
+          const linter = new Linter(lintOptions);
+          linter.lint(fileObj.file, fileObj.content, configuration);
+          const lintingResult = linter.getResult();
+          if (lintingResult.failureCount > 0) {
             lintingErrors[fileObj.file] = lintingResult;
           } else {
             delete lintingErrors[fileObj.file];
           }
         }
+
         if (Object.keys(lintingErrors).length > 0) {
-          const err = new Error("There are linting errors in the project");
-          err.code = "ELINT";
+          const err  = new Error("There are linting errors in the project");
+          err.code   = "ELINT";
           err.output = _.values(lintingErrors).map(result => {
             return result.failures.map((failure) => {
-              const pos = failure.startPosition.lineAndCharacter
+              const pos = failure.startPosition.lineAndCharacter;
               return `${failure.fileName}[${pos.line + 1}, ${pos.character}]: ${failure.failure} (${failure.ruleName})`
             }).join("\n");
           }).join("\n");

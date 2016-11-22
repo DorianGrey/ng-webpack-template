@@ -1,8 +1,8 @@
-const path         = require("path");
-const webpack      = require("webpack");
-const DefinePlugin = require("webpack/lib/DefinePlugin");
+const path                = require("path");
+const webpack             = require("webpack");
+const DefinePlugin        = require("webpack/lib/DefinePlugin");
 const {ForkCheckerPlugin} = require("awesome-typescript-loader");
-const commons      = require("./constants");
+const commons             = require("./constants");
 
 module.exports = {
   entry: commons.root("src/main.ts"),
@@ -52,6 +52,10 @@ module.exports = {
       commons.root(".tmp"),
       commons.root("")
     ],
-    stats: {colors: true}
+    // TODO: Maybe add more of the options mentioned here: https://github.com/webpack/webpack-dev-server/issues/68#issuecomment-75323551
+    stats: {
+      colors: true,
+      chunks: false
+    }
   }
 };

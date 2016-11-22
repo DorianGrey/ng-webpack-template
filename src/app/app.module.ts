@@ -27,10 +27,10 @@ const IMPORTS = [
 ];
 
 @NgModule({
-  imports:      IMPORTS,
-  providers:    [appRoutingProviders],
+  imports: IMPORTS,
+  providers: [appRoutingProviders],
   declarations: [App],
-  bootstrap:    [App]
+  bootstrap: [App]
 })
 export class AppModule {
   constructor(public appRef: ApplicationRef,
@@ -38,13 +38,15 @@ export class AppModule {
   }
 
   hmrOnInit(store: any) {
-    if (!store || !store.rootState) return;
+    if (!store || !store.rootState) {
+      return;
+    }
 
     // restore state by dispatch a SET_ROOT_STATE action
     if (store.rootState) {
       // TODO: A reducer for this has to be implemented.
       this._store.dispatch({
-        type:    "SET_ROOT_STATE",
+        type: "SET_ROOT_STATE",
         payload: store.rootState
       });
     }

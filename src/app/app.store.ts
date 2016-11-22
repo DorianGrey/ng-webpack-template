@@ -1,5 +1,5 @@
 import {assign} from "lodash";
-import {StoreModule, ActionReducer, combineReducers} from "@ngrx/store";
+import {StoreModule, ActionReducer, combineReducers, Action} from "@ngrx/store";
 import {compose} from "@ngrx/core/compose";
 import {List} from "immutable";
 
@@ -17,7 +17,7 @@ export const reducers = {
 // Generate a reducer to set the root state in dev mode for HMR
 function stateSetter(reducer: ActionReducer<any>): ActionReducer<any> {
   "use strict";
-  return function (state, action) {
+  return function (state: any, action: Action) {
     if (action.type === "SET_ROOT_STATE") {
       return action.payload;
     }

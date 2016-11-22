@@ -4,13 +4,13 @@ import "rxjs/add/operator/take";
 
 import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
 import {enableProdMode} from "@angular/core";
-import {bootloader} from '@angularclass/hmr';
-// import {Store} from "@ngrx/store";
+import {bootloader} from "@angularclass/hmr";
+
 import {AppModule} from "./app/app.module";
 import {decorateModuleRef} from "./environment";
 
 if ("production" === ENV) {
-  enableProdMode()
+  enableProdMode();
 }
 
 export function main(): Promise<any> {

@@ -1,6 +1,6 @@
 inputTest:
   heading:
-    de: Eingabe test Komponente
+    de: Eingabe Test Komponente
     en: Input test component
   display:
     de: Sie haben <span class="display">{{value}}</span> eingegeben.
