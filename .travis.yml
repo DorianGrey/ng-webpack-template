@@ -1,4 +1,12 @@
 language: node_js
+
+cache:
+  directories:
+    - $HOME/.npm
+    - $HOME/.yarn-cache
+
 node_js:
   - "6.9.1"
-before_install: npm i -g npm@3.10.9
+
+install: npm install yarn -g && yarn install
+
