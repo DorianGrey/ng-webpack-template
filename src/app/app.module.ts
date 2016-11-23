@@ -9,7 +9,7 @@ import {Store} from "@ngrx/store";
 import {App} from "./app.component";
 import {APP_ROUTES, appRoutingProviders} from "./app.routes";
 import {AppState, createStoreProvider} from "./app.store";
-import {InputTestModule} from "./inputTest/inputTest.module";
+import {InputTestModule} from "./input-test/input-test.module";
 import {TodosModule} from "./todos/todos.module";
 import {SharedModule} from "./shared/shared.module";
 import {createNewHosts, createInputTransfer, removeNgStyles} from "@angularclass/hmr/dist/helpers";

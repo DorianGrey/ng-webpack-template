@@ -2,7 +2,7 @@ import {Component} from "@angular/core";
 
 @Component({
   selector:  "input-test",
-  styleUrls: ["./inputTest.component.scss"],
+  styleUrls: ["./input-test.component.scss"],
   template:  `
     <div>
       <h3>{{'inputTest.heading' | translate}}</h3>

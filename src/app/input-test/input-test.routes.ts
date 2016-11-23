@@ -1,5 +1,5 @@
 import {RouterModule} from "@angular/router";
-import {InputTestComponent} from "./inputTest.component";
+import {InputTestComponent} from "./input-test.component";
 
 export const INPUT_TEST_ROUTES = RouterModule.forChild([
   {
