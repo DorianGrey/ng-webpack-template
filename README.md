@@ -25,7 +25,7 @@ The version favors to use [yarn](https://github.com/yarnpkg/yarn) for faster and
 ```
 npm install -g yarn
 ```
-Alternatively, you might use good old `npm`, if you REALLY want to.
+Alternatively, you might use good old `npm`, if you REALLY want to. If that is the case, just replace the `yarn` part of the commands listed below with `npm`
 
 ## Project structure
 
@@ -37,7 +37,7 @@ Alternatively, you might use good old `npm`, if you REALLY want to.
 
 Just run
 ```
-npm start
+yarn start
 ```
 which will fire up a webpack-dev-server using webpack's DLL feature up-front to speed up everything, and provide HMR functionality. The latter is based on [ngrx/store](https://github.com/ngrx/store).
 
@@ -46,16 +46,16 @@ which will fire up a webpack-dev-server using webpack's DLL feature up-front to 
 
 Just run
 ```
-npm run dist
+yarn run dist
 ```
 which will create a production build in the `dist` folder.
 
 # TODOs
 
 - ~~Add the linters back into development and production mode~~.
-- Properly configure Travis CI.
+- ~~Properly configure Travis CI~~.
 - Add more docs to the various webpack configs and their `constants` file.
 - Add more docs to the code itself, esp. the state maintenance via [ngrx/store](https://github.com/ngrx/store).
 - ~~Set up a minimal production server~~.
 - Drop unused code, scripts and dependencies.
-- Add a lazy loading example for effort comparison with https://github.com/flaviait/ng2-jspm-template/pull/38 .
+- ~~Add a lazy loading example for effort comparison with https://github.com/flaviait/ng2-jspm-template/pull/38~~.
