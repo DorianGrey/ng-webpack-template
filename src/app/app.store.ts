@@ -5,13 +5,16 @@ import {List} from "immutable";
 
 import {todosReducer, initialTodosState} from "./todos/todos.store";
 import {Todo} from "./todos/todo.model";
+import {watchTimeReducer, initialLazyTestState} from "./+lazy-test/lazy-test.store";
 
 export interface AppState {
   todos: List<Todo>;
+  watchTime: number;
 }
 
 export const reducers = {
-  todos: todosReducer
+  todos: todosReducer,
+  watchTime: watchTimeReducer
 };
 
 // Generate a reducer to set the root state in dev mode for HMR
@@ -29,7 +32,11 @@ const DEV_REDUCERS = [stateSetter];
 const developmentReducer = compose(...DEV_REDUCERS, combineReducers)(reducers);
 // TODO: Use and eval the ENV variable (via DefinePlugin).
 
-const initialStates = assign({}, initialTodosState);
+const initialStates = assign(
+  {},
+  initialTodosState,
+  initialLazyTestState
+);
 
 export const createStoreProvider = (currentState?: any) =>
   StoreModule.provideStore(developmentReducer, assign(currentState || {}, initialStates));

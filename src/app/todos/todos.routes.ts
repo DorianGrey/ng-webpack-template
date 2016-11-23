@@ -1,9 +1,9 @@
-import {TodosComponent} from "./todos.component";
 import {RouterModule} from "@angular/router";
+import {TodosComponent} from "./todos.component";
 
 export const TODO_ROUTES = RouterModule.forChild([
   {
-    path: "todos",
+    path:      "todos",
     component: TodosComponent
   }
 ]);

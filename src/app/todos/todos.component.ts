@@ -1,8 +1,9 @@
 import {Component, ViewChild} from "@angular/core";
-import {TodoService} from "./todo.service";
 import {Observable} from "rxjs/Observable";
-import {Todo} from "./todo.model";
 import {List} from "immutable";
+
+import {TodoService} from "./todo.service";
+import {Todo} from "./todo.model";
 
 @Component({
   selector: "todos",
