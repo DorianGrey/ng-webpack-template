@@ -5,6 +5,7 @@ import {BrowserModule} from "@angular/platform-browser";
 import {TranslateModule} from "ng2-translate";
 
 import {Store} from "@ngrx/store";
+import {createNewHosts, createInputTransfer, removeNgStyles} from "@angularclass/hmr/dist/helpers";
 
 import {App} from "./app.component";
 import {APP_ROUTES, appRoutingProviders} from "./app.routes";
@@ -12,7 +13,7 @@ import {AppState, createStoreProvider} from "./app.store";
 import {InputTestModule} from "./input-test/input-test.module";
 import {TodosModule} from "./todos/todos.module";
 import {SharedModule} from "./shared/shared.module";
-import {createNewHosts, createInputTransfer, removeNgStyles} from "@angularclass/hmr/dist/helpers";
+import {NotFoundComponent} from "./not-found/not-found.component";
 
 
 const IMPORTS = [
@@ -29,7 +30,7 @@ const IMPORTS = [
 @NgModule({
   imports: IMPORTS,
   providers: [appRoutingProviders],
-  declarations: [App],
+  declarations: [NotFoundComponent, App],
   bootstrap: [App]
 })
 export class AppModule {

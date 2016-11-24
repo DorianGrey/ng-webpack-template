@@ -1,4 +1,5 @@
 import {Routes, RouterModule} from "@angular/router";
+import {NotFoundComponent} from "./not-found/not-found.component";
 
 const appRoutes: Routes = [
   {
@@ -7,9 +8,13 @@ const appRoutes: Routes = [
     redirectTo: "input-test"
   },
   {
-    path:         "lazy-test",
+    path: "lazy-test",
     // This one gets process by angular2-router-loader (https://github.com/brandonroberts/angular2-router-loader)
     loadChildren: "./+lazy-test/lazy-test.module#LazyTestModule"
+  },
+  {
+    path: "**",
+    component: NotFoundComponent
   }
 ];
 
