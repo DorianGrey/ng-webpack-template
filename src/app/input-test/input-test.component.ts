@@ -1,15 +1,9 @@
 import {Component} from "@angular/core";
 
 @Component({
-  selector:  "input-test",
+  selector: "input-test",
   styleUrls: ["./input-test.component.scss"],
-  template:  `
-    <div>
-      <h3>{{'inputTest.heading' | translate}}</h3>
-      <div [innerHTML]="'inputTest.display' | translate:{value: input}"></div>
-      <input type="text" [(ngModel)]="input" />
-    </div>
-  `
+  templateUrl: "./input-test.component.html"
 })
 export class InputTestComponent {
   input: string;

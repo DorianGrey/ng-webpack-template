@@ -4,10 +4,7 @@ import {LazyTestService} from "./lazy-test.service";
 
 @Component({
   selector: "lazy-test",
-  template: `
-    <p>{{ 'lazyTest.text' | translate }}</p>
-    <p>{{ 'lazyTest.info' | translate:{value: watchTime | async} }}</p>
-  `
+  templateUrl: "./lazy-test.component.html"
 })
 export class LazyTestComponent implements OnDestroy {
   watchTime: Observable<number>;
