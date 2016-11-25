@@ -45,7 +45,6 @@ export class AppModule {
 
     // restore state by dispatch a SET_ROOT_STATE action
     if (store.rootState) {
-      // TODO: A reducer for this has to be implemented.
       this._store.dispatch({
         type: "SET_ROOT_STATE",
         payload: store.rootState

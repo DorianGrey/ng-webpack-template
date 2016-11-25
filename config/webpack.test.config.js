@@ -91,7 +91,7 @@ module.exports = {
   plugins: [
     commons.addDefaultContextReplacementPlugin(),
     new DefinePlugin({
-      ENV: JSON.stringify("test")
+      ENV: JSON.stringify(process.env.NODE_ENV || "test")
     }),
     new NamedModulesPlugin()
   ],

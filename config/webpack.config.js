@@ -1,8 +1,9 @@
-const path              = require("path");
-const webpack           = require("webpack");
-const DefinePlugin      = require("webpack/lib/DefinePlugin");
+const path            = require("path");
+const webpack         = require("webpack");
+const DefinePlugin    = require("webpack/lib/DefinePlugin");
 const {ForkCheckerPlugin} = require("awesome-typescript-loader");
-const commons           = require("./constants");
+const commons         = require("./constants");
+const devServerConfig = require("./dev-server.config");
 
 module.exports = {
   entry: commons.root("src/main.ts"),
@@ -43,19 +44,5 @@ module.exports = {
   ],
 
   node: commons.nodeConfig,
-  // For further config see here: https://github.com/webpack/docs/wiki/webpack-dev-server#api
-  devServer: {
-    port: 9987,
-    historyApiFallback: true,
-    contentBase: [
-      commons.root("src"),
-      commons.root(".tmp"),
-      commons.root("")
-    ],
-    // TODO: Maybe add more of the options mentioned here: https://github.com/webpack/webpack-dev-server/issues/68#issuecomment-75323551
-    stats: {
-      colors: true,
-      chunks: false
-    }
-  }
+  devServer: devServerConfig
 };
