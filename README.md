@@ -44,11 +44,23 @@ which will fire up a webpack-dev-server using webpack's DLL feature up-front to 
 
 ### Production
 
-Just run
+There are two ways to create a production build: The regular way, and a slightly more experimental one which includes [AoT compilation](https://angular.io/docs/ts/latest/cookbook/aot-compiler.html).
+
+For the regular way, just run
 ```
 yarn run dist
 ```
 which will create a production build in the `dist` folder.
+
+For the AoT-based, run
+```
+yarn run dist:aot
+```
+which will create a production build in the `dist-aot` folder.
+
+**Beware**: I did not call this way _experimental_ for no reason. The whole AoT processing currently enforces rather strict rules (see a rather good explanation [here](https://medium.com/@isaacplmann/making-your-angular-2-library-statically-analyzable-for-aot-e1c6f3ebedd5)) on how not only your own code has to be written, but also the code of the libraries you are using. Before you consider using AoT optimization, you will have to check if all your libraries support it.
+
+Since some of these restrictions are caused by the lack of maturity of the AoT compiler ("just not implemented yet"), I'd describe both the AoT compiler itself and the corresponding plugin as _experimental_. **Don't get me wrong**: In case it works and passes the whole compilation process, the results are working fine, but there still is a rather high probability that you hit a case where you can't adopt your code to conform to the required restrictions. So - beware.
 
 # TODOs
 
@@ -59,3 +71,4 @@ which will create a production build in the `dist` folder.
 - ~~Set up a minimal production server~~.
 - Drop unused code, scripts and dependencies.
 - ~~Add a lazy loading example for effort comparison with https://github.com/flaviait/ng2-jspm-template/pull/38~~.
+- Maybe control webpack from code instead of via CLI to be able to handle arguments better. 

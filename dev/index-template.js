@@ -25,3 +25,7 @@ exports.dev = (srcFileName, targetFileName, params) => {
 exports.dist = (srcFileName, targetFileName, params) => {
   return handleFileCreation(srcFileName, targetFileName, params, "dist");
 };
+
+exports.distAot = (srcFileName, targetFileName, params) => {
+  return handleFileCreation(srcFileName, targetFileName, params, "dist-aot");
+};

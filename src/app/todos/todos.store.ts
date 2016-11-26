@@ -14,15 +14,13 @@ export class TodoActionCreator {
   };
 }
 
-export const todosReducer: ActionReducer<any> = (state: List<Todo>, action: Action) => {
+const initialTodoList = List.of<Todo>();
+
+export const todosReducer: ActionReducer<any> = (state: List<Todo> = initialTodoList, action: Action) => {
   switch (action.type) {
     case ACTION_TYPES.ADD_TODO:
       return state.push(action.payload);
     default:
       return state;
   }
-};
-
-export const initialTodosState = {
-  todos: List.of<Todo>()
 };

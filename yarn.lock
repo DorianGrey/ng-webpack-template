@@ -2,9 +2,26 @@
 # yarn lockfile v1
 
 
+"@angular-cli/ast-tools@^1.0.0":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@angular-cli/ast-tools/-/ast-tools-1.0.9.tgz#be2bf235e03a956c053a1f65661abc981c7ffe38"
+  dependencies:
+    "@angular/tsc-wrapped" "^0.3.0"
+    denodeify "^1.2.1"
+    rxjs "5.0.0-beta.12"
+    typescript "~2.0.3"
+
 "@angular/common@2.2.3":
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/@angular/common/-/common-2.2.3.tgz#0d26bdfdea362ed32e436ced4f31bb69a9d7b9e4"
+
+"@angular/compiler-cli@2.2.3":
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-2.2.3.tgz#d632bbf856802a20fc5589cb472f98fef5f011c4"
+  dependencies:
+    "@angular/tsc-wrapped" "^0.3.0"
+    minimist "^1.2.0"
+    reflect-metadata "^0.1.2"
 
 "@angular/compiler@2.2.3":
   version "2.2.3"
@@ -30,9 +47,21 @@
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-2.2.3.tgz#f48d2452a6dfebc0d41274f0e3a02ba89c01b2b6"
 
+"@angular/platform-server@2.2.3":
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/@angular/platform-server/-/platform-server-2.2.3.tgz#9959f65c14194faac82052edae226fd7ea75be76"
+  dependencies:
+    parse5 "^2.2.1"
+
 "@angular/router@3.2.3":
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/@angular/router/-/router-3.2.3.tgz#07cd0e978abc53abb71be9d17353d7ff93f05083"
+
+"@angular/tsc-wrapped@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@angular/tsc-wrapped/-/tsc-wrapped-0.3.0.tgz#98cdeb5c38d145b187c0ad0397a8d98b217f33f2"
+  dependencies:
+    tsickle "^0.1.7"
 
 "@angularclass/hmr-loader@3.0.2":
   version "3.0.2"
@@ -51,6 +80,12 @@
 "@ngrx/store@2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@ngrx/store/-/store-2.2.1.tgz#316ec1e43aa5a0166e5e6e1aa2c34a4049386510"
+
+"@ngtools/webpack@1.1.6":
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-1.1.6.tgz#bf28a7e7e4e9e9f23a2225985ac1a658e0653ac8"
+  dependencies:
+    "@angular-cli/ast-tools" "^1.0.0"
 
 "@types/core-js@0.9.34":
   version "0.9.34"
@@ -783,7 +818,7 @@ commander@2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.6.0.tgz#9df7e52fb2a0cb0fb89058ee80c3104225f37e1d"
 
-commander@^2.9.0:
+commander@2.9.0, commander@^2.9.0:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.9.0.tgz#9c99094176e12240cb22d6c5146098400fe0f7d4"
   dependencies:
@@ -1163,6 +1198,10 @@ delegates@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/delegates/-/delegates-1.0.0.tgz#84c6e159b81904fdca59a0ef44cd870d31250f9a"
 
+denodeify@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/denodeify/-/denodeify-1.2.1.tgz#3a36287f5034e699e7577901052c2e6c94251631"
+
 depd@~1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/depd/-/depd-1.1.0.tgz#e1bd82c6aab6ced965b97b88b17ed3e528ca18c3"
@@ -1458,7 +1497,7 @@ expand-range@^1.8.1:
   dependencies:
     fill-range "^2.1.0"
 
-express@^4.13.3, express@^4.14.0:
+express@4.14.0, express@^4.13.3, express@^4.14.0:
   version "4.14.0"
   resolved "https://registry.yarnpkg.com/express/-/express-4.14.0.tgz#c1ee3f42cdc891fb3dc650a8922d51ec847d0d66"
   dependencies:
@@ -2002,7 +2041,7 @@ http-proxy-middleware@~0.17.1:
     lodash "^4.16.2"
     micromatch "^2.3.11"
 
-http-proxy@^1.13.0, http-proxy@^1.15.1, http-proxy@^1.15.2:
+http-proxy@1.15.2, http-proxy@^1.13.0, http-proxy@^1.15.1:
   version "1.15.2"
   resolved "https://registry.yarnpkg.com/http-proxy/-/http-proxy-1.15.2.tgz#642fdcaffe52d3448d2bda3b0079e9409064da31"
   dependencies:
@@ -2433,7 +2472,7 @@ karma-jasmine@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/karma-jasmine/-/karma-jasmine-1.0.2.tgz#c0b3ab327bf207db60e17fa27db37cfdef5d8e6c"
 
-karma-junit-reporter@^1.1.0:
+karma-junit-reporter@1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/karma-junit-reporter/-/karma-junit-reporter-1.1.0.tgz#12f8ff82050607a1d4f1192f0211efde4b59ca3e"
   dependencies:
@@ -3214,6 +3253,10 @@ parse-json@^2.1.0, parse-json@^2.2.0:
   dependencies:
     error-ex "^1.2.0"
 
+parse5@^2.2.1:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/parse5/-/parse5-2.2.3.tgz#0c4fc41c1000c5e6b93d48b03f8083837834e9f6"
+
 parsejson@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/parsejson/-/parsejson-0.0.1.tgz#9b10c6c0d825ab589e685153826de0a3ba278bcc"
@@ -3714,7 +3757,7 @@ raw-body@~2.1.7:
     iconv-lite "0.4.13"
     unpipe "1.0.0"
 
-raw-loader@^0.5.1:
+raw-loader@0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/raw-loader/-/raw-loader-0.5.1.tgz#0c3d0beaed8a01c966d9787bf778281252a979aa"
 
@@ -3837,6 +3880,10 @@ reduce-function-call@^1.0.1:
   resolved "https://registry.yarnpkg.com/reduce-function-call/-/reduce-function-call-1.0.1.tgz#fa02e126e695824263cab91d3a5b0fdc1dd27a9a"
   dependencies:
     balanced-match "~0.1.0"
+
+reflect-metadata@^0.1.2:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.8.tgz#72426d570b60776e3688968bd5ab9537a15cecf6"
 
 regenerate@^1.2.1:
   version "1.3.2"
@@ -4011,6 +4058,12 @@ ripemd160@^1.0.0:
 rx@2.3.24:
   version "2.3.24"
   resolved "https://registry.yarnpkg.com/rx/-/rx-2.3.24.tgz#14f950a4217d7e35daa71bbcbe58eff68ea4b2b7"
+
+rxjs@5.0.0-beta.12:
+  version "5.0.0-beta.12"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.0.0-beta.12.tgz#cdfde2d8c4639d20ae7794bff8fddf32da7ad337"
+  dependencies:
+    symbol-observable "^1.0.1"
 
 rxjs@5.0.0-rc.4:
   version "5.0.0-rc.4"
@@ -4221,11 +4274,23 @@ source-map-loader@0.1.5:
     loader-utils "~0.2.2"
     source-map "~0.1.33"
 
+source-map-support@^0.3.1:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.3.3.tgz#34900977d5ba3f07c7757ee72e73bb1a9b53754f"
+  dependencies:
+    source-map "0.1.32"
+
 source-map-support@^0.4.0:
   version "0.4.6"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.4.6.tgz#32552aa64b458392a85eab3b0b5ee61527167aeb"
   dependencies:
     source-map "^0.5.3"
+
+source-map@0.1.32:
+  version "0.1.32"
+  resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.1.32.tgz#c8b6c167797ba4740a8ea33252162ff08591b266"
+  dependencies:
+    amdefine ">=0.0.4"
 
 source-map@>=0.5.6, source-map@^0.5.1, source-map@^0.5.3, source-map@^0.5.6, source-map@~0.5.1, source-map@~0.5.3:
   version "0.5.6"
@@ -4636,6 +4701,15 @@ ts-helpers@1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/ts-helpers/-/ts-helpers-1.1.2.tgz#fc69be9f1f3baed01fb1a0ef8d4cfe748814d835"
 
+tsickle@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/tsickle/-/tsickle-0.1.7.tgz#bfe8f4cdcdaf9a40b84a729a38480c2f824f18ab"
+  dependencies:
+    minimist "^1.2.0"
+    mkdirp "^0.5.1"
+    source-map "^0.4.2"
+    source-map-support "^0.3.1"
+
 tslint@4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/tslint/-/tslint-4.0.2.tgz#d43f24c0c1f826de7f3a097bb7808a8b4325feac"
@@ -4678,7 +4752,7 @@ typedarray@~0.0.5:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript@2.0.10:
+typescript@2.0.10, typescript@~2.0.3:
   version "2.0.10"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.0.10.tgz#ccdd4ed86fd5550a407101a0814012e1b3fac3dd"
 
@@ -4843,7 +4917,7 @@ void-elements@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
 
-wait-for-change@^1.1.0:
+wait-for-change@1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/wait-for-change/-/wait-for-change-1.1.0.tgz#a6d3e5be82f0ef3b4b81d400b0bf4ab7aeaca50c"
 
@@ -4861,9 +4935,9 @@ wbuf@^1.1.0, wbuf@^1.4.0:
   dependencies:
     minimalistic-assert "^1.0.0"
 
-webpack-bundle-analyzer@^1.5.3:
-  version "1.5.4"
-  resolved "https://registry.yarnpkg.com/webpack-bundle-analyzer/-/webpack-bundle-analyzer-1.5.4.tgz#cec4574706aed04c14477ef77938961b4ecbf794"
+webpack-bundle-analyzer@1.5.3:
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/webpack-bundle-analyzer/-/webpack-bundle-analyzer-1.5.3.tgz#d1109bdd0a0067bba88ea6aa642533b4de926965"
   dependencies:
     acorn "^4.0.3"
     chalk "^1.1.3"
