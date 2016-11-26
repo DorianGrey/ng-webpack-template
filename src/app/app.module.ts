@@ -2,40 +2,47 @@ import {NgModule, ApplicationRef} from "@angular/core";
 import {HttpModule} from "@angular/http";
 import {BrowserModule} from "@angular/platform-browser";
 
-import {TranslateModule} from "ng2-translate";
+import "rxjs/add/operator/take";
 
-import {Store} from "@ngrx/store";
+import {TranslateLoader, TranslateModule, TranslateService} from "ng2-translate";
+
+import {Store, StoreModule} from "@ngrx/store";
 import {createNewHosts, createInputTransfer, removeNgStyles} from "@angularclass/hmr/dist/helpers";
 
 import {App} from "./app.component";
 import {APP_ROUTES, appRoutingProviders} from "./app.routes";
-import {AppState, createStoreProvider} from "./app.store";
+import {AppState, rootReducer} from "./app.store";
 import {InputTestModule} from "./input-test/input-test.module";
 import {TodosModule} from "./todos/todos.module";
 import {SharedModule} from "./shared/shared.module";
 import {NotFoundComponent} from "./not-found/not-found.component";
-
-
-const IMPORTS = [
-  BrowserModule, // Should only be imported by the root => every other module should import "CommonModule".
-  HttpModule,
-  APP_ROUTES,
-  TranslateModule.forRoot(),
-  SharedModule,
-  InputTestModule,
-  TodosModule,
-  createStoreProvider()
-];
+import {createTranslateLoader} from "./translate.factory";
+import translations from "../generated/translations";
 
 @NgModule({
-  imports: IMPORTS,
+  imports: [
+    BrowserModule, // Should only be imported by the root => every other module should import "CommonModule".
+    HttpModule,
+    APP_ROUTES,
+    TranslateModule.forRoot({
+      provide: TranslateLoader,
+      useFactory: createTranslateLoader
+    }),
+    SharedModule.forRoot(),
+    InputTestModule,
+    TodosModule,
+    StoreModule.provideStore(rootReducer)
+  ],
   providers: [appRoutingProviders],
   declarations: [NotFoundComponent, App],
   bootstrap: [App]
 })
 export class AppModule {
   constructor(public appRef: ApplicationRef,
-              private _store: Store<AppState>) {
+              private _store: Store<AppState>,
+              translate: TranslateService) {
+    translate.addLangs(Object.keys(translations));
+    translate.use("en");
   }
 
   hmrOnInit(store: any) {

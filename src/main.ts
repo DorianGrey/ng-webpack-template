@@ -1,6 +1,5 @@
 import "./styles/main.scss";
 import "./polyfills";
-import "rxjs/add/operator/take";
 
 import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
 import {enableProdMode} from "@angular/core";

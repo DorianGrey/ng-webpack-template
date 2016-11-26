@@ -11,4 +11,5 @@ npm-debug.log*
 jspm.browser.js
 /test-results
 /dist
+/dist-aot
 yarn-error.log

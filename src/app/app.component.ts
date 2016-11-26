@@ -1,7 +1,6 @@
 import {indexOf} from "lodash";
 import {Component} from "@angular/core";
 import {TranslateService} from "ng2-translate/ng2-translate";
-import translations from "../generated/translations";
 
 @Component({
   selector: "app",
@@ -16,7 +15,7 @@ export class App {
 
   constructor(private translate: TranslateService) {
     this.currentLanguage    = this.translate.currentLang;
-    this.availableLanguages = Object.keys(translations);
+    this.availableLanguages = this.translate.getLangs();
   }
 
   rotateLanguage() {

@@ -12,15 +12,13 @@ export class LazyTestActionCreator {
   };
 }
 
-export const watchTimeReducer: ActionReducer<number> = (state: number, action: Action) => {
+const initialWatchTime = 0;
+
+export const watchTimeReducer: ActionReducer<number> = (state: number = initialWatchTime, action: Action) => {
   switch (action.type) {
     case LAZY_TEST_ACTION_TYPES.INC_SECONDS:
       return state + 1;
     default:
       return state;
   }
-};
-
-export const initialLazyTestState = {
-  watchTime: 0
 };

@@ -1,11 +1,10 @@
-import {assign} from "lodash";
-import {StoreModule, ActionReducer, combineReducers, Action} from "@ngrx/store";
+import {ActionReducer, combineReducers, Action} from "@ngrx/store";
 import {compose} from "@ngrx/core/compose";
 import {List} from "immutable";
 
-import {todosReducer, initialTodosState} from "./todos/todos.store";
+import {todosReducer} from "./todos/todos.store";
 import {Todo} from "./todos/todo.model";
-import {watchTimeReducer, initialLazyTestState} from "./+lazy-test/lazy-test.store";
+import {watchTimeReducer} from "./+lazy-test/lazy-test.store";
 
 export interface AppState {
   todos: List<Todo>;
@@ -28,15 +27,10 @@ function stateSetter(reducer: ActionReducer<any>): ActionReducer<any> {
   };
 }
 
-const DEV_REDUCERS = [stateSetter];
-const developmentReducer = compose(...DEV_REDUCERS, combineReducers)(reducers);
-// TODO: Use and eval the ENV variable (via DefinePlugin).
+const DEV_REDUCERS                                         = [stateSetter];
+const developmentReducer: (state: any, action: any) => any = compose(...DEV_REDUCERS, combineReducers)(reducers);
+// TODO: Use and eval the ENV variable (via DefinePlugin) to properly define a production reducer.
 
-const initialStates = assign(
-  {},
-  initialTodosState,
-  initialLazyTestState
-);
-
-export const createStoreProvider = (currentState?: any) =>
-  StoreModule.provideStore(developmentReducer, assign(currentState || {}, initialStates));
+export function rootReducer(state: any, action: any): any {
+  return developmentReducer(state, action);
+}
