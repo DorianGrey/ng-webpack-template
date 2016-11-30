@@ -18,7 +18,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run tslint:dist && npm run stylelint:dist && npm run translations:dist && cross-env NODE_ENV=production karma start karma.conf.js",
-    "start": "npm run create-index:dev && npm run dev-dll && concurrently -r \"npm run translations:dev\" \"npm run stylelint:dev\" \"npm run tslint:dev\" \"wait-for-change src/generated/translations.ts && npm run dev-server\"",
+    "start": "npm run create-index:dev && npm run dev-dll && concurrently -r \"npm run dev-qa\" \"npm run translations:dev\" \"wait-for-change src/generated/translations.ts && npm run dev-server\"",
     "dist": "npm run test && npm run create-index:dist && npm run dist-bundle",
     "dist:aot": "npm run test && npm run create-index:dist-aot && npm run dist-bundle:aot",
     "dist-bundle": "cross-env NODE_ENV=production webpack --config config/webpack.dist.config.js",
@@ -27,6 +27,7 @@
     "dist-server:aot": "cross-env NO_ANALYZE_PLUGIN=true npm run dist:aot && node example-dist-server/server.js dist-aot",
     "dev-bundle": "cross-env NODE_ENV=development webpack --config config/webpack.config.js",
     "dev-server": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.config.js --inline --hot",
+    "dev-qa": "concurrently -r \"npm run translations:dev\" \"npm run stylelint:dev\" \"npm run tslint:dev\" \"karma start karma.conf.js\"",
     "dev-dll": "webpack --config config/webpack.dll.config.js",
     "dev-test": "cross-env NODE_ENV=development karma start karma.conf.js",
     "stylelint:dist": "node bin/lint-styles.js \"src/**/*.scss\"",
