@@ -66,6 +66,7 @@ Since some of these restrictions are caused by the lack of maturity of the AoT c
 
 - ~~Add the linters back into development and production mode~~.
 - ~~Properly configure Travis CI~~.
+- Add Karma to the dev cycle; With particular config to reduce output noise.
 - Add more docs to the various webpack configs and their `constants` file.
 - Add more docs to the code itself, esp. the state maintenance via [ngrx/store](https://github.com/ngrx/store).
 - ~~Set up a minimal production server~~.

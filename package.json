@@ -47,7 +47,7 @@
     "@ngtools/webpack": "1.1.6",
     "@types/core-js": "0.9.34",
     "@types/jasmine": "2.5.38",
-    "@types/lodash": "4.14.40",
+    "@types/lodash": "4.14.41",
     "@types/node": "6.0.51",
     "angular2-router-loader": "0.3.4",
     "angular2-template-loader": "0.6.0",
@@ -85,7 +85,7 @@
     "typescript": "2.0.10",
     "wait-for-change": "1.1.0",
     "webpack": "2.1.0-beta.27",
-    "webpack-bundle-analyzer": "1.5.3",
+    "webpack-bundle-analyzer": "2.1.1",
     "webpack-dev-server": "2.1.0-beta.11",
     "yargs": "6.4.0"
   },
