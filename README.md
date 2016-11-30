@@ -25,7 +25,7 @@ The version favors to use [yarn](https://github.com/yarnpkg/yarn) for faster and
 ```
 npm install -g yarn
 ```
-Alternatively, you might use good old `npm`, if you REALLY want to. If that is the case, just replace the `yarn` part of the commands listed below with `npm`
+Alternatively, you might use good old `npm`, if you REALLY want to. If that is the case, just replace the `yarn` part of the commands listed below with `npm`.
 
 ## Project structure
 
@@ -57,6 +57,9 @@ For the AoT-based, run
 yarn run dist:aot
 ```
 which will create a production build in the `dist-aot` folder.
+
+By default, both versions are utilizing the [webpack-bundle-analyzer](https://github.com/th0r/webpack-bundle-analyzer), which is available at `http://localhost:5000` after the build completed.
+Alternatively, both versions can be executed with `dist-server` instead of just `dist` to start an exemplary production server (see the `example-dist-server` for details) be able to have a look at the build results immediately.
 
 **Beware**: I did not call this way _experimental_ for no reason. The whole AoT processing currently enforces rather strict rules (see a rather good explanation [here](https://medium.com/@isaacplmann/making-your-angular-2-library-statically-analyzable-for-aot-e1c6f3ebedd5)) on how not only your own code has to be written, but also the code of the libraries you are using. Before you consider using AoT optimization, you will have to check if all your libraries support it.
 

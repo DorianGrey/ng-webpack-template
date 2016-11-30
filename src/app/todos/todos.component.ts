@@ -1,4 +1,4 @@
-import {Component, ViewChild} from "@angular/core";
+import {Component, ViewChild, ElementRef} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {List} from "immutable";
 
@@ -10,8 +10,8 @@ import {Todo} from "./todo.model";
   templateUrl: "./todos.component.html"
 })
 export class TodosComponent {
-  @ViewChild("name") name: any;
-  private todos: Observable<List<Todo>>;
+  @ViewChild("name") name: ElementRef;
+  todos: Observable<List<Todo>>;
 
   constructor(private todoService: TodoService) {
     this.todos = todoService.todos;

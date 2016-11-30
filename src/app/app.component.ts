@@ -1,4 +1,4 @@
-import {indexOf} from "lodash";
+import * as indexOf from "lodash/indexOf";
 import {Component} from "@angular/core";
 import {TranslateService} from "ng2-translate/ng2-translate";
 

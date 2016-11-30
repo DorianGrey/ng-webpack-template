@@ -1,7 +1,8 @@
-const commons        = require("./constants");
-const webpack        = require("webpack");
-const UglifyJsPlugin = require("webpack/lib/optimize/UglifyJsPlugin");
-const DefinePlugin   = require("webpack/lib/DefinePlugin");
+const commons               = require("./constants");
+const webpack               = require("webpack");
+const UglifyJsPlugin        = require("webpack/lib/optimize/UglifyJsPlugin");
+const OccurrenceOrderPlugin = require("webpack/lib/optimize/OccurrenceOrderPlugin");
+const DefinePlugin          = require("webpack/lib/DefinePlugin");
 
 const {AotPlugin}          = require("@ngtools/webpack");
 const {ForkCheckerPlugin}  = require("awesome-typescript-loader");
@@ -9,7 +10,7 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPl
 
 // See https://github.com/webpack/webpack/issues/2254#issuecomment-203528744 for this kind of style.
 module.exports = function (env) {
-  env = env || {};
+  env                            = env || {};
   // Eval configurable parts.
   const USE_AOT                  = env.aot === true;
   const NO_ANALYZE_PLUGIN_CONFIG = process.env.NO_ANALYZE_PLUGIN === "true";
@@ -20,6 +21,7 @@ module.exports = function (env) {
     }),
     new webpack.ProgressPlugin(),
     new webpack.NoErrorsPlugin(),
+    new OccurrenceOrderPlugin(true),
     new UglifyJsPlugin({
       beautify: false,
       comments: false
@@ -67,7 +69,6 @@ module.exports = function (env) {
   if (!NO_ANALYZE_PLUGIN_CONFIG) {
     plugins.push(new BundleAnalyzerPlugin({analyzerPort: 5000}));
   }
-
 
   return {
     entry: commons.root("src/main.ts"),
