@@ -44,7 +44,7 @@ which will fire up a webpack-dev-server using webpack's DLL feature up-front to 
 
 ### Production
 
-There are two ways to create a production build: The regular way, and a slightly more experimental one which includes [AoT compilation](https://angular.io/docs/ts/latest/cookbook/aot-compiler.html).
+There are two ways to create a production build: The regular way, and a slightly more experimental one which includes [AoT compilation](https://angular.io/docs/ts/latest/cookbook/aot-compiler.html) using the corresponding [webpack plugin](https://github.com/angular/angular-cli/blob/master/packages/webpack/README.md).
 
 For the regular way, just run
 ```
@@ -63,7 +63,9 @@ Alternatively, both versions can be executed with `dist-server` instead of just 
 
 **Beware**: I did not call this way _experimental_ for no reason. The whole AoT processing currently enforces rather strict rules (see a rather good explanation [here](https://medium.com/@isaacplmann/making-your-angular-2-library-statically-analyzable-for-aot-e1c6f3ebedd5)) on how not only your own code has to be written, but also the code of the libraries you are using. Before you consider using AoT optimization, you will have to check if all your libraries support it.
 
-Since some of these restrictions are caused by the lack of maturity of the AoT compiler ("just not implemented yet"), I'd describe both the AoT compiler itself and the corresponding plugin as _experimental_. **Don't get me wrong**: In case it works and passes the whole compilation process, the results are working fine, but there still is a rather high probability that you hit a case where you can't adopt your code to conform to the required restrictions. So - beware.
+Since some of these restrictions are caused by the lack of maturity of the AoT compiler ("just not implemented yet"), I'd describe both the AoT compiler itself and the corresponding plugin as _experimental_. **Don't get me wrong**: In case it works and passes the whole compilation process, the results are working fine, but there still is a rather high probability that you hit a case where you can't adopt your code to conform to the required restrictions.
+
+You should also keep an eye on the list of [issues marked as related to it](https://github.com/angular/angular-cli/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20aot). Esp. [this](https://github.com/angular/angular-cli/issues/2799) is somewhat annoying and might be a deal breaker if you want to integrate libraries that use custom decorators, like [ngrx/effects](https://github.com/ngrx/effects).
 
 # TODOs
 
