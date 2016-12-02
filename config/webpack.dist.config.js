@@ -3,10 +3,10 @@ const webpack               = require("webpack");
 const UglifyJsPlugin        = require("webpack/lib/optimize/UglifyJsPlugin");
 const OccurrenceOrderPlugin = require("webpack/lib/optimize/OccurrenceOrderPlugin");
 const DefinePlugin          = require("webpack/lib/DefinePlugin");
-
+const HtmlWebpackPlugin     = require("html-webpack-plugin");
 const {AotPlugin}          = require("@ngtools/webpack");
 const {ForkCheckerPlugin}  = require("awesome-typescript-loader");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin  = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 // See https://github.com/webpack/webpack/issues/2254#issuecomment-203528744 for this kind of style.
 module.exports = function (env) {
@@ -25,7 +25,8 @@ module.exports = function (env) {
     new UglifyJsPlugin({
       beautify: false,
       comments: false
-    })
+    }),
+    new HtmlWebpackPlugin(commons.getHtmlTemplateOptions(false))
   ];
 
   let outputRoot;

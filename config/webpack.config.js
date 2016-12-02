@@ -1,9 +1,10 @@
-const path            = require("path");
-const webpack         = require("webpack");
-const DefinePlugin    = require("webpack/lib/DefinePlugin");
+const path              = require("path");
+const webpack           = require("webpack");
+const DefinePlugin      = require("webpack/lib/DefinePlugin");
 const {ForkCheckerPlugin} = require("awesome-typescript-loader");
-const commons         = require("./constants");
-const devServerConfig = require("./dev-server.config");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const commons           = require("./constants");
+const devServerConfig   = require("./dev-server.config");
 
 module.exports = {
   entry: commons.root("src/main.ts"),
@@ -40,7 +41,8 @@ module.exports = {
     new webpack.DllReferencePlugin({
       context: '.',
       manifest: require(commons.root(".tmp/vendor-manifest.json"))
-    })
+    }),
+    new HtmlWebpackPlugin(commons.getHtmlTemplateOptions(true))
   ],
 
   node: commons.nodeConfig,

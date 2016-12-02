@@ -1,0 +1,16 @@
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= htmlWebpackPlugin.options.title %></title>
+</head>
+<base href="<%= htmlWebpackPlugin.options.baseHref %>">
+<body>
+  <app>
+    Loading...
+  </app>
+  <% if (htmlWebpackPlugin.options.devMode) { %>
+  <script src="<%= htmlWebpackPlugin.options.polyfillFile %>"></script>
+  <script src="<%= htmlWebpackPlugin.options.vendorFile %>"></script>
+  <% } %>
+</body>
+</html>

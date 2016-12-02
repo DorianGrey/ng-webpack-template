@@ -48,7 +48,7 @@ const RULE_TS_LOADING = {
 const RULE_HTML_LOADING = {
   test: /\.html/,
   loader: "raw-loader",
-  exclude: [root("src/index.html")]
+  exclude: [root("src/index.template.html")]
 };
 
 const RULE_MAIN_SASS_LOADING = {
@@ -72,6 +72,20 @@ function addDefaultContextReplacementPlugin(src) {
   )
 }
 
+function getHtmlTemplateOptions(devMode) {
+  return {
+    template: "src/index.template.html",
+    filename: "index.html", // Keep in mind that the output path gets prepended to this name automatically.
+    inject: "body",
+    // Custom config.
+    title: "Demo App",
+    devMode: devMode,
+    baseHref: "/",
+    polyfillFile: "polyfills.dll.js",
+    vendorFile: "vendor.dll.js"
+  };
+}
+
 module.exports = {
   root: root,
   nodeConfig: nodeConfig,
@@ -82,5 +96,6 @@ module.exports = {
   RULE_MAIN_SASS_LOADING: RULE_MAIN_SASS_LOADING,
   RULE_SASS_LOADING: RULE_SASS_LOADING,
   DEFAULT_RESOLVE_EXTENSIONS: DEFAULT_RESOLVE_EXTENSIONS,
-  addDefaultContextReplacementPlugin: addDefaultContextReplacementPlugin
+  addDefaultContextReplacementPlugin: addDefaultContextReplacementPlugin,
+  getHtmlTemplateOptions: getHtmlTemplateOptions
 };
