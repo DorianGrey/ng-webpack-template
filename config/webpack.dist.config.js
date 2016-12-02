@@ -75,7 +75,8 @@ module.exports = function (env) {
     entry: commons.root("src/main.ts"),
     output: {
       path: outputRoot,
-      filename: "bundle.min.js"
+      filename: "bundle.[hash].js",
+      chunkFilename: "[id].bundle.[hash].js"
     },
     devtool: false,
     resolve: {
