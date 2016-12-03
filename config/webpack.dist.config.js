@@ -34,7 +34,7 @@ module.exports = function (env) {
     commons.RULE_LIB_SOURCE_MAP_LOADING,
     commons.RULE_HTML_LOADING,
     commons.RULE_MAIN_SASS_LOADING,
-    commons.RULE_SASS_LOADING
+    commons.RULE_COMPONENT_SASS_LOADING
   ];
 
   if (USE_AOT) {
@@ -86,6 +86,6 @@ module.exports = function (env) {
       rules: rules
     },
     plugins: plugins,
-    node: commons.nodeConfig
+    node: commons.NODE_CONFIG
   };
 };

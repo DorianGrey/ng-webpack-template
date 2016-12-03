@@ -101,5 +101,5 @@ module.exports = {
    *
    * See: https://webpack.github.io/docs/configuration.html#node
    */
-  node: commons.nodeConfig
+  node: commons.NODE_CONFIG
 };

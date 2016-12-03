@@ -68,5 +68,5 @@ module.exports = {
     })
   ],
 
-  node: commons.nodeConfig
+  node: commons.NODE_CONFIG
 };

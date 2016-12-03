@@ -22,7 +22,7 @@ module.exports = {
       commons.RULE_TS_LOADING,
       commons.RULE_HTML_LOADING,
       commons.RULE_MAIN_SASS_LOADING,
-      commons.RULE_SASS_LOADING,
+      commons.RULE_COMPONENT_SASS_LOADING
     ]
   },
   plugins: [
@@ -45,6 +45,6 @@ module.exports = {
     new HtmlWebpackPlugin(commons.getHtmlTemplateOptions(true))
   ],
 
-  node: commons.nodeConfig,
+  node: commons.NODE_CONFIG,
   devServer: devServerConfig
 };
