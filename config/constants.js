@@ -1,5 +1,6 @@
-const path    = require("path");
-const webpack = require("webpack");
+const path              = require("path");
+const webpack           = require("webpack");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const rootDir = path.resolve(__dirname, "..");
 
@@ -80,15 +81,27 @@ const RULE_HTML_LOADING = {
 };
 
 /** Stylesheets in .scss format may be loaded in two different ways:
- * (1) As CSS by inserting it into a <style> tag. That's what happens to the "main.scss" file,
+ * (1) As CSS by inserting it into a <style> or a <link> tag. That's what happens to the "main.scss" file,
  * since it does not refer to a particular component only.
+ * The <style> tag is used in development, to get proper HMR.
+ * The <link> tag is used as optimization for the production modes.
  * (2) As an inline string - that what happens to all .component.scss files, since they refer
  * to a particular component, and inlining simplifies dealing with them.
  */
-const RULE_MAIN_SASS_LOADING      = {
-  test: /main\.scss$/,
-  loaders: ["style-loader", "css-loader", "sass-loader"]
-};
+function RULE_MAIN_SASS_LOADING(isDev) {
+  const result = {
+    test: /main\.scss$/
+  };
+  if (isDev) {
+    result.loaders = ["style-loader", "css-loader", "sass-loader"];
+  } else {
+    result.loader = ExtractTextPlugin.extract({
+      fallbackLoader: "style-loader",
+      loader: ["css-loader", "sass-loader"]
+    });
+  }
+  return result;
+}
 const RULE_COMPONENT_SASS_LOADING = {
   test: /\.component\.scss$/,
   loaders: ["to-string-loader", "css-loader", "sass-loader"]

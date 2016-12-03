@@ -1,10 +1,10 @@
-const path              = require("path");
-const webpack           = require("webpack");
-const DefinePlugin      = require("webpack/lib/DefinePlugin");
+const path                = require("path");
+const webpack             = require("webpack");
+const DefinePlugin        = require("webpack/lib/DefinePlugin");
 const {ForkCheckerPlugin} = require("awesome-typescript-loader");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const commons           = require("./constants");
-const devServerConfig   = require("./dev-server.config");
+const HtmlWebpackPlugin   = require("html-webpack-plugin");
+const commons             = require("./constants");
+const devServerConfig     = require("./dev-server.config");
 
 module.exports = {
   entry: commons.root("src/main.ts"),
@@ -21,7 +21,7 @@ module.exports = {
       commons.RULE_LIB_SOURCE_MAP_LOADING,
       commons.RULE_TS_LOADING,
       commons.RULE_HTML_LOADING,
-      commons.RULE_MAIN_SASS_LOADING,
+      commons.RULE_MAIN_SASS_LOADING(true),
       commons.RULE_COMPONENT_SASS_LOADING
     ]
   },
@@ -35,11 +35,11 @@ module.exports = {
       ENV: JSON.stringify(process.env.NODE_ENV || "development")
     }),
     new webpack.DllReferencePlugin({
-      context: '.',
+      context: ".",
       manifest: require(commons.root(".tmp/polyfills-manifest.json"))
     }),
     new webpack.DllReferencePlugin({
-      context: '.',
+      context: ".",
       manifest: require(commons.root(".tmp/vendor-manifest.json"))
     }),
     new HtmlWebpackPlugin(commons.getHtmlTemplateOptions(true))

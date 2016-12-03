@@ -4,9 +4,10 @@ const UglifyJsPlugin        = require("webpack/lib/optimize/UglifyJsPlugin");
 const OccurrenceOrderPlugin = require("webpack/lib/optimize/OccurrenceOrderPlugin");
 const DefinePlugin          = require("webpack/lib/DefinePlugin");
 const HtmlWebpackPlugin     = require("html-webpack-plugin");
-const {AotPlugin}          = require("@ngtools/webpack");
-const {ForkCheckerPlugin}  = require("awesome-typescript-loader");
+const {AotPlugin}           = require("@ngtools/webpack");
+const {ForkCheckerPlugin}   = require("awesome-typescript-loader");
 const BundleAnalyzerPlugin  = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const ExtractTextPlugin     = require("extract-text-webpack-plugin");
 
 // See https://github.com/webpack/webpack/issues/2254#issuecomment-203528744 for this kind of style.
 module.exports = function (env) {
@@ -26,14 +27,15 @@ module.exports = function (env) {
       beautify: false,
       comments: false
     }),
-    new HtmlWebpackPlugin(commons.getHtmlTemplateOptions(false))
+    new HtmlWebpackPlugin(commons.getHtmlTemplateOptions(false)),
+    new ExtractTextPlugin("[name].[chunkhash].css"),
   ];
 
   let outputRoot;
   const rules = [
     commons.RULE_LIB_SOURCE_MAP_LOADING,
     commons.RULE_HTML_LOADING,
-    commons.RULE_MAIN_SASS_LOADING,
+    commons.RULE_MAIN_SASS_LOADING(false),
     commons.RULE_COMPONENT_SASS_LOADING
   ];
 
@@ -76,7 +78,7 @@ module.exports = function (env) {
     output: {
       path: outputRoot,
       filename: "bundle.[hash].js",
-      chunkFilename: "[id].bundle.[hash].js"
+      chunkFilename: "[id].bundle.[chunkhash].js"
     },
     devtool: false,
     resolve: {
