@@ -28,6 +28,14 @@ module.exports = function (env) {
       comments: false
     }),
     new HtmlWebpackPlugin(commons.getHtmlTemplateOptions(false)),
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        // Forwards options to the sass-loader (and thus: node-sass); put more of them here as required.
+        sassLoader: {
+          outputStyle: "compressed"
+        }
+      }
+    }),
     new ExtractTextPlugin("[name].[chunkhash].css"),
   ];
 
