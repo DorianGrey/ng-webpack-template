@@ -1,8 +1,13 @@
 const commons               = require("./constants");
-const webpack               = require("webpack");
+const {
+        DefinePlugin,
+        LoaderOptionsPlugin,
+        NoErrorsPlugin,
+        ProgressPlugin
+      }                     = require("webpack");
 const UglifyJsPlugin        = require("webpack/lib/optimize/UglifyJsPlugin");
 const OccurrenceOrderPlugin = require("webpack/lib/optimize/OccurrenceOrderPlugin");
-const DefinePlugin          = require("webpack/lib/DefinePlugin");
+
 const HtmlWebpackPlugin     = require("html-webpack-plugin");
 const {AotPlugin}           = require("@ngtools/webpack");
 const {ForkCheckerPlugin}   = require("awesome-typescript-loader");
@@ -20,15 +25,15 @@ module.exports = function (env) {
     new DefinePlugin({
       ENV: JSON.stringify(process.env.NODE_ENV || "production")
     }),
-    new webpack.ProgressPlugin(),
-    new webpack.NoErrorsPlugin(),
+    new ProgressPlugin(),
+    new NoErrorsPlugin(),
     new OccurrenceOrderPlugin(true),
     new UglifyJsPlugin({
       beautify: false,
       comments: false
     }),
     new HtmlWebpackPlugin(commons.getHtmlTemplateOptions(false)),
-    new webpack.LoaderOptionsPlugin({
+    new LoaderOptionsPlugin({
       options: {
         // Forwards options to the sass-loader (and thus: node-sass); put more of them here as required.
         sassLoader: {

@@ -1,6 +1,6 @@
-const path              = require("path");
-const webpack           = require("webpack");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const path                       = require("path");
+const {ContextReplacementPlugin} = require("webpack");
+const ExtractTextPlugin          = require("extract-text-webpack-plugin");
 
 const rootDir = path.resolve(__dirname, "..");
 
@@ -117,7 +117,7 @@ const DEFAULT_RESOLVE_EXTENSIONS = [".ts", ".js", ".json"];
 
 function addDefaultContextReplacementPlugin(src) {
   src = src || "src";
-  return new webpack.ContextReplacementPlugin(
+  return new ContextReplacementPlugin(
     /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
     root(src)
   )

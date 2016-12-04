@@ -1,6 +1,6 @@
-const path    = require("path");
-const webpack = require("webpack");
-const commons = require("./constants");
+const path        = require("path");
+const {DllPlugin} = require("webpack");
+const commons     = require("./constants");
 
 module.exports = {
   entry: {
@@ -62,7 +62,7 @@ module.exports = {
   },
   plugins: [
     commons.addDefaultContextReplacementPlugin(),
-    new webpack.DllPlugin({
+    new DllPlugin({
       name: "[name]",
       path: commons.root(".tmp/[name]-manifest.json"),
     })

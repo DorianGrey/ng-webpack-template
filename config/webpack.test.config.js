@@ -1,7 +1,8 @@
 const path               = require("path");
-const webpack            = require("webpack");
-const DefinePlugin       = require("webpack/lib/DefinePlugin");
-const NamedModulesPlugin = require("webpack/lib/NamedModulesPlugin");
+const {
+        DefinePlugin,
+        NamedModulesPlugin
+      }                  = require("webpack");
 const commons            = require("./constants");
 
 module.exports = {

@@ -1,6 +1,9 @@
 const path                = require("path");
-const webpack             = require("webpack");
-const DefinePlugin        = require("webpack/lib/DefinePlugin");
+const {
+        DefinePlugin,
+        DllReferencePlugin,
+        ProgressPlugin
+      }                   = require("webpack");
 const {ForkCheckerPlugin} = require("awesome-typescript-loader");
 const HtmlWebpackPlugin   = require("html-webpack-plugin");
 const commons             = require("./constants");
@@ -29,16 +32,16 @@ module.exports = {
     // See https://github.com/AngularClass/angular2-webpack-starter/issues/993
     // and https://github.com/angular/angular/issues/11625
     commons.addDefaultContextReplacementPlugin(),
-    new webpack.ProgressPlugin(),
+    new ProgressPlugin(),
     new ForkCheckerPlugin(),
     new DefinePlugin({
       ENV: JSON.stringify(process.env.NODE_ENV || "development")
     }),
-    new webpack.DllReferencePlugin({
+    new DllReferencePlugin({
       context: ".",
       manifest: require(commons.root(".tmp/polyfills-manifest.json"))
     }),
-    new webpack.DllReferencePlugin({
+    new DllReferencePlugin({
       context: ".",
       manifest: require(commons.root(".tmp/vendor-manifest.json"))
     }),
