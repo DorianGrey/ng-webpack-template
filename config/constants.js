@@ -61,7 +61,7 @@ const RULE_TS_LOADING = {
     "@angularclass/hmr-loader?pretty=true",
     "awesome-typescript-loader",
     "angular2-template-loader",
-    "angular2-router-loader"
+    "angular-router-loader"
   ]
 };
 
