@@ -1,11 +1,9 @@
-const path                = require("path");
 const {
         DefinePlugin,
         DllReferencePlugin,
         ProgressPlugin
       }                   = require("webpack");
 const {ForkCheckerPlugin} = require("awesome-typescript-loader");
-const HtmlWebpackPlugin   = require("html-webpack-plugin");
 const commons             = require("./constants");
 const devServerConfig     = require("./dev-server.config");
 
@@ -31,7 +29,7 @@ module.exports = {
   plugins: [
     // See https://github.com/AngularClass/angular2-webpack-starter/issues/993
     // and https://github.com/angular/angular/issues/11625
-    commons.addDefaultContextReplacementPlugin(),
+    commons.getDefaultContextReplacementPlugin(),
     new ProgressPlugin(),
     new ForkCheckerPlugin(),
     new DefinePlugin({
@@ -45,7 +43,8 @@ module.exports = {
       context: ".",
       manifest: require(commons.root(".tmp/vendor-manifest.json"))
     }),
-    new HtmlWebpackPlugin(commons.getHtmlTemplateOptions(true))
+    commons.getHtmlTemplatePlugin(true),
+    commons.getLoaderOptionsPlugin(true)
   ],
 
   node: commons.NODE_CONFIG,

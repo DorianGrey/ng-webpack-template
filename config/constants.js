@@ -1,6 +1,10 @@
-const path                       = require("path");
-const {ContextReplacementPlugin} = require("webpack");
-const ExtractTextPlugin          = require("extract-text-webpack-plugin");
+const path              = require("path");
+const {
+        ContextReplacementPlugin,
+        LoaderOptionsPlugin
+      }                 = require("webpack");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const rootDir = path.resolve(__dirname, "..");
 
@@ -88,23 +92,24 @@ const RULE_HTML_LOADING = {
  * (2) As an inline string - that what happens to all .component.scss files, since they refer
  * to a particular component, and inlining simplifies dealing with them.
  */
+const scssLoaderChain = ["css-loader?importLoaders=1", "postcss-loader", "sass-loader"];
 function RULE_MAIN_SASS_LOADING(isDev) {
   const result = {
     test: /main\.scss$/
   };
   if (isDev) {
-    result.loaders = ["style-loader", "css-loader", "sass-loader"];
+    result.loaders = ["style-loader"].concat(scssLoaderChain);
   } else {
     result.loader = ExtractTextPlugin.extract({
       fallbackLoader: "style-loader",
-      loader: ["css-loader", "sass-loader"]
+      loader: scssLoaderChain
     });
   }
   return result;
 }
 const RULE_COMPONENT_SASS_LOADING = {
   test: /\.component\.scss$/,
-  loaders: ["to-string-loader", "css-loader", "sass-loader"]
+  loaders: ["to-string-loader"].concat(scssLoaderChain)
 };
 
 /** A list of file extensions that may be tried resolved automatically by webpack
@@ -115,7 +120,7 @@ const RULE_COMPONENT_SASS_LOADING = {
  */
 const DEFAULT_RESOLVE_EXTENSIONS = [".ts", ".js", ".json"];
 
-function addDefaultContextReplacementPlugin(src) {
+function getDefaultContextReplacementPlugin(src) {
   src = src || "src";
   return new ContextReplacementPlugin(
     /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
@@ -123,18 +128,43 @@ function addDefaultContextReplacementPlugin(src) {
   )
 }
 
-function getHtmlTemplateOptions(devMode) {
-  return {
+function getLoaderOptionsPlugin(isDevMode) {
+  const options = {
+    options: {
+      // Forwards options to the postcss-loader; put more of them here as required.
+      // In its current state, only
+      postcss: {
+        plugins: [
+          require("autoprefixer")({
+            "browsers": ["last 2 versions"]
+          })
+        ]
+      }
+    }
+  };
+
+  if (!isDevMode) {
+    // Forwards options to the sass-loader (and thus: node-sass); put more of them here as required.
+    options.options.sassLoader = {
+      outputStyle: "compressed"
+    };
+  }
+
+  return new LoaderOptionsPlugin(options)
+}
+
+function getHtmlTemplatePlugin(isDevMode) {
+  return new HtmlWebpackPlugin({
     template: "src/index.template.html",
     filename: "index.html", // Keep in mind that the output path gets prepended to this name automatically.
     inject: "body",
     // Custom config.
     title: "Demo App",
-    devMode: devMode,
+    devMode: isDevMode,
     baseHref: "/",
     polyfillFile: "polyfills.dll.js",
     vendorFile: "vendor.dll.js"
-  };
+  });
 }
 
 module.exports = {
@@ -148,6 +178,7 @@ module.exports = {
   RULE_HTML_LOADING: RULE_HTML_LOADING,
   RULE_MAIN_SASS_LOADING: RULE_MAIN_SASS_LOADING,
   RULE_COMPONENT_SASS_LOADING: RULE_COMPONENT_SASS_LOADING,
-  addDefaultContextReplacementPlugin: addDefaultContextReplacementPlugin,
-  getHtmlTemplateOptions: getHtmlTemplateOptions
+  getDefaultContextReplacementPlugin: getDefaultContextReplacementPlugin,
+  getHtmlTemplatePlugin: getHtmlTemplatePlugin,
+  getLoaderOptionsPlugin: getLoaderOptionsPlugin
 };

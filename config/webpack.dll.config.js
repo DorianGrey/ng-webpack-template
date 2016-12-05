@@ -61,7 +61,7 @@ module.exports = {
     ]
   },
   plugins: [
-    commons.addDefaultContextReplacementPlugin(),
+    commons.getDefaultContextReplacementPlugin(),
     new DllPlugin({
       name: "[name]",
       path: commons.root(".tmp/[name]-manifest.json"),

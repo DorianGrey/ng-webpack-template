@@ -90,7 +90,7 @@ module.exports = {
     ]
   },
   plugins: [
-    commons.addDefaultContextReplacementPlugin(),
+    commons.getDefaultContextReplacementPlugin(),
     new DefinePlugin({
       ENV: JSON.stringify(process.env.NODE_ENV || "test")
     }),

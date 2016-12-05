@@ -1,14 +1,12 @@
 const commons               = require("./constants");
 const {
         DefinePlugin,
-        LoaderOptionsPlugin,
         NoErrorsPlugin,
         ProgressPlugin
       }                     = require("webpack");
 const UglifyJsPlugin        = require("webpack/lib/optimize/UglifyJsPlugin");
 const OccurrenceOrderPlugin = require("webpack/lib/optimize/OccurrenceOrderPlugin");
 
-const HtmlWebpackPlugin     = require("html-webpack-plugin");
 const {AotPlugin}           = require("@ngtools/webpack");
 const {ForkCheckerPlugin}   = require("awesome-typescript-loader");
 const BundleAnalyzerPlugin  = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
@@ -32,15 +30,8 @@ module.exports = function (env) {
       beautify: false,
       comments: false
     }),
-    new HtmlWebpackPlugin(commons.getHtmlTemplateOptions(false)),
-    new LoaderOptionsPlugin({
-      options: {
-        // Forwards options to the sass-loader (and thus: node-sass); put more of them here as required.
-        sassLoader: {
-          outputStyle: "compressed"
-        }
-      }
-    }),
+    commons.getHtmlTemplatePlugin(false),
+    commons.getLoaderOptionsPlugin(false),
     new ExtractTextPlugin("[name].[chunkhash].css"),
   ];
 
@@ -71,7 +62,7 @@ module.exports = function (env) {
   } else {
     // Add context replacement and fork checker.
     plugins.push(
-      commons.addDefaultContextReplacementPlugin(),
+      commons.getDefaultContextReplacementPlugin(),
       new ForkCheckerPlugin()
     );
 
