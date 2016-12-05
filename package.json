@@ -21,14 +21,14 @@
     "start": "rimraf .tmp && npm run dev-dll && concurrently -r \"npm run dev-qa\" \"npm run translations:dev\" \"wait-for-change src/generated/translations.ts && npm run dev-server\"",
     "dist": "rimraf dist && npm run test && npm run dist-bundle",
     "dist:aot": "rimraf dist-aot && npm run test && npm run dist-bundle:aot",
-    "dist-bundle": "cross-env NODE_ENV=production webpack --config config/webpack.dist.config.js",
+    "dist-bundle": "cross-env NODE_ENV=production webpack --config webpack/main.config.js",
     "dist-bundle:aot": "npm run dist-bundle -- --env.aot",
     "dist-server": "cross-env NO_ANALYZE_PLUGIN=true npm run dist && node example-dist-server/server.js dist",
     "dist-server:aot": "cross-env NO_ANALYZE_PLUGIN=true npm run dist:aot && node example-dist-server/server.js dist-aot",
-    "dev-bundle": "cross-env NODE_ENV=development webpack --config config/webpack.config.js",
-    "dev-server": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.config.js --inline --hot",
+    "dev-bundle": "cross-env NODE_ENV=development webpack --config webpack/main.config.js",
+    "dev-server": "cross-env NODE_ENV=development webpack-dev-server --config webpack/main.config.js --inline --hot",
     "dev-qa": "concurrently -r \"npm run translations:dev\" \"npm run stylelint:dev\" \"npm run tslint:dev\" \"karma start karma.conf.js\"",
-    "dev-dll": "webpack --config config/webpack.dll.config.js",
+    "dev-dll": "webpack --config webpack/dll.config.js",
     "dev-test": "cross-env NODE_ENV=development karma start karma.conf.js",
     "stylelint:dist": "node bin/lint-styles.js \"src/**/*.scss\"",
     "stylelint:dev": "npm run stylelint:dist -- -w",
@@ -88,7 +88,8 @@
     "wait-for-change": "1.1.0",
     "webpack": "2.1.0-beta.27",
     "webpack-bundle-analyzer": "2.1.1",
-    "webpack-dev-server": "2.1.0-beta.11"
+    "webpack-dev-server": "2.1.0-beta.11",
+    "webpack-merge": "^1.0.2"
   },
   "dependencies": {
     "@angular/common": "2.2.4",
