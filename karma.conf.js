@@ -1,4 +1,4 @@
-const webpackTestConfig = require("./config/webpack.test.config");
+const webpackTestConfig = require("./webpack/test.config.js");
 
 const ENV                = process.env.NODE_ENV || "development";
 const devSpecificConfig  = {

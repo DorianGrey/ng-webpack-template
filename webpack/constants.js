@@ -8,10 +8,10 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const rootDir = path.resolve(__dirname, "..");
 
-function root(relativPath) {
+exports.root = function root(relativePath) {
   "use strict";
-  return path.resolve(rootDir, relativPath);
-}
+  return path.resolve(rootDir, relativePath);
+};
 
 /*
  * Include polyfills or mocks for various node stuff
@@ -19,9 +19,9 @@ function root(relativPath) {
  *
  * See: https://webpack.github.io/docs/configuration.html#node
  */
-const NODE_CONFIG = {
+exports.NODE_CONFIG = {
   global: true,
-  crypto: 'empty',
+  crypto: "empty",
   process: true,
   module: false,
   clearImmediate: false,
@@ -30,18 +30,18 @@ const NODE_CONFIG = {
 
 // These packages have problems with their source-maps.
 // If any other packages have - just reference them here in the same style.
-const EXCLUDE_SOURCE_MAPS = [
+exports.EXCLUDE_SOURCE_MAPS = [
   // these packages have problems with their sourcemaps
-  root("node_modules/@angular"),
-  root("node_modules/rxjs")
+  exports.root("node_modules/@angular"),
+  exports.root("node_modules/rxjs")
 ];
 
 // We should not use plain js files in our case, however,
 // some of the libs may contain them. We're interested in their source-maps.
-const RULE_LIB_SOURCE_MAP_LOADING = {
+exports.RULE_LIB_SOURCE_MAP_LOADING = {
   test: /\.js$/,
   loader: "source-map-loader",
-  exclude: [EXCLUDE_SOURCE_MAPS]
+  exclude: [exports.EXCLUDE_SOURCE_MAPS]
 };
 
 /** Loader chain for typescript files in case of non-aot mode. Keep in mind that the list of loaders
@@ -55,8 +55,8 @@ const RULE_LIB_SOURCE_MAP_LOADING = {
  * Note that this loader automatically disables itself in production mode and leaves the code untouched in that case.
  * Thus, there is no need to make a difference between development and production mode here.
  */
-const RULE_TS_LOADING = {
-  test: /\.tsx?$/,
+exports.RULE_TS_LOADING = {
+  test: /\.ts$/,
   loaders: [
     "@angularclass/hmr-loader?pretty=true",
     "awesome-typescript-loader",
@@ -69,7 +69,7 @@ const RULE_TS_LOADING = {
  Note that you MUST NOT configure another loader here, since this might break the whole step.
  This loader already takes care of delegating work to others if required.
  */
-const RULE_TS_AOT_LOADING = {
+exports.RULE_TS_AOT_LOADING = {
   test: /\.ts$/,
   loader: "@ngtools/webpack",
 };
@@ -78,10 +78,10 @@ const RULE_TS_AOT_LOADING = {
  * The only exception that the index template, which is dealt with by the
  * HtmlWebpackPlugin during build time.
  */
-const RULE_HTML_LOADING = {
+exports.RULE_HTML_LOADING = {
   test: /\.html/,
   loader: "raw-loader",
-  exclude: [root("src/index.template.html")]
+  exclude: [exports.root("src/index.template.html")]
 };
 
 /** Stylesheets in .scss format may be loaded in two different ways:
@@ -92,8 +92,8 @@ const RULE_HTML_LOADING = {
  * (2) As an inline string - that what happens to all .component.scss files, since they refer
  * to a particular component, and inlining simplifies dealing with them.
  */
-const scssLoaderChain = ["css-loader?importLoaders=1", "postcss-loader", "sass-loader"];
-function RULE_MAIN_SASS_LOADING(isDev) {
+const scssLoaderChain               = ["css-loader?importLoaders=1", "postcss-loader", "sass-loader"];
+exports.RULE_MAIN_SASS_LOADING      = function RULE_MAIN_SASS_LOADING(isDev) {
   const result = {
     test: /main\.scss$/
   };
@@ -106,8 +106,8 @@ function RULE_MAIN_SASS_LOADING(isDev) {
     });
   }
   return result;
-}
-const RULE_COMPONENT_SASS_LOADING = {
+};
+exports.RULE_COMPONENT_SASS_LOADING = {
   test: /\.component\.scss$/,
   loaders: ["to-string-loader"].concat(scssLoaderChain)
 };
@@ -118,17 +118,17 @@ const RULE_COMPONENT_SASS_LOADING = {
  * compilation process, since the attempts are executed in the order their corresponding
  * extensions are listed here.
  */
-const DEFAULT_RESOLVE_EXTENSIONS = [".ts", ".js", ".json"];
+exports.DEFAULT_RESOLVE_EXTENSIONS = [".ts", ".js", ".json"];
 
-function getDefaultContextReplacementPlugin(src) {
+exports.getDefaultContextReplacementPlugin = function getDefaultContextReplacementPlugin(src) {
   src = src || "src";
   return new ContextReplacementPlugin(
     /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
-    root(src)
+    exports.root(src)
   )
-}
+};
 
-function getLoaderOptionsPlugin(isDevMode) {
+exports.getLoaderOptionsPlugin = function getLoaderOptionsPlugin(isDevMode) {
   const options = {
     options: {
       // Forwards options to the postcss-loader; put more of them here as required.
@@ -151,9 +151,9 @@ function getLoaderOptionsPlugin(isDevMode) {
   }
 
   return new LoaderOptionsPlugin(options)
-}
+};
 
-function getHtmlTemplatePlugin(isDevMode) {
+exports.getHtmlTemplatePlugin = function getHtmlTemplatePlugin(isDevMode) {
   return new HtmlWebpackPlugin({
     template: "src/index.template.html",
     filename: "index.html", // Keep in mind that the output path gets prepended to this name automatically.
@@ -165,20 +165,4 @@ function getHtmlTemplatePlugin(isDevMode) {
     polyfillFile: "polyfills.dll.js",
     vendorFile: "vendor.dll.js"
   });
-}
-
-module.exports = {
-  root: root,
-  NODE_CONFIG: NODE_CONFIG,
-  EXCLUDE_SOURCE_MAPS: EXCLUDE_SOURCE_MAPS,
-  DEFAULT_RESOLVE_EXTENSIONS: DEFAULT_RESOLVE_EXTENSIONS,
-  RULE_LIB_SOURCE_MAP_LOADING: RULE_LIB_SOURCE_MAP_LOADING,
-  RULE_TS_LOADING: RULE_TS_LOADING,
-  RULE_TS_AOT_LOADING: RULE_TS_AOT_LOADING,
-  RULE_HTML_LOADING: RULE_HTML_LOADING,
-  RULE_MAIN_SASS_LOADING: RULE_MAIN_SASS_LOADING,
-  RULE_COMPONENT_SASS_LOADING: RULE_COMPONENT_SASS_LOADING,
-  getDefaultContextReplacementPlugin: getDefaultContextReplacementPlugin,
-  getHtmlTemplatePlugin: getHtmlTemplatePlugin,
-  getLoaderOptionsPlugin: getLoaderOptionsPlugin
 };
