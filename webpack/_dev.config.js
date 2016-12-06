@@ -1,4 +1,7 @@
-const {DllReferencePlugin} = require("webpack");
+const {
+        DllReferencePlugin,
+        NamedModulesPlugin
+      }                    = require("webpack");
 const {root}               = require("./constants");
 const devServerConfig      = require("./dev-server.config.js");
 
@@ -27,6 +30,7 @@ module.exports = function () {
         context: ".",
         manifest: require(root(".tmp/vendor-manifest.json"))
       }),
+      new NamedModulesPlugin()
     ],
     devServer: devServerConfig
   };
