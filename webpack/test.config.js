@@ -6,9 +6,7 @@ const {
 const commons            = require("./constants");
 
 module.exports = {
-
   entry: {},
-
   /**
    * Source map for Karma from the help of karma-sourcemap-loader &  karma-webpack
    *
@@ -16,34 +14,10 @@ module.exports = {
    * See: https://github.com/webpack/karma-webpack#source-maps
    */
   devtool: "inline-source-map",
-
-  /**
-   * Options affecting the resolving of modules.
-   *
-   * See: http://webpack.github.io/docs/configuration.html#resolve
-   */
   resolve: {
-
-    /**
-     * An array of extensions that should be used to resolve modules.
-     *
-     * See: http://webpack.github.io/docs/configuration.html#resolve-extensions
-     */
     extensions: commons.DEFAULT_RESOLVE_EXTENSIONS
   },
-
-  /**
-   * Options affecting the normal modules.
-   *
-   * See: http://webpack.github.io/docs/configuration.html#module
-   */
   module: {
-
-    /**
-     * An array of applied pre and post loaders.
-     *
-     * See: http://webpack.github.io/docs/configuration.html#module-preloaders-module-postloaders
-     */
     rules: [
       /**
        * Source map loader support for *.js files
@@ -58,7 +32,8 @@ module.exports = {
         exclude: [commons.EXCLUDE_SOURCE_MAPS]
       },
       /**
-       * Typescript loader support for .ts and Angular 2 async routes via .async.ts
+       * Typescript loader support for .ts and Angular 2 async routes.
+       * Note that the processing steps differ from the ones defined in RULE_TS_LOADING.
        *
        * See: https://github.com/s-panferov/awesome-typescript-loader
        */
@@ -74,11 +49,13 @@ module.exports = {
       /**
        * Instruments JS files with Istanbul for subsequent code coverage reporting.
        * Instrument only testing sources.
+       * FIXME: This loader is currently fixed at version 0.2.0 => >=1.0.0 does NOT work atm.;
+       * It fires curious errors regarding source maps that may not be found, although they are
+       * used in the created report ...
        *
        * See: https://github.com/deepsweet/istanbul-instrumenter-loader
        */
       {
-        // BEWARE: This loader is currently fixed at version 0.2.0 => 1.0.0 does NOT work atm!
         test: /\.(js|ts)$/, loader: "istanbul-instrumenter-loader",
         enforce: "post",
         include: path.resolve(process.cwd(), "src"),
@@ -96,11 +73,5 @@ module.exports = {
     }),
     new NamedModulesPlugin()
   ],
-  /**
-   * Include polyfills or mocks for various node stuff
-   * Description: Node configuration
-   *
-   * See: https://webpack.github.io/docs/configuration.html#node
-   */
   node: commons.NODE_CONFIG
 };
