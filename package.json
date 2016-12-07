@@ -18,7 +18,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run tslint:dist && npm run stylelint:dist && npm run translations:dist && cross-env NODE_ENV=production karma start karma.conf.js",
-    "start": "rimraf .tmp && npm run dev-dll && concurrently -r \"npm run dev-qa\" \"npm run translations:dev\" \"wait-for-change src/generated/translations.ts && npm run dev-server\"",
+    "start": "rimraf .tmp && npm run dev-dll && concurrently -r \"npm run dev-qa\" \"wait-for-change src/generated/translations.ts && npm run dev-server\"",
     "dist": "rimraf dist && npm run test && npm run dist-bundle",
     "dist:aot": "rimraf dist-aot && npm run test && npm run dist-bundle:aot",
     "dist-bundle": "cross-env NODE_ENV=production webpack --config webpack/main.config.js",
