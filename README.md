@@ -28,9 +28,10 @@ npm install -g yarn
 Alternatively, you might use good old `npm`, if you REALLY want to. If that is the case, just replace the `yarn` part of the commands listed below with `npm`.
 
 ## Project structure
-The intended project structure, how to work with it and possibly extend it is documented in the [docs folder](https://github.com/DorianGrey/ng2-webpack-template/tree/master/docs)
+The intended project structure, how to work with it and possibly extend it is documented in the [docs folder](https://github.com/DorianGrey/ng2-webpack-template/tree/master/docs).
 
 - [General structure](https://github.com/DorianGrey/ng2-webpack-template/blob/master/docs/general_structure.md)
+- [The application state and how to extend it](https://github.com/DorianGrey/ng2-webpack-template/blob/master/docs/app_state.md)
 
 -- TODO --
 
