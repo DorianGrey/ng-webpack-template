@@ -76,9 +76,10 @@ You should also keep an eye on the list of [issues marked as related to it](http
 - ~~Add the linters back into development and production mode~~.
 - ~~Properly configure Travis CI~~.
 - ~~Add Karma to the dev cycle; With particular config to reduce output noise.~~
-- Add more docs to the various webpack configs and their `constants` file.
-- Add more docs to the code itself, esp. the state maintenance via [ngrx/store](https://github.com/ngrx/store).
+- ~~Add more docs to the various webpack configs and their `constants` file.~~
+- ~~Add more docs to the code itself, esp. the state maintenance via [ngrx/store](https://github.com/ngrx/store).~~
 - ~~Set up a minimal production server~~.
 - Drop unused code, scripts and dependencies.
 - ~~Add a lazy loading example for effort comparison with https://github.com/flaviait/ng2-jspm-template/pull/38~~.
-- Maybe control webpack from code instead of via CLI to be able to handle arguments better. 
+- Maybe control webpack from code instead of via CLI to be able to handle arguments better.
+- Optimize webpack output (changed with >=2.1.0-beta.28); see what's configurable. 
