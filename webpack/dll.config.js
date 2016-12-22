@@ -83,5 +83,6 @@ module.exports = {
       path: commons.root(".tmp/[name]-manifest.json"),
     })
   ],
+  performance: commons.getPerformanceOptions(false),
   node: commons.NODE_CONFIG
 };

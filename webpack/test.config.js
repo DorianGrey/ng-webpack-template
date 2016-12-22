@@ -73,5 +73,6 @@ module.exports = {
     }),
     new NamedModulesPlugin()
   ],
+  performance: commons.getPerformanceOptions(false),
   node: commons.NODE_CONFIG
 };

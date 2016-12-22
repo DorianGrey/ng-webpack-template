@@ -9,6 +9,7 @@ const {
         NODE_CONFIG,
         getHtmlTemplatePlugin,
         getLoaderOptionsPlugin,
+        getPerformanceOptions,
         getDefaultContextReplacementPlugin,
         RULE_LIB_SOURCE_MAP_LOADING,
         RULE_TS_LOADING,
@@ -99,6 +100,7 @@ module.exports = function (isDev) {
       getDefaultContextReplacementPlugin(),
       // Plugin of atl. to improve build and type checking speed; Will be included by default in the next major version.
       new ForkCheckerPlugin()
-    ]
+    ],
+    performance: getPerformanceOptions(!isDev)
   };
 };

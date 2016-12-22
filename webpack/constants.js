@@ -166,3 +166,14 @@ exports.getHtmlTemplatePlugin = function getHtmlTemplatePlugin(isDevMode) {
     vendorFile: "vendor.dll.js"
   });
 };
+
+exports.getPerformanceOptions = function getPerformanceOptions(isProdMode) {
+  return {
+    /**
+     * Show performance hints / warnings / errors. Especially displays warnings about too large entry points and chunks.
+     * This is not useful in development mode (since no optimization is performed at this stage), but for any production
+     * mode.
+     */
+    hints: isProdMode
+  }
+};
