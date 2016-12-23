@@ -1,8 +1,9 @@
 const {
         DefinePlugin,
         ProgressPlugin
-      }                   = require("webpack");
-const {ForkCheckerPlugin} = require("awesome-typescript-loader");
+      }                          = require("webpack");
+const {ForkCheckerPlugin}        = require("awesome-typescript-loader");
+const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const {
         root,
         DEFAULT_RESOLVE_EXTENSIONS,
@@ -16,7 +17,7 @@ const {
         RULE_HTML_LOADING,
         RULE_MAIN_SASS_LOADING,
         RULE_COMPONENT_SASS_LOADING
-      }                   = require("./constants");
+      }                          = require("./constants");
 
 /**
  * It might seem a little bit suspicious to use a mode-specific parameterized function in a "common"
@@ -81,6 +82,9 @@ module.exports = function (isDev) {
     plugins: [
       // HTML plugin to generate proper index.html files w.r.t. the output of this build.
       getHtmlTemplatePlugin(isDev),
+      new ScriptExtHtmlWebpackPlugin({
+        defaultAttribute: "defer"
+      }),
       // Plugin to provide options to our loaders.
       getLoaderOptionsPlugin(isDev),
       /**
