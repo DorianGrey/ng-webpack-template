@@ -9,7 +9,8 @@ module.exports = function () {
   return {
     output: {
       path: root(".tmp"),
-      filename: "bundle.js"
+      filename: "[name].js",
+      chunkFilename: "[id].chunk.js"
     },
     /**
      * This is a rather expensive source map w.r.t. rebuild performance, but also a really

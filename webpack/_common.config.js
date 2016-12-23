@@ -28,7 +28,9 @@ const {
  */
 module.exports = function (isDev) {
   return {
-    entry: root("src/main.ts"),
+    entry: {
+      bundle: root("src/main.ts")
+    },
     /**
      * Options affecting the resolving of modules.
      *

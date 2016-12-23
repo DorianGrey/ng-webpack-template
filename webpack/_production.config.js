@@ -40,7 +40,7 @@ module.exports = function (useAnalyzePlugin) {
      *
      * See: http://webpack.github.io/docs/stylesheets.html#separate-css-bundle
      */
-    new ExtractTextPlugin("[name].[chunkhash].css")
+    new ExtractTextPlugin("main.[chunkhash].css")
   ];
   if (useAnalyzePlugin) {
     plugins.push(new BundleAnalyzerPlugin({analyzerPort: 5000}));
@@ -55,8 +55,8 @@ module.exports = function (useAnalyzePlugin) {
   return {
     output: {
       path: root("dist"),
-      filename: "bundle.[hash].js",
-      chunkFilename: "[id].bundle.[chunkhash].js"
+      filename: "[name].[chunkhash].js",
+      chunkFilename: "[id].chunk.[chunkhash].js"
     },
     devtool: false,
     plugins: plugins
