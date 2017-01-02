@@ -85,17 +85,17 @@
   version "0.9.35"
   resolved "https://registry.yarnpkg.com/@types/core-js/-/core-js-0.9.35.tgz#444064e63711cdcc62ea844d27642f6efc2285f2"
 
-"@types/jasmine@2.5.38":
-  version "2.5.38"
-  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.5.38.tgz#a4379124c4921d4e21de54ec74669c9e9b356717"
+"@types/jasmine@^2.5.40":
+  version "2.5.40"
+  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.5.40.tgz#875c7ae739dcab1342794f51231c4aadcda6eb79"
 
 "@types/lodash@4.14.42":
   version "4.14.42"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.42.tgz#e278a11eeb52251b65b4be95fd4c9c8aaa45909e"
 
-"@types/node@^6.0.53":
-  version "6.0.53"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.53.tgz#8c300ca8ba51f80f98f3525b932ff47c6efd6be1"
+"@types/node@^6.0.55":
+  version "6.0.55"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.55.tgz#e5cb679a43561f42afd1bd6d58d3992ec8f31720"
 
 JSONStream@^0.8.4:
   version "0.8.4"
@@ -402,7 +402,7 @@ babel-messages@^6.8.0:
   dependencies:
     babel-runtime "^6.0.0"
 
-babel-runtime@^6.0.0, babel-runtime@^6.11.6, babel-runtime@^6.20.0, babel-runtime@^6.9.0:
+babel-runtime@^6.0.0, babel-runtime@^6.20.0, babel-runtime@^6.9.0:
   version "6.20.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.20.0.tgz#87300bdcf4cd770f09bf0048c64204e17806d16f"
   dependencies:
@@ -2195,9 +2195,9 @@ html-tags@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/html-tags/-/html-tags-1.1.1.tgz#869f43859f12d9bdc3892419e494a628aa1b204e"
 
-html-webpack-plugin@2.24.1:
-  version "2.24.1"
-  resolved "https://registry.yarnpkg.com/html-webpack-plugin/-/html-webpack-plugin-2.24.1.tgz#7f45fc678f66eac2d433f22336b4399da023b57e"
+html-webpack-plugin@^2.25.0:
+  version "2.25.0"
+  resolved "https://registry.yarnpkg.com/html-webpack-plugin/-/html-webpack-plugin-2.25.0.tgz#945c860c9bf413d725a09f773d09cfeca72e8f8a"
   dependencies:
     bluebird "^3.4.6"
     html-minifier "^3.1.0"
@@ -2718,11 +2718,11 @@ karma-phantomjs-launcher@1.0.2:
     lodash "^4.0.1"
     phantomjs-prebuilt "^2.1.7"
 
-karma-remap-coverage@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/karma-remap-coverage/-/karma-remap-coverage-0.1.3.tgz#6d79d1021e52a28524ca04697cb2b2a601d18e09"
+karma-remap-coverage@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/karma-remap-coverage/-/karma-remap-coverage-0.1.4.tgz#29feff25aa159655cc347586bcf4a200591b3b28"
   dependencies:
-    remap-istanbul "^0.8.0"
+    remap-istanbul "0.8.4"
 
 karma-sourcemap-loader@0.3.7:
   version "0.3.7"
@@ -2971,13 +2971,17 @@ lodash.unionwith@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/lodash.unionwith/-/lodash.unionwith-4.6.0.tgz#74d140b5ca8146e6c643c3724f5152538d9ac1f0"
 
-lodash@4.17.2, lodash@^4.0.0, lodash@^4.0.1, lodash@^4.1.0, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.16.2, lodash@^4.16.4, lodash@^4.17.2, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.5.0, lodash@^4.5.1:
-  version "4.17.2"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.2.tgz#34a3055babe04ce42467b607d700072c7ff6bf42"
-
 lodash@^3.8.0:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
+
+lodash@^4.0.0, lodash@^4.0.1, lodash@^4.1.0, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.16.2, lodash@^4.16.4, lodash@^4.17.2, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.5.0, lodash@^4.5.1:
+  version "4.17.2"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.2.tgz#34a3055babe04ce42467b607d700072c7ff6bf42"
+
+lodash@^4.17.4:
+  version "4.17.4"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
 lodash@~4.16.4:
   version "4.16.6"
@@ -3188,7 +3192,7 @@ ms@0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.1.tgz#9cd13c03adbff25b65effde7ce864ee952017098"
 
-multimatch@^2.0.0, multimatch@^2.1.0:
+multimatch@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/multimatch/-/multimatch-2.1.0.tgz#9c7906a22fb4c02919e2f5f75161b4cdbd4b2a2b"
   dependencies:
@@ -4268,12 +4272,11 @@ relateurl@0.2.x:
   version "0.2.7"
   resolved "https://registry.yarnpkg.com/relateurl/-/relateurl-0.2.7.tgz#54dbf377e51440aca90a4cd274600d3ff2d888a9"
 
-remap-istanbul@^0.8.0:
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/remap-istanbul/-/remap-istanbul-0.8.3.tgz#5ab65c2be134b00748c6b197e1d18acf0e0671dc"
+remap-istanbul@0.8.4:
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/remap-istanbul/-/remap-istanbul-0.8.4.tgz#b4bfdfdbc90efa635e9a28b1f4a116e22c8c2697"
   dependencies:
     amdefine "^1.0.0"
-    babel-runtime "^6.11.6"
     gulp-util "3.0.7"
     istanbul "0.4.5"
     source-map ">=0.5.6"
@@ -4412,9 +4415,9 @@ sax@~1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.1.tgz#7b8e656190b228e81a66aea748480d828cd2d37a"
 
-script-ext-html-webpack-plugin@^1.3.4:
-  version "1.3.4"
-  resolved "https://registry.yarnpkg.com/script-ext-html-webpack-plugin/-/script-ext-html-webpack-plugin-1.3.4.tgz#266dee90fad4c8f00a9737524f0fb2a412efe7b0"
+script-ext-html-webpack-plugin@^1.3.5:
+  version "1.3.5"
+  resolved "https://registry.yarnpkg.com/script-ext-html-webpack-plugin/-/script-ext-html-webpack-plugin-1.3.5.tgz#776341624cb1cc5cdfc13be51cfe398672f7cea0"
 
 select-hose@^2.0.0:
   version "2.0.0"
@@ -4825,9 +4828,9 @@ stylehacks@^2.3.0:
     text-table "^0.2.0"
     write-file-stdout "0.0.2"
 
-stylelint@^7.7.0:
-  version "7.7.0"
-  resolved "https://registry.yarnpkg.com/stylelint/-/stylelint-7.7.0.tgz#bf222c2a202c0b02d7834ad321fe0883d33cfde0"
+stylelint@^7.7.1:
+  version "7.7.1"
+  resolved "https://registry.yarnpkg.com/stylelint/-/stylelint-7.7.1.tgz#af30b6677e307d38b0ad64b70e719c1752973c67"
   dependencies:
     autoprefixer "^6.0.0"
     balanced-match "^0.4.0"
@@ -4845,7 +4848,7 @@ stylelint@^7.7.0:
     lodash "^4.0.0"
     log-symbols "^1.0.2"
     meow "^3.3.0"
-    multimatch "^2.1.0"
+    micromatch "^2.3.11"
     normalize-selector "^0.2.0"
     postcss "^5.0.20"
     postcss-less "^0.14.0"
