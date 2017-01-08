@@ -2,12 +2,15 @@
 
 [![Build Status](https://travis-ci.org/DorianGrey/ng2-webpack-template.svg?branch=master)](https://travis-ci.org/DorianGrey/ng2-webpack-template)
 
-This project provides a template for an [angular 2](https://angular.io/) project setup with [webpack](http://webpack.github.io).
-Its mainly considered to be the "evil brother" of [ng2-jspm-template](https://github.com/flaviait/ng2-jspm-template), with the primary purpose to provide an almost identical codebase and feature set compared to its brother. The goal will be to use projects to compare the two ways of setting up a project for angular 2 and get a better idea of which of them may be the better one under particular circumstances. Detailed comparison will follow up once this clone is feature-complete.
+This project provides a template for an [angular](https://angular.io/) project setup with [webpack](http://webpack.github.io).
+It started as a companion of [ng2-jspm-template](https://github.com/flaviait/ng2-jspm-template), with the primary purpose to provide an almost identical codebase and feature set compared to its brother to make it easier to figure out which template fits better to the daily requirements of development with [angular](https://angular.io/).
 
 ## Setup
 
-Since there is no release (yet), you'll have to clone this repo:
+To start using this template, you might either
+ - pick the latest release ([1.0.0](https://github.com/DorianGrey/ng2-webpack-template/releases/tag/1.0.0))
+ - clone the repository directly for the most recent features and updates:
+
 
     git clone https://github.com/DorianGrey/ng2-webpack-template.git
 
@@ -32,8 +35,7 @@ The intended project structure, how to work with it and possibly extend it is do
 
 - [General structure](https://github.com/DorianGrey/ng2-webpack-template/blob/master/docs/general_structure.md)
 - [The application state and how to extend it](https://github.com/DorianGrey/ng2-webpack-template/blob/master/docs/app_state.md)
-
--- TODO --
+- [The linters and why they are not tied to the webpack build](https://github.com/DorianGrey/ng2-webpack-template/blob/master/docs/linters.md)
 
 ## Workflow
 
@@ -71,15 +73,3 @@ Since some of these restrictions are caused by the lack of maturity of the AoT c
 
 You should also keep an eye on the list of [issues marked as related to it](https://github.com/angular/angular-cli/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20aot). Esp. [this](https://github.com/angular/angular-cli/issues/2799) is somewhat annoying and might be a deal breaker if you want to integrate libraries that use custom decorators, like [ngrx/effects](https://github.com/ngrx/effects).
 
-# TODOs
-
-- ~~Add the linters back into development and production mode~~.
-- ~~Properly configure Travis CI~~.
-- ~~Add Karma to the dev cycle; With particular config to reduce output noise.~~
-- ~~Add more docs to the various webpack configs and their `constants` file.~~
-- ~~Add more docs to the code itself, esp. the state maintenance via [ngrx/store](https://github.com/ngrx/store).~~
-- ~~Set up a minimal production server~~.
-- Drop unused code, scripts and dependencies.
-- ~~Add a lazy loading example for effort comparison with https://github.com/flaviait/ng2-jspm-template/pull/38~~.
-- Maybe control webpack from code instead of via CLI to be able to handle arguments better.
-- Optimize webpack output (changed with >=2.1.0-beta.28); see what's configurable. 
