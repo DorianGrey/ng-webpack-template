@@ -6,7 +6,6 @@ const {
 const commons            = require("./constants");
 
 module.exports = {
-  entry: {},
   /**
    * Source map for Karma from the help of karma-sourcemap-loader &  karma-webpack
    *

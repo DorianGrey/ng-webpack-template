@@ -174,6 +174,6 @@ exports.getPerformanceOptions = function getPerformanceOptions(isProdMode) {
      * This is not useful in development mode (since no optimization is performed at this stage), but for any production
      * mode.
      */
-    hints: isProdMode
+    hints: isProdMode ? "warning" : false
   }
 };
