@@ -8,7 +8,7 @@ It started as a companion of [ng2-jspm-template](https://github.com/flaviait/ng2
 ## Setup
 
 To start using this template, you might either
- - pick the latest release ([1.0.0](https://github.com/DorianGrey/ng2-webpack-template/releases/tag/1.0.0))
+ - pick the latest release ([1.1.0](https://github.com/DorianGrey/ng2-webpack-template/releases/tag/1.1.0))
  - clone the repository directly for the most recent features and updates:
 
 
@@ -71,5 +71,5 @@ Alternatively, both versions can be executed with `dist-server` instead of just 
 
 Since some of these restrictions are caused by the lack of maturity of the AoT compiler ("just not implemented yet"), I'd describe both the AoT compiler itself and the corresponding plugin as _experimental_. **Don't get me wrong**: In case it works and passes the whole compilation process, the results are working fine, but there still is a rather high probability that you hit a case where you can't adopt your code to conform to the required restrictions.
 
-You should also keep an eye on the list of [issues marked as related to it](https://github.com/angular/angular-cli/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20aot). Esp. [this](https://github.com/angular/angular-cli/issues/2799) is somewhat annoying and might be a deal breaker if you want to integrate libraries that use custom decorators, like [ngrx/effects](https://github.com/ngrx/effects).
+You should also keep an eye on the list of [issues marked as related to it](https://github.com/angular/angular-cli/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20aot). Esp. [this](https://github.com/angular/angular-cli/issues/2799) is somewhat annoying if you want to integrate libraries that use custom decorators (as a workaround, no decorators are stripped atm., so the resulting bundle is larger), like [ngrx/effects](https://github.com/ngrx/effects).
 
