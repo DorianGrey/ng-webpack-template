@@ -1,6 +1,6 @@
-const {NoErrorsPlugin}      = require("webpack");
-const UglifyJsPlugin        = require("webpack/lib/optimize/UglifyJsPlugin");
-const OccurrenceOrderPlugin = require("webpack/lib/optimize/OccurrenceOrderPlugin");
+const {NoEmitOnErrorsPlugin} = require("webpack");
+const UglifyJsPlugin         = require("webpack/lib/optimize/UglifyJsPlugin");
+const OccurrenceOrderPlugin  = require("webpack/lib/optimize/OccurrenceOrderPlugin");
 
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const ExtractTextPlugin    = require("extract-text-webpack-plugin");
@@ -18,7 +18,7 @@ const {root}               = require("./constants");
 module.exports = function (useAnalyzePlugin) {
   const plugins = [
     // Plugin to let the whole build fail on any error; i.e. do not tolerate these
-    new NoErrorsPlugin(),
+    new NoEmitOnErrorsPlugin(),
     /**
      * Optimize the strategy of how module and chunk ids are assigned; make this more predictable.
      *
