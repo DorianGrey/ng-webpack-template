@@ -27,7 +27,7 @@ module.exports = {
       {
         test: /\.js$/,
         enforce: "pre",
-        loader: "source-map-loader",
+        use: "source-map-loader",
         exclude: [commons.EXCLUDE_SOURCE_MAPS]
       },
       /**
@@ -38,7 +38,7 @@ module.exports = {
        */
       {
         test: /\.ts$/,
-        loaders: [
+        use: [
           "awesome-typescript-loader?sourceMap=false,inlineSourceMap=true",
           "angular2-template-loader"
         ],
@@ -55,7 +55,8 @@ module.exports = {
        * See: https://github.com/deepsweet/istanbul-instrumenter-loader
        */
       {
-        test: /\.(js|ts)$/, loader: "istanbul-instrumenter-loader",
+        test: /\.(js|ts)$/,
+        use: "istanbul-instrumenter-loader",
         enforce: "post",
         include: path.resolve(process.cwd(), "src"),
         exclude: [

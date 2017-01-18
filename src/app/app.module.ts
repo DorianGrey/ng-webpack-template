@@ -1,5 +1,4 @@
 import {NgModule, ApplicationRef} from "@angular/core";
-import {HttpModule} from "@angular/http";
 import {BrowserModule} from "@angular/platform-browser";
 
 import "rxjs/add/operator/take";
@@ -22,7 +21,6 @@ import translations from "../generated/translations";
 @NgModule({
   imports: [
     BrowserModule, // Should only be imported by the root => every other module should import "CommonModule".
-    HttpModule,
     APP_ROUTES,
     TranslateModule.forRoot({
       provide: TranslateLoader,
