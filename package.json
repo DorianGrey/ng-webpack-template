@@ -38,8 +38,8 @@
     "translations:dev": "npm run translations:dist -- -w"
   },
   "devDependencies": {
-    "@angular/compiler-cli": "^2.4.3",
-    "@angular/platform-server": "^2.4.3",
+    "@angular/compiler-cli": "^2.4.4",
+    "@angular/platform-server": "^2.4.4",
     "@angularclass/hmr": "1.2.2",
     "@angularclass/hmr-loader": "3.0.2",
     "@ngtools/webpack": "^1.2.3",
@@ -93,14 +93,14 @@
     "webpack-merge": "^2.4.0"
   },
   "dependencies": {
-    "@angular/common": "^2.4.3",
-    "@angular/compiler": "^2.4.3",
-    "@angular/core": "^2.4.3",
-    "@angular/forms": "^2.4.3",
-    "@angular/http": "^2.4.3",
-    "@angular/platform-browser": "^2.4.3",
-    "@angular/platform-browser-dynamic": "^2.4.3",
-    "@angular/router": "^3.4.3",
+    "@angular/common": "^2.4.4",
+    "@angular/compiler": "^2.4.4",
+    "@angular/core": "^2.4.4",
+    "@angular/forms": "^2.4.4",
+    "@angular/http": "^2.4.4",
+    "@angular/platform-browser": "^2.4.4",
+    "@angular/platform-browser-dynamic": "^2.4.4",
+    "@angular/router": "^3.4.4",
     "@ngrx/core": "1.2.0",
     "@ngrx/store": "2.2.1",
     "angular-router-loader": "^0.5.0",
