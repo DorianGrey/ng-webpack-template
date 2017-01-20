@@ -72,9 +72,9 @@
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@ngrx/store/-/store-2.2.1.tgz#316ec1e43aa5a0166e5e6e1aa2c34a4049386510"
 
-"@ngtools/webpack@^1.2.3":
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-1.2.3.tgz#968e1994bf38115502df615b27654f7676d337a7"
+"@ngtools/webpack@^1.2.4":
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-1.2.4.tgz#1aec8dfaf2b5b0027bd9732229a028db61b47d25"
   dependencies:
     enhanced-resolve "^2.3.0"
     loader-utils "^0.2.16"
@@ -2700,9 +2700,9 @@ karma-junit-reporter@^1.2.0:
     path-is-absolute "^1.0.0"
     xmlbuilder "8.2.2"
 
-karma-mocha-reporter@2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/karma-mocha-reporter/-/karma-mocha-reporter-2.2.1.tgz#8508b2f0925433a6417f0c528e53fcb411745758"
+karma-mocha-reporter@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/karma-mocha-reporter/-/karma-mocha-reporter-2.2.2.tgz#876de9a287244e54a608591732a98e66611f6abe"
   dependencies:
     chalk "1.1.3"
 
