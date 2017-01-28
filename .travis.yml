@@ -1,12 +1,20 @@
+sudo: false
+env:
+  - CXX=g++-4.8
 language: node_js
-
+node_js:
+  - "6.9.1"
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-4.8
+      - g++-4.8
 cache:
   directories:
     - $HOME/.npm
     - $HOME/.yarn-cache
-
-node_js:
-  - "6.9.1"
 
 install: npm install yarn -g && yarn install
 
