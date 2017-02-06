@@ -2,7 +2,7 @@ const {
         DefinePlugin,
         ProgressPlugin
       }                          = require("webpack");
-const {ForkCheckerPlugin}        = require("awesome-typescript-loader");
+const {CheckerPlugin}            = require("awesome-typescript-loader");
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const {
         root,
@@ -105,7 +105,7 @@ module.exports = function (isDev) {
       // Fix the angular2 context w.r.t. to webpack and the usage of System.import in their "load a component lazily" code.
       getDefaultContextReplacementPlugin(),
       // Plugin of atl. to improve build and type checking speed; Will be included by default in the next major version.
-      new ForkCheckerPlugin()
+      new CheckerPlugin()
     ],
     performance: getPerformanceOptions(!isDev)
   };
