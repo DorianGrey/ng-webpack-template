@@ -7,6 +7,7 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "noEmitHelpers": true,
+    "importHelpers": true,
     "removeComments": false,
     "noImplicitAny": true,
     "noImplicitReturns": true,

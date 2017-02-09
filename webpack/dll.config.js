@@ -29,7 +29,7 @@ module.exports = {
       "webpack/hot/emitter.js",
       // Library polyfills and utilities that do not belong to
       // a particular libary.
-      "ts-helpers",
+      "tslib",
       "zone.js",
       "core-js/es6/reflect",
       "core-js/es7/reflect",
