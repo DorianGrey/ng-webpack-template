@@ -2,7 +2,7 @@ import {NgModule, ModuleWithProviders} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 
-import {TranslateModule} from "ng2-translate";
+import {TranslateModule} from "@ngx-translate/core";
 
 // See https://angular.io/docs/ts/latest/guide/ngmodule.html#!#shared-module
 // for an explanation of how to properly create and use a shared module.

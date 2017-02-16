@@ -3,7 +3,7 @@ import {BrowserModule} from "@angular/platform-browser";
 
 import "rxjs/add/operator/take";
 
-import {TranslateLoader, TranslateModule, TranslateService} from "ng2-translate";
+import {TranslateLoader, TranslateModule, TranslateService} from "@ngx-translate/core";
 
 import {Store, StoreModule} from "@ngrx/store";
 import {createNewHosts, createInputTransfer, removeNgStyles} from "@angularclass/hmr/dist/helpers";
@@ -23,8 +23,10 @@ import translations from "../generated/translations";
     BrowserModule, // Should only be imported by the root => every other module should import "CommonModule".
     APP_ROUTES,
     TranslateModule.forRoot({
-      provide: TranslateLoader,
-      useFactory: createTranslateLoader
+      loader: {
+        provide: TranslateLoader,
+        useFactory: createTranslateLoader
+      }
     }),
     SharedModule.forRoot(),
     InputTestModule,

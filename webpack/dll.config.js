@@ -57,7 +57,7 @@ module.exports = {
       "@ngrx/store",
       "immutable",
       "lodash",
-      "ng2-translate",
+      "@ngx-translate/core",
       "rxjs"
     ]
   },
