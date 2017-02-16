@@ -98,11 +98,11 @@ exports.RULE_MAIN_SASS_LOADING      = function RULE_MAIN_SASS_LOADING(isDev) {
     test: /main\.scss$/
   };
   if (isDev) {
-    result.loaders = ["style-loader"].concat(scssLoaderChain);
+    result.use = ["style-loader"].concat(scssLoaderChain);
   } else {
-    result.loader = ExtractTextPlugin.extract({
-      fallbackLoader: "style-loader",
-      loader: scssLoaderChain
+    result.use = ExtractTextPlugin.extract({
+      fallback: "style-loader",
+      use: scssLoaderChain
     });
   }
   return result;
