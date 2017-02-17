@@ -42,7 +42,7 @@
     "@angular/platform-server": "^2.4.7",
     "@angularclass/hmr": "1.2.2",
     "@angularclass/hmr-loader": "3.0.2",
-    "@ngtools/webpack": "1.2.4",
+    "@ngtools/webpack": "1.2.10",
     "@types/core-js": "^0.9.35",
     "@types/jasmine": "^2.5.43",
     "@types/lodash": "4.14.42",

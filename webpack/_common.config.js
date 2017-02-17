@@ -26,8 +26,43 @@ const {
  * themselves. Thus, we're using the `isDev` parameter to determine the exact target mode and simplify the
  * option details this way.
  * @param isDev Indicates whether development mode was selected or not.
+ * @param useAot Indicates whether aot mode was selected or not.
  */
-module.exports = function (isDev) {
+module.exports = function (isDev, useAot) {
+  const plugins = [
+    // HTML plugin to generate proper index.html files w.r.t. the output of this build.
+    getHtmlTemplatePlugin(isDev),
+    new ScriptExtHtmlWebpackPlugin({
+      defaultAttribute: "defer"
+    }),
+    // Plugin to provide options to our loaders.
+    getLoaderOptionsPlugin(isDev),
+    /**
+     * Plugin to define several variables.
+     * Note: Webpack is capable of conditionally dropping code w.r.t. these variables.
+     * E.g. if a variable `ENV` is defined as `"whatever"`, and you have some code like:
+     *
+     *     if (ENV !== "whatever") {...}
+     *
+     * Then the code inside the braces will be dropped during the bundle process.
+     * We're using this for conditionally executing development / production code.
+     */
+    new DefinePlugin({
+      ENV: JSON.stringify(process.env.NODE_ENV || "development")
+    }),
+    // Plugin for displaying bundle process stage.
+    new ProgressPlugin(),
+    // Plugin of atl. to improve build and type checking speed; Will be included by default in the next major version.
+    new CheckerPlugin()
+  ];
+
+  if (!useAot) {
+    // Fix the angular2 context w.r.t. to webpack and the usage of System.import in their "load a component lazily" code.
+    // Note: Since a version > 1.2.4 of the @ngtools/webpack plugin, the context replacement conflicts with it (seems to deal with it itself).
+    // Thus, we only add this plugin in case we're NOT aiming at AoT compilation.
+    plugins.push(getDefaultContextReplacementPlugin());
+  }
+
   return {
     entry: {
       bundle: root("src/main.ts")
@@ -79,34 +114,7 @@ module.exports = function (isDev) {
      *
      * See: http://webpack.github.io/docs/configuration.html#plugins
      */
-    plugins: [
-      // HTML plugin to generate proper index.html files w.r.t. the output of this build.
-      getHtmlTemplatePlugin(isDev),
-      new ScriptExtHtmlWebpackPlugin({
-        defaultAttribute: "defer"
-      }),
-      // Plugin to provide options to our loaders.
-      getLoaderOptionsPlugin(isDev),
-      /**
-       * Plugin to define several variables.
-       * Note: Webpack is capable of conditionally dropping code w.r.t. these variables.
-       * E.g. if a variable `ENV` is defined as `"whatever"`, and you have some code like:
-       *
-       *     if (ENV !== "whatever") {...}
-       *
-       * Then the code inside the braces will be dropped during the bundle process.
-       * We're using this for conditionally executing development / production code.
-       */
-      new DefinePlugin({
-        ENV: JSON.stringify(process.env.NODE_ENV || "development")
-      }),
-      // Plugin for displaying bundle process stage.
-      new ProgressPlugin(),
-      // Fix the angular2 context w.r.t. to webpack and the usage of System.import in their "load a component lazily" code.
-      getDefaultContextReplacementPlugin(),
-      // Plugin of atl. to improve build and type checking speed; Will be included by default in the next major version.
-      new CheckerPlugin()
-    ],
+    plugins: plugins,
     performance: getPerformanceOptions(!isDev)
   };
 };

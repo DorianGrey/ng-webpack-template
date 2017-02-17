@@ -32,7 +32,7 @@ module.exports = function (env) {
    *      This strategy enables the overwrite of the TS-rule in case of AoT mode.
    */
   return merge.smart(
-    commonConfig(IS_DEV),
+    commonConfig(IS_DEV, USE_AOT),
     IS_DEV ? devConfig() : prodConfig(!NO_ANALYZE_PLUGIN_CONFIG),
     USE_AOT ? aotConfig() : {}
   );
