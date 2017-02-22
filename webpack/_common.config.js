@@ -38,7 +38,10 @@ module.exports = function (isDev, useAot) {
     // Plugin to provide options to our loaders.
     getLoaderOptionsPlugin(isDev),
     /**
-     * Plugin to define several variables.
+     * Plugin to define several variables. "process.env.NODE_ENV" is forwarded so that libraries may
+     * react on it (e.g. by skipping some of their code). Please keep in mind that this is only possible
+     * since our node config enables shimming the "process" variable.
+     *
      * Note: Webpack is capable of conditionally dropping code w.r.t. these variables.
      * E.g. if a variable `ENV` is defined as `"whatever"`, and you have some code like:
      *
@@ -48,7 +51,10 @@ module.exports = function (isDev, useAot) {
      * We're using this for conditionally executing development / production code.
      */
     new DefinePlugin({
-      ENV: JSON.stringify(process.env.NODE_ENV || "development")
+      ENV: JSON.stringify(process.env.NODE_ENV || "development"),
+      "process.env": {
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV || "development")
+      }
     }),
     // Plugin for displaying bundle process stage.
     new ProgressPlugin(),
