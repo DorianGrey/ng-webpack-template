@@ -33,7 +33,7 @@ module.exports = function (useAnalyzePlugin) {
      *
      * See: http://webpack.github.io/docs/stylesheets.html#separate-css-bundle
      */
-    new ExtractTextPlugin("main.[chunkhash].css")
+    new ExtractTextPlugin("main.[contenthash].css")
   ];
   if (useAnalyzePlugin) {
     plugins.push(new BundleAnalyzerPlugin({analyzerPort: 5000}));
