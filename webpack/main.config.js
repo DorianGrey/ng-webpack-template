@@ -6,16 +6,17 @@ const merge        = require("webpack-merge");
 
 const logger = require("log4js").getLogger("webpack-build");
 
-module.exports = function (env) {
-  env                            = env || {};
-  process.env.NODE_ENV           = process.env.NODE_ENV || "development";
+module.exports = function (env = {}) {
+  process.env.NODE_ENV = process.env.NODE_ENV || "development";
   // Eval configurable parts.
-  const USE_AOT                  = env.aot === true;
-  const IS_DEV                   = process.env.NODE_ENV !== "production";
-  const NO_ANALYZE_PLUGIN_CONFIG = process.env.NO_ANALYZE_PLUGIN === "true";
+  env.isDev            = process.env.NODE_ENV !== "production";
 
-  logger.debug("Build mode:", IS_DEV ? "development" : "production");
-  logger.debug("Using AoT:", USE_AOT);
+  logger.debug("Using build env:", JSON.stringify(env, null, 4));
+  logger.debug("Build mode:", env.isDev ? "development" : "production");
+  if (!env.isDev) {
+    logger.debug("Using minifier:", env.useClosureCompiler ? "Closure Compiler" : "UglifyJs");
+  }
+  logger.debug("Using AoT:", env.useAot === true);
 
   /** See the docs for more information about how merging configs is implemented:
    * https://github.com/survivejs/webpack-merge/blob/master/README.md
@@ -32,8 +33,8 @@ module.exports = function (env) {
    *      This strategy enables the overwrite of the TS-rule in case of AoT mode.
    */
   return merge.smart(
-    commonConfig(IS_DEV, USE_AOT),
-    IS_DEV ? devConfig() : prodConfig(!NO_ANALYZE_PLUGIN_CONFIG),
-    USE_AOT ? aotConfig() : {}
+    commonConfig(env),
+    env.isDev ? devConfig() : prodConfig(env),
+    env.useAot ? aotConfig() : {}
   );
 };

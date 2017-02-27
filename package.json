@@ -19,21 +19,36 @@
   "scripts": {
     "test": "npm run tslint:dist && npm run stylelint:dist && npm run translations:dist && cross-env NODE_ENV=production karma start karma.conf.js",
     "start": "rimraf .tmp && npm run dev-dll && concurrently -r \"npm run dev-qa\" \"wait-for-change src/generated/translations.ts && npm run dev-server\"",
-    "dist": "rimraf dist && npm run test && npm run dist-bundle",
-    "dist:aot": "rimraf dist-aot && npm run test && npm run dist-bundle:aot",
-    "dist-bundle": "cross-env NODE_ENV=production webpack --config webpack/main.config.js",
-    "dist-bundle:aot": "npm run dist-bundle -- --env.aot",
-    "dist-server": "cross-env NO_ANALYZE_PLUGIN=true npm run dist && node example-dist-server/server.js dist",
-    "dist-server:aot": "cross-env NO_ANALYZE_PLUGIN=true npm run dist:aot && node example-dist-server/server.js dist-aot",
+
+    "predist": "rimraf dist && npm run test",
+    "dist": "cross-env NODE_ENV=production webpack --config webpack/main.config.js",
+
+    "predist:cc": "rimraf dist && npm run test",
+    "dist:cc": "cross-env NODE_ENV=production webpack --config webpack/main.config.js --env.useClosureCompiler",
+
+    "predist:aot": "rimraf dist-aot && npm run test",
+    "dist:aot": "cross-env NODE_ENV=production webpack --config webpack/main.config.js --env.useAot",
+
+    "predist:aot:cc": "rimraf dist-aot && npm run test",
+    "dist:aot:cc": "cross-env NODE_ENV=production webpack --config webpack/main.config.js --env.useAot --env.useClosureCompiler",
+
+    "dist-server": "npm run dist -- --env.skipAnalyzePlugin && node example-dist-server/server.js dist",
+    "dist-server:cc": "npm run dist:cc -- --env.skipAnalyzePlugin && node example-dist-server/server.js dist",
+    "dist-server:aot": "npm run dist:aot -- --env.skipAnalyzePlugin && node example-dist-server/server.js dist-aot",
+    "dist-server:aot:cc": "npm run dist:aot:cc -- --env.skipAnalyzePlugin && node example-dist-server/server.js dist-aot",
+
     "dev-bundle": "cross-env NODE_ENV=development webpack --config webpack/main.config.js",
     "dev-server": "cross-env NODE_ENV=development webpack-dev-server --config webpack/main.config.js --hot",
     "dev-qa": "concurrently -r \"npm run translations:dev\" \"npm run stylelint:dev\" \"npm run tslint:dev\" \"karma start karma.conf.js\"",
     "dev-dll": "webpack --config webpack/dll.config.js",
     "dev-test": "cross-env NODE_ENV=development karma start karma.conf.js",
+
     "stylelint:dist": "node bin/lint-styles.js \"src/**/*.scss\"",
     "stylelint:dev": "npm run stylelint:dist -- -w",
+
     "tslint:dist": "node bin/lint-scripts.js \"src/**/*.ts\" -e \"src/generated/**/*.ts\"",
     "tslint:dev": "npm run tslint:dist -- -w",
+
     "translations:dist": "node bin/compile-translations.js \"src/**/*.i18n.yml\" src/generated/translations.ts",
     "translations:dev": "npm run translations:dist -- -w"
   },
@@ -89,6 +104,7 @@
     "wait-for-change": "^1.1.1",
     "webpack": "^2.2.1",
     "webpack-bundle-analyzer": "^2.3.0",
+    "webpack-closure-compiler": "^2.1.4",
     "webpack-dev-server": "^2.4.1",
     "webpack-merge": "^3.0.0"
   },

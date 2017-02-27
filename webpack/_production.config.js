@@ -5,6 +5,8 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPl
 const ExtractTextPlugin    = require("extract-text-webpack-plugin");
 const {root}               = require("./constants");
 
+const ClosureCompilerPlugin = require("webpack-closure-compiler");
+
 /**
  * The production build may or may not include the BundleAnalyzerPlugin to visualize the build
  * result and check if any of the illustrated sizes might be optimized, or if anything is missing
@@ -12,21 +14,13 @@ const {root}               = require("./constants");
  *
  * At the time of writing, the plugin is used in every production build (with and without AoT),
  * except when the exemplary production server is started as well.
- * @param useAnalyzePlugin Whether the BundleAnalyzerPlugin should be used or not.
+ * @param env Bundle environment options.
  */
-module.exports = function (useAnalyzePlugin) {
+module.exports = function (env) {
   const plugins = [
     // Plugin to let the whole build fail on any error; i.e. do not tolerate these
     new NoEmitOnErrorsPlugin(),
-    /**
-     * Plugin to properly minify the build output
-     *
-     * See: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
-     */
-    new UglifyJsPlugin({
-      beautify: false,
-      comments: false
-    }),
+
     /**
      * Plugin to extract styles as css files; We're using this for the main.scss only atm.
      * This may optimize loading time in production mode since it may be cached by the browser separately.
@@ -35,7 +29,35 @@ module.exports = function (useAnalyzePlugin) {
      */
     new ExtractTextPlugin("main.[contenthash].css")
   ];
-  if (useAnalyzePlugin) {
+
+  /**
+   * Plugin to properly minify the build output in one of two ways.
+   *
+   * See:
+   * - http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
+   * - https://github.com/roman01la/webpack-closure-compiler
+   */
+  if (env.useClosureCompiler) {
+    plugins.push(
+      new ClosureCompilerPlugin({
+        compiler: {
+          language_in: "ECMASCRIPT5",
+          language_out: "ECMASCRIPT5"
+          // Note: compilation_level: 'ADVANCED' does not work (yet?); it causes some weird errors regarding the usage of .prototype.
+        },
+        concurrency: 3,
+      })
+    );
+  } else {
+    plugins.push(
+      new UglifyJsPlugin({
+        beautify: false,
+        comments: false
+      })
+    );
+  }
+
+  if (!env.skipAnalyzePlugin) {
     plugins.push(new BundleAnalyzerPlugin({analyzerPort: 5000}));
   }
 

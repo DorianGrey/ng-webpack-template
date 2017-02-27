@@ -25,10 +25,12 @@ const {
  * even if provided by different modes, since only the parameters passed to them differ and not the plugins
  * themselves. Thus, we're using the `isDev` parameter to determine the exact target mode and simplify the
  * option details this way.
- * @param isDev Indicates whether development mode was selected or not.
- * @param useAot Indicates whether aot mode was selected or not.
+ * @param env Bundle environment options.
  */
-module.exports = function (isDev, useAot) {
+module.exports = function (env) {
+  const isDev = env.isDev,
+        useAot = env.useAot;
+
   const plugins = [
     // HTML plugin to generate proper index.html files w.r.t. the output of this build.
     getHtmlTemplatePlugin(isDev),
