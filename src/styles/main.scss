@@ -1,6 +1,25 @@
 // Put your global styles here
 
+// "Normalizing" browser styles is required in almost every reasonable project we know of, thus ...
+@import "../../node_modules/normalize.css/normalize";
+
+// Native font stack, see: http://v4-alpha.getbootstrap.com/content/reboot/#native-font-stack
+// Should be suitable as default for most browsers.
+$font-family-sans-serif:
+  // Safari for OS X and iOS (San Francisco)
+  -apple-system,
+  // Chrome >= 56 for OS X (San Francisco), Windows, Linux and Android
+  system-ui,
+  // Chrome < 56 for OS X (San Francisco)
+  BlinkMacSystemFont,
+  // Windows
+  "Segoe UI",
+  // Android
+  "Roboto",
+  // Basic web fallback
+  "Helvetica Neue", Arial, sans-serif !default;
+
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: $font-family-sans-serif;
   background: #eee;
 }
