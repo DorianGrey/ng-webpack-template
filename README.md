@@ -8,7 +8,7 @@ It started as a companion of [ng2-jspm-template](https://github.com/flaviait/ng2
 ## Setup
 
 To start using this template, you might either
- - pick the latest release ([3.1.0](https://github.com/DorianGrey/ng2-webpack-template/releases/tag/3.1.0))
+ - pick the latest release ([4.0.0](https://github.com/DorianGrey/ng2-webpack-template/releases/tag/4.0.0))
  - clone the repository directly for the most recent features and updates:
 
 
@@ -50,26 +50,45 @@ which will fire up a webpack-dev-server using webpack's DLL feature up-front to 
 
 ### Production
 
-There are two ways to create a production build: The regular way, and a slightly more experimental one which includes [AoT compilation](https://angular.io/docs/ts/latest/cookbook/aot-compiler.html) using the corresponding [webpack plugin](https://github.com/angular/angular-cli/blob/master/packages/webpack/README.md).
+There are currently four ways to create a production build:
+- With or without [AoT compilation](https://angular.io/docs/ts/latest/cookbook/aot-compiler.html)
+- With [Closure Compiler](https://github.com/google/closure-compiler-npm) or [UglifyJS2](https://github.com/mishoo/UglifyJS2) as code minifier
 
-For the regular way, just run
-```
-yarn run dist
-```
-which will create a production build in the `dist` folder.
+Each of them might bring up different results, and might be suitable for a particular situation while being problematic in another.
 
-For the AoT-based, run
-```
-yarn run dist:aot
-```
-which will create a production build in the `dist-aot` folder.
+We have recently added support for using [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification since 
+- its results are slightly smaller
+- there is currently some work going on to be able to take more advantage of its available optimization techniques
+Just note that at the moment, the `Advanced` optimization mode is not yet usable.
 
-By default, both versions are utilizing the [webpack-bundle-analyzer](https://github.com/th0r/webpack-bundle-analyzer), which is available at `http://localhost:5000` after the build completed.
-Alternatively, both versions can be executed with `dist-server` instead of just `dist` to start an exemplary production server (see the `example-dist-server` for details) be able to have a look at the build results immediately.
+The AoT versions are using the [@ngtools/webpack plugin](https://github.com/angular/angular-cli/blob/master/packages/webpack/README.md).
 
-**Beware**: I did not call this way _experimental_ for no reason. The whole AoT processing currently enforces rather strict rules (see a rather good explanation [here](https://medium.com/@isaacplmann/making-your-angular-2-library-statically-analyzable-for-aot-e1c6f3ebedd5)) on how not only your own code has to be written, but also the code of the libraries you are using. Before you consider using AoT optimization, you will have to check if all your libraries support it.
+**Beware**: The whole AoT processing currently enforces rather strict rules (see a rather good explanation [here](https://medium.com/@isaacplmann/making-your-angular-2-library-statically-analyzable-for-aot-e1c6f3ebedd5)) on how not only your own code has to be written, but also the code of the libraries you are using. Before you consider using AoT optimization, you will have to check if all your libraries support it. However, **I'd strongly recommend** to head this way if it is possible in any way. You should also keep an eye on the list of [issues marked as related to it](https://github.com/angular/angular-cli/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20aot).
 
-Since some of these restrictions are caused by the lack of maturity of the AoT compiler ("just not implemented yet"), I'd describe both the AoT compiler itself and the corresponding plugin as _experimental_. **Don't get me wrong**: In case it works and passes the whole compilation process, the results are working fine, but there still is a rather high probability that you hit a case where you can't adopt your code to conform to the required restrictions.
+The tables below will provide a full overview of the relevant commands
+Note that each dist task will also invoke the `test` task (includes linting, generating the translations and executing the unit-tests) before.
 
-You should also keep an eye on the list of [issues marked as related to it](https://github.com/angular/angular-cli/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20aot). Esp. [this](https://github.com/angular/angular-cli/issues/2799) is somewhat annoying if you want to integrate libraries that use custom decorators (as a workaround, no decorators are stripped atm., so the resulting bundle is larger), like [ngrx/effects](https://github.com/ngrx/effects).
+
+#### Dist tasks not including the example server
+
+All of these tasks are utilizing the [webpack-bundle-analyzer](https://github.com/th0r/webpack-bundle-analyzer), which is available at `http://localhost:5000` after the build completed.
+
+| Command            | Effect        |
+| ------------------ | ------------- |
+| `yarn dist`        | Creates a producton bundle in the `dist` folder. |
+| `yarn dist:cc`     | Same as above, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification.|
+| `yarn dist:aot`    | Creates a producton bundle in the `dist-aot` folder. Utilizes AoT compilation. |
+| `yarn dist:aot:cc` | Same as above, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification. |
+
+#### Dist tasks including the example server
+
+All of these tasks will skip starting the [webpack-bundle-analyzer](https://github.com/th0r/webpack-bundle-analyzer) and instead bring up the exemplary production server (see the `example-dist-server` directory for details), which is available at `http://localhost:9988` after the build. 
+
+| Command            | Effect        |
+| ------------------ | ------------- |
+| `yarn dist-server`        | Creates a producton bundle in the `dist` folder and serves its contents afterwards. |
+| `yarn dist-server:cc`     | Same as above, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification.|
+| `yarn dist-server:aot`    | Creates a producton bundle in the `dist-aot` folder and serves its contents afterwards. Utilizes AoT compilation. |
+| `yarn dist-server:aot:cc` | Same as above, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification. |
+
 
