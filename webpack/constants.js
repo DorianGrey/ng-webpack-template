@@ -123,7 +123,7 @@ exports.DEFAULT_RESOLVE_EXTENSIONS = [".ts", ".js", ".json"];
 exports.getDefaultContextReplacementPlugin = function getDefaultContextReplacementPlugin(src) {
   src = src || "src";
   return new ContextReplacementPlugin(
-    /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
+    /angular(\\|\/)core(\\|\/)@angular/, // See https://github.com/angular/angular/issues/11580#issuecomment-282705332
     exports.root(src)
   )
 };
