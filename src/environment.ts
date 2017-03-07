@@ -10,7 +10,14 @@ let _decorateModuleRef = function identity<T>(value: T): T {
 
 if ("production" === ENV) {
   // Production
-  disableDebugTools();
+  // FIXME: In angular-4-rc.x, calling this function results in an error:
+  // "Cannot read property 'setGlobalVar' of null" - it seems that the called "getDOM()" function returns null.
+  // We'll skip this error and go ahead for now.
+  try {
+    disableDebugTools();
+  } catch (e) {
+    console.warn("Disabling debug tools failed, due to:", e);
+  }
   enableProdMode();
 
 } else {
