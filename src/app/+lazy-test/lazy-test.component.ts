@@ -4,6 +4,7 @@ import {LazyTestService} from "./lazy-test.service";
 
 @Component({
   selector: "lazy-test",
+  styleUrls: ["./lazy-test.component.scss"],
   templateUrl: "./lazy-test.component.html"
 })
 export class LazyTestComponent implements OnDestroy {

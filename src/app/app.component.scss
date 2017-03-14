@@ -3,9 +3,13 @@
   display: block;
 }
 
+h1, h2 {
+  margin-left: 1rem;
+}
+
 .language-select {
   position: absolute;
-  right: 0;
+  right: 1rem;
   top: 0;
   padding: 7px;
   border-radius: 50%;
@@ -36,4 +40,8 @@ nav {
       color: white;
     }
   }
+}
+
+.page-body {
+  padding: 0 1rem;
 }
