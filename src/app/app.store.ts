@@ -5,6 +5,7 @@ import {List} from "immutable";
 import {todosReducer} from "./todos/todos.store";
 import {Todo} from "./todos/todo.model";
 import {watchTimeReducer} from "./+lazy-test/lazy-test.store";
+import {languageReducer} from "./i18n/language.store";
 
 /**
  * This interface describes the relevant "state" of your application,
@@ -19,6 +20,7 @@ import {watchTimeReducer} from "./+lazy-test/lazy-test.store";
 export interface AppState {
   todos: List<Todo>;
   watchTime: number;
+  language: string;
 }
 
 /**
@@ -30,7 +32,8 @@ export interface AppState {
  */
 const reducers = {
   todos:     todosReducer,
-  watchTime: watchTimeReducer
+  watchTime: watchTimeReducer,
+  language:  languageReducer
 };
 
 // Generate a reducer to set the root state in dev mode for HMR

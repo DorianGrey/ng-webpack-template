@@ -17,14 +17,15 @@ import {SharedModule} from "./shared/shared.module";
 import {NotFoundComponent} from "./not-found/not-found.component";
 import {createTranslateLoader} from "./translate.factory";
 import translations from "../generated/translations";
+import {LangActionCreator} from "./i18n/language.store";
 
 @NgModule({
-  imports: [
+  imports:      [
     BrowserModule, // Should only be imported by the root => every other module should import "CommonModule".
     APP_ROUTES,
     TranslateModule.forRoot({
       loader: {
-        provide: TranslateLoader,
+        provide:    TranslateLoader,
         useFactory: createTranslateLoader
       }
     }),
@@ -33,16 +34,24 @@ import translations from "../generated/translations";
     TodosModule,
     StoreModule.provideStore(rootReducer)
   ],
-  providers: [appRoutingProviders],
+  providers:    [
+    appRoutingProviders,
+    LangActionCreator
+  ],
   declarations: [NotFoundComponent, App],
-  bootstrap: [App]
+  bootstrap:    [App]
 })
 export class AppModule {
   constructor(public appRef: ApplicationRef,
               private _store: Store<AppState>,
               translate: TranslateService) {
     translate.addLangs(Object.keys(translations));
-    translate.use("en");
+    // TODO: It might be useful to put this to a different position... however, for now, it's perfectly valid.
+    _store
+      .select(state => state.language)
+      .subscribe(lang => {
+        translate.use(lang);
+      });
   }
 
   hmrOnInit(store: any) {
@@ -53,7 +62,7 @@ export class AppModule {
     // restore state by dispatch a SET_ROOT_STATE action
     if (store.rootState) {
       this._store.dispatch({
-        type: "SET_ROOT_STATE",
+        type:    "SET_ROOT_STATE",
         payload: store.rootState
       });
     }
