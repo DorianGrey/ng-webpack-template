@@ -93,9 +93,9 @@
   version "2.5.46"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.5.46.tgz#bb3047a3f40f60dee03f52c3e2d955cd3d5066c8"
 
-"@types/lodash-es@^4.14.4":
-  version "4.14.4"
-  resolved "https://registry.yarnpkg.com/@types/lodash-es/-/lodash-es-4.14.4.tgz#b874a1c39dd59b28089ac05f13ab8df73a21b23b"
+"@types/lodash-es@^4.14.5":
+  version "4.14.5"
+  resolved "https://registry.yarnpkg.com/@types/lodash-es/-/lodash-es-4.14.5.tgz#57c11845eaf6a7d2a9095e9533fed4980f3d5784"
   dependencies:
     "@types/lodash" "*"
 
@@ -4909,9 +4909,9 @@ strip-json-comments@~1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-1.0.4.tgz#1e15fbcac97d3ee99bf2d73b4c656b082bbafb91"
 
-style-loader@^0.15.0:
-  version "0.15.0"
-  resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-0.15.0.tgz#17ff9527ae109b94d8c53d253dc9333041438a2d"
+style-loader@^0.16.0:
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-0.16.0.tgz#5f001a9bf58fff9fd40f8aa3b9738ab99d4000c7"
   dependencies:
     loader-utils "^1.0.2"
 
@@ -5215,7 +5215,7 @@ typescript@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.2.1.tgz#4862b662b988a4c8ff691cc7969622d24db76ae9"
 
-uglify-js@2.7.x, uglify-js@^2.6:
+uglify-js@2.7.x:
   version "2.7.5"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-2.7.5.tgz#4612c0c7baaee2ba7c487de4904ae122079f2ca8"
   dependencies:
@@ -5224,7 +5224,7 @@ uglify-js@2.7.x, uglify-js@^2.6:
     uglify-to-browserify "~1.0.0"
     yargs "~3.10.0"
 
-uglify-js@^2.8.5:
+uglify-js@^2.6, uglify-js@^2.8.5:
   version "2.8.14"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-2.8.14.tgz#25b15d1af39b21752ee33703adbf432e8bc8f77d"
   dependencies:
@@ -5511,9 +5511,9 @@ webpack-sources@^0.2.0:
     source-list-map "^1.0.1"
     source-map "~0.5.3"
 
-webpack@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-2.3.0.tgz#0ae2d90350a7d48a44fddd7dd85c855642bc042e"
+webpack@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-2.3.1.tgz#55bce8baffe7c1f9dc3029adc048643b448318a8"
   dependencies:
     acorn "^4.0.4"
     acorn-dynamic-import "^2.0.0"
