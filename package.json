@@ -1,5 +1,5 @@
 {
-  "name": "ng2-webpack-template",
+  "name": "ng-webpack-template",
   "version": "0.0.1",
   "description": "Evil brother of ng2-jspm-template",
   "author": {
@@ -9,7 +9,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DorianGrey/ng2-webpack-template.git"
+    "url": "git+https://github.com/DorianGrey/ng-webpack-template.git"
   },
   "keywords": [
     "webpack",

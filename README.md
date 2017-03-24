@@ -1,18 +1,18 @@
-# ng2-webpack-template
+# ng-webpack-template
 
-[![Build Status](https://travis-ci.org/DorianGrey/ng2-webpack-template.svg?branch=master)](https://travis-ci.org/DorianGrey/ng2-webpack-template)
+[![Build Status](https://travis-ci.org/DorianGrey/ng-webpack-template.svg?branch=master)](https://travis-ci.org/DorianGrey/ng-webpack-template)
 
 This project provides a template for an [angular](https://angular.io/) project setup with [webpack](http://webpack.github.io).
-It started as a companion of [ng2-jspm-template](https://github.com/flaviait/ng2-jspm-template), with the primary purpose to provide an almost identical codebase and feature set compared to its brother to make it easier to figure out which template fits better to the daily requirements of development with [angular](https://angular.io/).
+It started as a companion of [ng-jspm-template](https://github.com/flaviait/ng2-jspm-template), with the primary purpose to provide an almost identical codebase and feature set compared to its brother to make it easier to figure out which template fits better to the daily requirements of development with [angular](https://angular.io/).
 
 ## Setup
 
 To start using this template, you might either
- - pick the latest release ([4.2.0](https://github.com/DorianGrey/ng2-webpack-template/releases/latest))
+ - pick the latest release ([4.2.0](https://github.com/DorianGrey/ng-webpack-template/releases/latest))
  - clone the repository directly for the most recent features and updates:
 
 
-    git clone https://github.com/DorianGrey/ng2-webpack-template.git
+    git clone https://github.com/DorianGrey/ng-webpack-template.git
 
 You need to install a node.js version >= 6.9, since this project uses ES2015 language features, and we only support node versions from the most recent LTS upwards.
 Things might work from 4.x upwards, but we do not provide any official support for this.
@@ -31,11 +31,11 @@ npm install -g yarn
 Alternatively, you might use good old `npm`, if you REALLY want to. If that is the case, just replace the `yarn` part of the commands listed below with `npm`.
 
 ## Project structure
-The intended project structure, how to work with it and possibly extend it is documented in the [docs folder](https://github.com/DorianGrey/ng2-webpack-template/tree/master/docs).
+The intended project structure, how to work with it and possibly extend it is documented in the [docs folder](https://github.com/DorianGrey/ng-webpack-template/tree/master/docs).
 
-- [General structure](https://github.com/DorianGrey/ng2-webpack-template/blob/master/docs/general_structure.md)
-- [The application state and how to extend it](https://github.com/DorianGrey/ng2-webpack-template/blob/master/docs/app_state.md)
-- [The linters and why they are not tied to the webpack build](https://github.com/DorianGrey/ng2-webpack-template/blob/master/docs/linters.md)
+- [General structure](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/general_structure.md)
+- [The application state and how to extend it](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/app_state.md)
+- [The linters and why they are not tied to the webpack build](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/linters.md)
 
 ## Workflow
 
