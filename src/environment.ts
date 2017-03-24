@@ -1,5 +1,5 @@
 // Angular 2
-import {enableDebugTools, disableDebugTools} from "@angular/platform-browser";
+import {enableDebugTools} from "@angular/platform-browser";
 import {enableProdMode, ApplicationRef} from "@angular/core";
 
 // Angular debug tools in the dev console
@@ -9,15 +9,7 @@ let _decorateModuleRef = function identity<T>(value: T): T {
 };
 
 if ("production" === ENV) {
-  // Production
-  // FIXME: In angular-4-rc.x, calling this function results in an error:
-  // "Cannot read property 'setGlobalVar' of null" - it seems that the called "getDOM()" function returns null.
-  // We'll skip this error and go ahead for now.
-  try {
-    disableDebugTools();
-  } catch (e) {
-    console.warn("Disabling debug tools failed, due to:", e);
-  }
+  // Since the debug tools are disabled by default in v4, we don't have to explicitly disable them as we had to before.
   enableProdMode();
 
 } else {
