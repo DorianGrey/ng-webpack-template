@@ -8,7 +8,7 @@ It started as a companion of [ng-jspm-template](https://github.com/flaviait/ng2-
 ## Setup
 
 To start using this template, you might either
- - pick the latest release ([4.2.0](https://github.com/DorianGrey/ng-webpack-template/releases/latest))
+ - pick the latest release ([5.0.0](https://github.com/DorianGrey/ng-webpack-template/releases/latest))
  - clone the repository directly for the most recent features and updates:
 
 
@@ -65,30 +65,37 @@ The AoT versions are using the [@ngtools/webpack plugin](https://github.com/angu
 
 **Beware**: The whole AoT processing currently enforces rather strict rules (see a rather good explanation [here](https://medium.com/@isaacplmann/making-your-angular-2-library-statically-analyzable-for-aot-e1c6f3ebedd5)) on how not only your own code has to be written, but also the code of the libraries you are using. Before you consider using AoT optimization, you will have to check if all your libraries support it. However, **I'd strongly recommend** to head this way if it is possible in any way. You should also keep an eye on the list of [issues marked as related to it](https://github.com/angular/angular-cli/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20aot).
 
-The tables below will provide a full overview of the relevant commands
-Note that each dist task will also invoke the `test` task (includes linting, generating the translations and executing the unit-tests) before.
+The tables below will provide a full overview of the relevant commands.
+Note that each build tasks will invoke the `test` task (includes linting, generating the translations and executing the unit-tests) **before** the real build.
 
 
-#### Dist tasks not including the example server
-
-All of these tasks are utilizing the [webpack-bundle-analyzer](https://github.com/th0r/webpack-bundle-analyzer), which is available at `http://localhost:5000` after the build completed.
+#### Build tasks not including the example server
 
 | Command            | Effect        |
 | ------------------ | ------------- |
-| `yarn dist`        | Creates a producton bundle in the `dist` folder. |
-| `yarn dist:cc`     | Same as above, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification.|
-| `yarn dist:aot`    | Creates a producton bundle in the `dist-aot` folder. Utilizes AoT compilation. |
-| `yarn dist:aot:cc` | Same as above, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification. |
+| `yarn build`        | Creates a producton bundle in the `dist` folder. |
+| `yarn build:cc`     | Same as above, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification.|
+| `yarn build:aot`    | Creates a producton bundle in the `dist-aot` folder. Utilizes AoT compilation. |
+| `yarn build:aot:cc` | Same as above, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification. |
 
-#### Dist tasks including the example server
+#### Build tasks including the example server
 
-All of these tasks will skip starting the [webpack-bundle-analyzer](https://github.com/th0r/webpack-bundle-analyzer) and instead bring up the exemplary production server (see the `example-dist-server` directory for details), which is available at `http://localhost:9988` after the build. 
+All of these tasks will bring up the exemplary production server (see the `example-prod-server` directory for details), which is available at `http://localhost:9988` after the build completes.
 
 | Command            | Effect        |
 | ------------------ | ------------- |
-| `yarn dist-server`        | Creates a producton bundle in the `dist` folder and serves its contents afterwards. |
-| `yarn dist-server:cc`     | Same as above, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification.|
-| `yarn dist-server:aot`    | Creates a producton bundle in the `dist-aot` folder and serves its contents afterwards. Utilizes AoT compilation. |
-| `yarn dist-server:aot:cc` | Same as above, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification. |
+| `yarn prod-server`        | Creates a producton bundle in the `dist` folder and serves its contents afterwards. |
+| `yarn prod-server:cc`     | Same as above, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification.|
+| `yarn prod-server:aot`    | Creates a producton bundle in the `dist-aot` folder and serves its contents afterwards. Utilizes AoT compilation. |
+| `yarn prod-server:aot:cc` | Same as above, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification. |
+
+#### Other useful tasks
+
+|Command|Effect|
+|------|-------|
+| `yarn analyze-bundles` | Performs a production build as described above and starts the [webpack-bundle-analyzer](https://github.com/th0r/webpack-bundle-analyzer) for bundle size inspection after the build completed successfully. The server will be available at `http://localhost:5000`.|
+| `yarn analyze-bundles:aot` | Uses AoT compilation mode.|
+| `yarn analyze-bundles:cc` | Uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification.|
+| `yarn analyze-bundles:aot:cc` | Uses both AoT compilation mode and [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification.|
 
 

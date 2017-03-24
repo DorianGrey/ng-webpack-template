@@ -57,7 +57,7 @@ module.exports = function (env) {
     );
   }
 
-  if (!env.skipAnalyzePlugin) {
+  if (env.analyzeBundles) {
     plugins.push(new BundleAnalyzerPlugin({analyzerPort: 5000}));
   }
 
