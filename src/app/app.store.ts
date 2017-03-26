@@ -1,6 +1,12 @@
 import {ActionReducer, combineReducers, Action} from "@ngrx/store";
 import {routerReducer, RouterState} from "@ngrx/router-store";
 import {compose} from "@ngrx/core/compose";
+/**
+ * storeFreeze prevents state from being mutated. When mutation occurs, an
+ * exception will be thrown. This is useful during development mode to
+ * ensure that none of the reducers accidentally mutates the state.
+ */
+import {storeFreeze} from "ngrx-store-freeze";
 import {List} from "immutable";
 
 import {todosReducer} from "./todos/todos.store";
@@ -65,7 +71,7 @@ function stateSetter(reducer: ActionReducer<any>): ActionReducer<any> {
 }
 
 // Feel free to add more reducers for development mode to this list, e.g. https://github.com/ngrx/store-log-monitor.
-const DEV_REDUCERS = [stateSetter];
+const DEV_REDUCERS = [stateSetter, storeFreeze];
 // This reducer is only used in development mode and is the result of a composition of DEV_REDUCERS and
 // the reducers that are related to your {AppState}.
 const developmentReducer: (state: any, action: any) => any = compose(...DEV_REDUCERS, combineReducers)(reducers);
