@@ -1,42 +1,27 @@
 import {NgModule, ApplicationRef} from "@angular/core";
-import {BrowserModule} from "@angular/platform-browser";
 
 import "rxjs/add/operator/take";
 
-import {TranslateLoader, TranslateModule, TranslateService} from "@ngx-translate/core";
+import {TranslateService} from "@ngx-translate/core";
 
-import {Store, StoreModule} from "@ngrx/store";
-import {RouterStoreModule } from "@ngrx/router-store";
+import {Store} from "@ngrx/store";
 
-import {createNewHosts, createInputTransfer, removeNgStyles} from "@angularclass/hmr/dist/helpers";
+import {
+  createNewHosts,
+  createInputTransfer,
+  removeNgStyles
+} from "@angularclass/hmr/dist/helpers";
 
 import {App} from "./app.component";
-import {APP_ROUTES, appRoutingProviders} from "./app.routes";
-import {AppState, rootReducer} from "./app.store";
-import {InputTestModule} from "./input-test/input-test.module";
-import {TodosModule} from "./todos/todos.module";
-import {SharedModule} from "./shared/shared.module";
+import {appRoutingProviders} from "./app.routes";
+import {AppState} from "./app.store";
 import {NotFoundComponent} from "./not-found/not-found.component";
-import {createTranslateLoader} from "./translate.factory";
 import translations from "../generated/translations";
 import {LangActionCreator} from "./i18n/language.store";
+import {APP_IMPORTS} from "./app.imports";
 
 @NgModule({
-  imports:      [
-    BrowserModule, // Should only be imported by the root => every other module should import "CommonModule".
-    APP_ROUTES,
-    TranslateModule.forRoot({
-      loader: {
-        provide:    TranslateLoader,
-        useFactory: createTranslateLoader
-      }
-    }),
-    SharedModule.forRoot(),
-    InputTestModule,
-    TodosModule,
-    StoreModule.provideStore(rootReducer),
-    RouterStoreModule.connectRouter()
-  ],
+  imports:      APP_IMPORTS,
   providers:    [
     appRoutingProviders,
     LangActionCreator
