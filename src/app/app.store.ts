@@ -1,4 +1,5 @@
 import {ActionReducer, combineReducers, Action} from "@ngrx/store";
+import {routerReducer, RouterState} from "@ngrx/router-store";
 import {compose} from "@ngrx/core/compose";
 import {List} from "immutable";
 
@@ -6,6 +7,7 @@ import {todosReducer} from "./todos/todos.store";
 import {Todo} from "./todos/todo.model";
 import {watchTimeReducer} from "./+lazy-test/lazy-test.store";
 import {languageReducer} from "./i18n/language.store";
+
 
 /**
  * This interface describes the relevant "state" of your application,
@@ -21,6 +23,8 @@ export interface AppState {
   todos: List<Todo>;
   watchTime: number;
   language: string;
+  // This entry is NOT part of our own state, but provided by the @ngrx/router-store module.
+  router: RouterState;
 }
 
 /**
@@ -33,7 +37,9 @@ export interface AppState {
 const reducers = {
   todos:     todosReducer,
   watchTime: watchTimeReducer,
-  language:  languageReducer
+  language:  languageReducer,
+  // This entry is NOT part of our own state, but provided by the @ngrx/router-store module.
+  router:    routerReducer
 };
 
 // Generate a reducer to set the root state in dev mode for HMR

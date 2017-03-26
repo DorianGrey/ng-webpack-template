@@ -6,6 +6,8 @@ import "rxjs/add/operator/take";
 import {TranslateLoader, TranslateModule, TranslateService} from "@ngx-translate/core";
 
 import {Store, StoreModule} from "@ngrx/store";
+import {RouterStoreModule } from "@ngrx/router-store";
+
 import {createNewHosts, createInputTransfer, removeNgStyles} from "@angularclass/hmr/dist/helpers";
 
 import {App} from "./app.component";
@@ -32,7 +34,8 @@ import {LangActionCreator} from "./i18n/language.store";
     SharedModule.forRoot(),
     InputTestModule,
     TodosModule,
-    StoreModule.provideStore(rootReducer)
+    StoreModule.provideStore(rootReducer),
+    RouterStoreModule.connectRouter()
   ],
   providers:    [
     appRoutingProviders,
