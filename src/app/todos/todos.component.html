@@ -1,12 +1,21 @@
 <div>
-  <h3>{{'todos.heading' | translate}}</h3>
+  <h3>{{'todos.heading.current' | translate}}</h3>
   <ul>
     <li *ngFor="let todo of todos | async">
-      {{todo.text}}
+      <div>{{todo.text}}</div>
+      <button (click)="complete(todo)">{{ 'todos.complete.entry' | translate }}</button>
     </li>
   </ul>
-  <form (ngSubmit)="add(name.value)">
-    <input #name required/>
+  <form (ngSubmit)="add()">
+    <input type="text" required id="name" name="name" #name="ngModel" [(ngModel)]="todoText" />
     <button type="submit">{{'general.add' | translate}}</button>
   </form>
+</div>
+<div>
+  <h3>{{ 'todos.heading.completed' | translate }}</h3>
+  <ul>
+    <li *ngFor="let todo of completedTodos | async">
+      <div>{{todo.text}}</div>
+    </li>
+  </ul>
 </div>

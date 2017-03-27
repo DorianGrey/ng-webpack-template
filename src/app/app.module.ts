@@ -14,7 +14,7 @@ import {
 
 import {App} from "./app.component";
 import {appRoutingProviders} from "./app.routes";
-import {AppState} from "./app.store";
+import {AppState, getLanguage} from "./app.store";
 import {NotFoundComponent} from "./not-found/not-found.component";
 import translations from "../generated/translations";
 import {LangActionCreator} from "./i18n/language.store";
@@ -36,7 +36,7 @@ export class AppModule {
     translate.addLangs(Object.keys(translations));
     // TODO: It might be useful to put this to a different position... however, for now, it's perfectly valid.
     _store
-      .select(state => state.language)
+      .select(getLanguage)
       .subscribe(lang => {
         translate.use(lang);
       });

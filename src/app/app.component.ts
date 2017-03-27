@@ -3,7 +3,7 @@ import {Component} from "@angular/core";
 import {Store} from "@ngrx/store";
 import {TranslateService} from "@ngx-translate/core";
 
-import {AppState} from "./app.store";
+import {AppState, getLanguage} from "./app.store";
 import {Observable} from "rxjs/Observable";
 import {LangActionCreator} from "./i18n/language.store";
 
@@ -21,7 +21,7 @@ export class App {
   constructor(private translate: TranslateService,
               private store: Store<AppState>,
               private langCreator: LangActionCreator) {
-    this.currentLanguage = this.store.select(state => state.language);
+    this.currentLanguage = this.store.select(getLanguage);
     this.availableLanguages = this.translate.getLangs();
   }
 

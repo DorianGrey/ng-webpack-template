@@ -1,4 +1,12 @@
 todos:
   heading:
-    de: Aufgaben für alle!
-    en: Todos for all!
+    current:
+      de: Aufgaben für alle!
+      en: Todos for all!
+    completed:
+      de: "Abgeschlossene Aufgaben:"
+      en: "Completed todos:"
+  complete:
+    entry:
+      de: Aufgabe abschließen
+      en: Complete todo

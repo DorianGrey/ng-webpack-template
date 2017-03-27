@@ -7,12 +7,16 @@ import {compose} from "@ngrx/core/compose";
  * ensure that none of the reducers accidentally mutates the state.
  */
 import {storeFreeze} from "ngrx-store-freeze";
-import {List} from "immutable";
 
-import {todosReducer} from "./todos/todos.store";
-import {Todo} from "./todos/todo.model";
+import {
+  completedTodos,
+  currentTodos,
+  todosReducer,
+  State as TodoState
+} from "./todos/todos.store";
 import {watchTimeReducer} from "./+lazy-test/lazy-test.store";
 import {languageReducer} from "./i18n/language.store";
+import {createSelector} from "reselect";
 
 
 /**
@@ -26,12 +30,21 @@ import {languageReducer} from "./i18n/language.store";
  * as well.
  */
 export interface AppState {
-  todos: List<Todo>;
+  todos: TodoState;
   watchTime: number;
   language: string;
   // This entry is NOT part of our own state, but provided by the @ngrx/router-store module.
   router: RouterState;
 }
+
+// TODO: Should be more documented how this works...
+export const getTodos          = (state: AppState) => state.todos;
+export const getCurrentTodos   = createSelector(getTodos, currentTodos);
+export const getCompletedTodos = createSelector(getTodos, completedTodos);
+
+export const getWatchTime   = (state: AppState) => state.watchTime;
+export const getLanguage    = (state: AppState) => state.language;
+export const getRouterState = (state: AppState) => state.router;
 
 /**
  * These reducers in this object refer to the {AppState} mentioned above.

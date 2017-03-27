@@ -1,24 +1,31 @@
-import {Component, ViewChild, ElementRef} from "@angular/core";
+import {Component} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {List} from "immutable";
+import assign from "lodash-es/assign";
 
 import {TodoService} from "./todo.service";
 import {Todo} from "./todo.model";
 
 @Component({
-  selector: "todos",
+  selector:    "todos",
   templateUrl: "./todos.component.html"
 })
 export class TodosComponent {
-  @ViewChild("name") name: ElementRef;
+  todoText: string;
   todos: Observable<List<Todo>>;
+  completedTodos: Observable<List<Todo>>;
 
   constructor(private todoService: TodoService) {
-    this.todos = todoService.todos;
+    this.todos          = todoService.todos;
+    this.completedTodos = todoService.completedTodos;
   }
 
-  add(name: string) {
-    this.todoService.add({text: name});
-    this.name.nativeElement.value = "";
+  add() {
+    this.todoService.add({text: this.todoText});
+    this.todoText = "";
+  }
+
+  complete(todo: Todo) {
+    this.todoService.complete(assign({...todo}, {done: true}));
   }
 }

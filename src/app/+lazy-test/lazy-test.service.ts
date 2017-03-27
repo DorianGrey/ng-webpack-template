@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {Store} from "@ngrx/store";
 import {Observable} from "rxjs/Observable";
 
-import {AppState} from "../app.store";
+import {AppState, getWatchTime} from "../app.store";
 import {LazyTestActionCreator} from "./lazy-test.store";
 
 @Injectable()
@@ -11,7 +11,7 @@ export class LazyTestService {
 
   constructor(private store: Store<AppState>,
               private actionCreator: LazyTestActionCreator) {
-    this.watchTime = this.store.select(state => state.watchTime);
+    this.watchTime = this.store.select(getWatchTime);
   }
 
   updateSeconds() {
