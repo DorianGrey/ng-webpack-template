@@ -106,7 +106,7 @@
     "tslint": "^4.5.1",
     "typescript": "^2.2.1",
     "wait-for-change": "^1.1.1",
-    "webpack": "^2.3.1",
+    "webpack": "^2.3.2",
     "webpack-bundle-analyzer": "^2.3.1",
     "webpack-closure-compiler": "^2.1.4",
     "webpack-dev-server": "^2.4.2",
@@ -130,7 +130,7 @@
     "core-js": "2.4.1",
     "immutable": "3.8.1",
     "lodash-es": "^4.17.4",
-    "normalize.css": "^5.0.0",
+    "normalize.css": "^6.0.0",
     "reselect": "^3.0.0",
     "rxjs": "^5.2.0",
     "zone.js": "^0.8.5"
