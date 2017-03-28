@@ -4,35 +4,35 @@
     <ul>
       <li *ngFor="let todo of todos | async">
         <div>
-          <span class="label">{{'todos.entry.description' | translate}}</span>
+          <span class="label">{{'todos.entry.description' | translate}}:</span>
           <span>{{todo.text}}</span>
         </div>
         <div>
-          <span class="label">{{'todos.entry.added' | translate}}</span>
+          <span class="label">{{'todos.entry.added' | translate}}:</span>
           <span>{{todo.addedTimestamp | date:'medium'}}</span>
         </div>
         <button (click)="complete(todo)">{{ 'todos.complete.entry' | translate }}</button>
       </li>
     </ul>
-    <form (ngSubmit)="add()">
+    <form (ngSubmit)="add()" #todoForm="ngForm">
       <input type="text" required id="name" name="name" #name="ngModel" [(ngModel)]="todoText"/>
-      <button type="submit">{{'general.add' | translate}}</button>
+      <button type="submit" [disabled]="!todoForm.form.valid">{{'general.add' | translate}}</button>
     </form>
   </div>
   <div class="column">
-    <h3>{{ 'todos.heading.completed' | translate }}</h3>
+    <h3>{{ 'todos.heading.completed' | translate }}:</h3>
     <ul>
       <li *ngFor="let todo of completedTodos | async">
         <div>
-          <span class="label">{{'todos.entry.description' | translate}}</span>
+          <span class="label">{{'todos.entry.description' | translate}}:</span>
           <span>{{todo.text}}</span>
         </div>
         <div>
-          <span class="label">{{'todos.entry.added' | translate}}</span>
+          <span class="label">{{'todos.entry.added' | translate}}:</span>
           <span>{{todo.addedTimestamp | date:'medium'}}</span>
         </div>
         <div>
-          <span class="label">{{'todos.entry.completed' | translate}}</span>
+          <span class="label">{{'todos.entry.completed' | translate}}:</span>
           <span>{{todo.completedTimestamp | date:'medium'}}</span>
         </div>
       </li>

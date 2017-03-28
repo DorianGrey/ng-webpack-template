@@ -4,19 +4,19 @@ todos:
       de: Aufgaben für alle!
       en: Todos for all!
     completed:
-      de: "Abgeschlossene Aufgaben:"
-      en: "Completed todos:"
+      de: Abgeschlossene Aufgaben
+      en: Completed todos
 
   entry:
     description:
-      de: "Beschreibung:"
-      en: "Description:"
+      de: Beschreibung
+      en: Description
     added:
-      de: "Hinzugefügt:"
-      en: "Added:"
+      de: Hinzugefügt
+      en: Added
     completed:
-      de: "Abgeschlossen:"
-      en: "Completed:"
+      de: Abgeschlossen
+      en: Completed
 
   complete:
     entry:

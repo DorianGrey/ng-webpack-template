@@ -1,5 +1,4 @@
 // Put your global styles here
-
 // "Normalizing" browser styles is required in almost every reasonable project we know of, thus ...
 @import "../../node_modules/normalize.css/normalize";
 
@@ -19,8 +18,29 @@ $font-family-sans-serif:
   // Basic web fallback
   "Helvetica Neue", Arial, sans-serif !default;
 
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  -webkit-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
 body {
   font-family: $font-family-sans-serif;
   margin: 0;
   background: #eee;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+input, select {
+  &.ng-invalid {
+    box-shadow: 0 0 6px #E84D3C;
+  }
 }
