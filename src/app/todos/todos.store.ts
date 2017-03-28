@@ -27,7 +27,7 @@ export interface State {
 
 const initialTodoList: State = {
   current:   List.of <Todo>(),
-  completed: List.of <Todo>({text: "A completed task!"})
+  completed: List.of <Todo>({text: "A completed task!", addedTimestamp: new Date(0), completedTimestamp: new Date(0)})
 };
 
 export const currentTodos   = (state: State) => state.current;
@@ -41,7 +41,7 @@ export const todosReducer: ActionReducer<any> = (state: State = initialTodoList,
         {current: state.current.push(action.payload)}
       );
     case ACTION_TYPES.COMPLETE_TODO:
-      const idx = state.current.findIndex(e => e.text === action.payload.text);
+      const idx = state.current.findIndex(e => e.addedTimestamp === action.payload.addedTimestamp && e.text === action.payload.text);
       /*
        Only update the lists in case:
        - The completed task is on the current list.

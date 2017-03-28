@@ -6,6 +6,18 @@ todos:
     completed:
       de: "Abgeschlossene Aufgaben:"
       en: "Completed todos:"
+
+  entry:
+    description:
+      de: "Beschreibung:"
+      en: "Description:"
+    added:
+      de: "Hinzugefügt:"
+      en: "Added:"
+    completed:
+      de: "Abgeschlossen:"
+      en: "Completed:"
+
   complete:
     entry:
       de: Aufgabe abschließen

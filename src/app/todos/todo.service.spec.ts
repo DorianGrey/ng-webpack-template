@@ -37,6 +37,15 @@ describe("TodoService", () => {
 
   });
 
+  describe("completedTodos", () => {
+
+    it("should be an Observable", () => {
+      expect(todoService.completedTodos).toBeDefined();
+      expect(todoService.completedTodos instanceof Observable).toBeTruthy();
+    });
+
+  });
+
   describe("add()", () => {
 
     it("should add a todo to the store", inject([Store], (store: Store<any>) => {
@@ -50,6 +59,19 @@ describe("TodoService", () => {
       });
     }));
 
+  });
+
+  describe("complete()", () => {
+    it("should call to move a todo to the 'completed' stage", inject([Store], (store: Store<any>) => {
+      spyOn(store, "dispatch");
+
+      todoService.complete({text: "Some Task"});
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: ACTION_TYPES.COMPLETE_TODO,
+        payload: {text: "Some Task"}
+      });
+    }));
   });
 
 });
