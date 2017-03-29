@@ -8,11 +8,11 @@ import {Observable} from "rxjs/Observable";
 import {LangActionCreator} from "./i18n/language.store";
 
 @Component({
-  selector:    "app",
+  selector:    "app-root",
   styleUrls:   ["./app.component.scss"],
   templateUrl: "./app.component.html"
 })
-export class App {
+export class AppComponent {
 
   currentLanguage: Observable<string>;
 

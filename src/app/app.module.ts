@@ -12,7 +12,7 @@ import {
   removeNgStyles
 } from "@angularclass/hmr/dist/helpers";
 
-import {App} from "./app.component";
+import {AppComponent} from "./app.component";
 import {appRoutingProviders} from "./app.routes";
 import {AppState, getLanguage} from "./app.store";
 import {NotFoundComponent} from "./not-found/not-found.component";
@@ -26,8 +26,8 @@ import {APP_IMPORTS} from "./app.imports";
     appRoutingProviders,
     LangActionCreator
   ],
-  declarations: [NotFoundComponent, App],
-  bootstrap:    [App]
+  declarations: [NotFoundComponent, AppComponent],
+  bootstrap:    [AppComponent]
 })
 export class AppModule {
   constructor(public appRef: ApplicationRef,

@@ -1,7 +1,7 @@
 import {NgModule} from "@angular/core";
 
 import {SharedModule} from "../shared/shared.module";
-import {TodosComponent} from "./todos.component";
+import {TodoListComponent} from "./todo-list.component";
 import {TodoService} from "./todo.service";
 import {TodoActionCreator} from "./todos.store";
 import {TODO_ROUTES} from "./todos.routes";
@@ -11,7 +11,7 @@ import {TODO_ROUTES} from "./todos.routes";
     SharedModule,
     TODO_ROUTES
   ],
-  declarations: [TodosComponent],
+  declarations: [TodoListComponent],
   providers: [TodoService, TodoActionCreator]
 })
 export class TodosModule {

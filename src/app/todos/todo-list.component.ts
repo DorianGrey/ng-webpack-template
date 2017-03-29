@@ -7,11 +7,11 @@ import {TodoService} from "./todo.service";
 import {Todo} from "./todo.model";
 
 @Component({
-  selector: "todos",
-  styleUrls: ["./todos.component.scss"],
-  templateUrl: "./todos.component.html"
+  selector: "todo-list",
+  styleUrls: ["./todo-list.component.scss"],
+  templateUrl: "./todo-list.component.html"
 })
-export class TodosComponent {
+export class TodoListComponent {
   todoText: string;
   todos: Observable<List<Todo>>;
   completedTodos: Observable<List<Todo>>;

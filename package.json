@@ -48,8 +48,8 @@
     "dev-dll": "webpack --config webpack/dll.config.js",
     "stylelint:prod": "node bin/lint-styles.js \"src/**/*.scss\"",
     "stylelint:dev": "npm run stylelint:prod -- -w",
-    "tslint:prod": "node bin/lint-scripts.js \"src/**/*.ts\" -e \"src/generated/**/*.ts\"",
-    "tslint:dev": "npm run tslint:prod -- -w",
+    "tslint:prod": "node bin/lint-scripts.js \"src/**/*.ts\" -e \"src/generated/**/*.ts\" -t",
+    "tslint:dev": "node bin/lint-scripts.js \"src/**/*.ts\" -e \"src/generated/**/*.ts\" -w",
     "translations:prod": "node bin/compile-translations.js \"src/**/*.i18n.yml\" src/generated/translations.ts",
     "translations:dev": "npm run translations:prod -- -w"
   },
@@ -67,6 +67,7 @@
     "angular2-template-loader": "^0.6.2",
     "autoprefixer": "^6.7.7",
     "awesome-typescript-loader": "^3.1.2",
+    "codelyzer": "^3.0.0-beta.4",
     "commander": "2.9.0",
     "concurrently": "^3.4.0",
     "cross-env": "^3.2.4",
