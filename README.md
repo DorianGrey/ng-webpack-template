@@ -8,7 +8,7 @@ It started as a companion of [ng-jspm-template](https://github.com/flaviait/ng2-
 ## Setup
 
 To start using this template, you might either
- - pick the latest release ([5.0.0](https://github.com/DorianGrey/ng-webpack-template/releases/latest))
+ - pick the [latest release](https://github.com/DorianGrey/ng-webpack-template/releases/latest)
  - clone the repository directly for the most recent features and updates:
 
 
