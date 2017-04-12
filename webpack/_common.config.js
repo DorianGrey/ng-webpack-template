@@ -28,7 +28,7 @@ const {
  * @param env Bundle environment options.
  */
 module.exports = function (env) {
-  const isDev = env.isDev,
+  const isDev  = env.isDev,
         useAot = env.useAot;
 
   const plugins = [
@@ -123,6 +123,7 @@ module.exports = function (env) {
      * See: http://webpack.github.io/docs/configuration.html#plugins
      */
     plugins: plugins,
-    performance: getPerformanceOptions(!isDev)
+    performance: getPerformanceOptions(!isDev),
+    recordsPath: root(".records", `records-${isDev ? "dev" : "prod"}.json`)
   };
 };

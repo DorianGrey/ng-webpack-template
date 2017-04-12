@@ -67,6 +67,7 @@
     "angular2-template-loader": "^0.6.2",
     "autoprefixer": "^6.7.7",
     "awesome-typescript-loader": "^3.1.2",
+    "chunk-manifest-webpack-plugin": "^1.0.0",
     "codelyzer": "^3.0.0-beta.4",
     "commander": "2.9.0",
     "concurrently": "^3.4.0",
@@ -76,6 +77,7 @@
     "extract-text-webpack-plugin": "^2.1.0",
     "html-webpack-plugin": "^2.28.0",
     "http-proxy": "^1.16.2",
+    "inline-chunk-manifest-html-webpack-plugin": "^0.2.1",
     "istanbul-instrumenter-loader": "^2.0.0",
     "jasmine-core": "2.5.2",
     "jasmine-reporters": "^2.2.1",
@@ -109,6 +111,7 @@
     "wait-for-change": "^1.1.1",
     "webpack": "^2.3.3",
     "webpack-bundle-analyzer": "^2.3.1",
+    "webpack-chunk-hash": "^0.4.0",
     "webpack-closure-compiler": "^2.1.4",
     "webpack-dev-server": "^2.4.2",
     "webpack-merge": "^4.1.0"

@@ -8,9 +8,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const rootDir = path.resolve(__dirname, "..");
 
-exports.root = function root(relativePath) {
-  "use strict";
-  return path.resolve(rootDir, relativePath);
+exports.root = function root(...relativePathSegments) {
+  return path.resolve(rootDir, ...relativePathSegments);
 };
 
 /*
