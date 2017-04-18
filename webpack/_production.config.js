@@ -5,7 +5,6 @@ const HashedModuleIdsPlugin  = require("webpack/lib/HashedModuleIdsPlugin");
 
 const BundleAnalyzerPlugin                 = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const ExtractTextPlugin                    = require("extract-text-webpack-plugin");
-const ChunkManifestPlugin                  = require("chunk-manifest-webpack-plugin");
 const InlineChunkManifestHtmlWebpackPlugin = require('inline-chunk-manifest-html-webpack-plugin');
 const WebpackChunkHash                     = require("webpack-chunk-hash");
 const {root}                               = require("./constants");
@@ -39,11 +38,7 @@ module.exports = function (env) {
     }),
     // Externalizes the application manifest.
     new CommonsChunkPlugin("manifest"),
-    // Extracts the chunk manifest to an external json file
-    new ChunkManifestPlugin({
-      filename: "chunk-manifest.json",
-      manifestVariable: "webpackManifest"
-    }),
+    // Extracts the chunk manifest and inlines it into the template
     new InlineChunkManifestHtmlWebpackPlugin({
       filename: "chunk-manifest.json",
       dropAsset: true
