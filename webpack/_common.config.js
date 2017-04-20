@@ -123,7 +123,6 @@ module.exports = function (env) {
      * See: http://webpack.github.io/docs/configuration.html#plugins
      */
     plugins: plugins,
-    performance: getPerformanceOptions(!isDev),
-    recordsPath: root(".records", `records-${isDev ? "dev" : "prod"}.json`)
+    performance: getPerformanceOptions(!isDev)
   };
 };
