@@ -1,11 +1,11 @@
 "use strict";
 
-const path          = require("path");
-const _             = require("lodash");
-const Linter        = require("tslint").Linter;
-const utils         = require("./utils");
-const configuration = require("../tslint.json");
-const logger        = require("log4js").getLogger("lint-scripts");
+const path                    = require("path");
+const _                       = require("lodash");
+const {Configuration, Linter} = require("tslint");
+const utils                   = require("./utils");
+const logger                  = require("log4js").getLogger("lint-scripts");
+const configuration           = Configuration.parseConfigFile(require("../tslint.json"));
 
 // We want to keep track of all linting errors, but don't want to lint all files on each change.
 // Because of this we simply store all errors in this object.
@@ -16,13 +16,10 @@ function stripFileNamePrefixes(files) {
   return files.map(file => file.replace(`${prefix}${path.sep}`, ""));
 }
 
-function groupFailures(allFailures) {
-  return _.groupBy(allFailures, f => f.fileName);
-}
-
 function updateErrorList(linter, fileName) {
   const lintingResult = linter.getResult();
-  if (lintingResult.failureCount > 0) {
+  const failureCount  = lintingResult.warningCount + lintingResult.errorCount;
+  if (failureCount > 0) {
     lintingErrors[fileName] = lintingResult;
   } else {
     delete lintingErrors[fileName];
@@ -36,8 +33,7 @@ function updateErrorList(linter, fileName) {
  * the list of requested files and the list of files determined by the created linter program.
  * Regularly, this should not be a problem. However, it might become one in case of unusual project structure, so BEWARE!
  *
- * @param program {ts.Program}
- * @param files {Array}
+ * @param requestedFiles {Array}
  * @param withTypeCheck {Boolean}
  */
 function performLint(requestedFiles, withTypeCheck) {
@@ -88,13 +84,17 @@ exports.lint = (requestedFiles, withTypeCheck) => {
         if (Object.keys(lintingErrors).length > 0) {
           const err  = new Error("There are linting errors in the project");
           err.code   = "ELINT";
-          err.output = _.values(lintingErrors).map(result => {
-            return result.failures.map((failure) => {
+          err.failures = _.values(lintingErrors)
+            .map(result => result.failures.map((failure) => {
               const pos = failure.startPosition.lineAndCharacter;
-              return `${failure.fileName}[${pos.line + 1}, ${pos.character}]: ${failure.failure} (${failure.ruleName})`
-            }).join("\n");
-          }).join("\n");
-          err.count  = _.values(lintingErrors).reduce((count, result) => result.failureCount + count, 0);
+              return {
+                text: `${failure.fileName}[${pos.line + 1}, ${pos.character}]: ${failure.failure} (${failure.ruleName})`,
+                ruleSeverity: failure.ruleSeverity
+              };
+            }))
+            .reduce((a, b) => a.concat(b), []);
+          err.warning = _.values(lintingErrors).reduce((count, result) => result.warningCount + count, 0);
+          err.error  = _.values(lintingErrors).reduce((count, result) => result.errorCount + count, 0);
           reject(err);
         } else {
           resolve();

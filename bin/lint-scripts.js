@@ -1,10 +1,10 @@
 "use strict";
 
-const _ = require("lodash");
+const _       = require("lodash");
 const program = require("commander");
-const logger = require("log4js").getLogger("lint-scripts");
+const logger  = require("log4js").getLogger("lint-scripts");
 
-const utils = require("../dev/utils");
+const utils       = require("../dev/utils");
 const lintScripts = require("../dev/scripts").lint;
 
 program
@@ -16,15 +16,29 @@ program
 
 program.files = program.args[0];
 
-const printError = e => {
+const errorCategories = ["warning", "error"]; // warn = "warning" in config file
+logger.warning        = logger.warn;
+
+const printErrors = e => {
+
   if (e.code === "ELINT") {
-    let textPrefix;
-    if (e.count === 1) {
-      textPrefix = `There is ${e.count} linting error:`
-    } else {
-      textPrefix = `There are ${e.count} linting errors:`
-    }
-    logger.error(textPrefix + "\n" + e.output + "\n");
+    errorCategories.forEach(category => {
+      if (e[category] > 0) {
+        let textPrefix;
+
+        const failuresForCategory = e.failures
+          .filter(f => f.ruleSeverity === category)
+          .map(f => f.text)
+          .join("\n");
+
+        if (e[category] === 1) {
+          textPrefix = `There is ${e[category]} linting ${category}:`
+        } else {
+          textPrefix = `There are ${e[category]} linting ${category}s:`
+        }
+        logger[category](textPrefix + "\n" + failuresForCategory + "\n");
+      }
+    });
   } else {
     logger.error(e.stack, "\n");
   }
@@ -35,7 +49,7 @@ utils.getFiles(program.files, {ignore: program.exclude})
   .then(
     () => logger.info("No linting errors\n"),
     e => {
-      printError(e);
+      printErrors(e);
       if (!program.watch) {
         process.exit(1);
       }
@@ -47,7 +61,7 @@ if (program.watch) {
   watch(program.files, files => {
     lintScripts(files).then(
       () => logger.info("No linting errors\n"),
-      printError
+      printErrors
     )
   }, {events: ["change", "unlink"]});
 }
