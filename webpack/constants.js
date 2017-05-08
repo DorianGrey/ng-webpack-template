@@ -91,7 +91,18 @@ exports.RULE_HTML_LOADING = {
  * (2) As an inline string - that what happens to all .component.scss files, since they refer
  * to a particular component, and inlining simplifies dealing with them.
  */
-const scssLoaderChain               = ["css-loader?importLoaders=1", "postcss-loader", "sass-loader"];
+const scssLoaderChain               = [
+  "css-loader?importLoaders=1",
+  {
+    loader: "postcss-loader",
+    options: {
+      config: {
+        ctx: {}
+      }
+    }
+  },
+  "sass-loader"
+];
 exports.RULE_MAIN_SASS_LOADING      = function RULE_MAIN_SASS_LOADING(isDev) {
   const result = {
     test: /main\.scss$/
@@ -132,13 +143,13 @@ exports.getLoaderOptionsPlugin = function getLoaderOptionsPlugin(isDevMode) {
     options: {
       // Forwards options to the postcss-loader; put more of them here as required.
       // In its current state, only
-      postcss: {
-        plugins: [
-          require("autoprefixer")({
-            "browsers": ["last 2 versions"]
-          })
-        ]
-      }
+      /*postcss: {
+       plugins: [
+       require("autoprefixer")({
+       "browsers": ["last 2 versions"]
+       })
+       ]
+       }*/
     }
   };
 
