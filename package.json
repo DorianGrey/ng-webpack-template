@@ -94,6 +94,7 @@
     "ngrx-store-freeze": "^0.1.9",
     "node-sass": "^4.5.2",
     "phantomjs-prebuilt": "^2.1.14",
+    "postcss-flexbugs-fixes": "^2.1.1",
     "postcss-loader": "^2.0.0",
     "raw-loader": "0.5.1",
     "rimraf": "^2.6.1",

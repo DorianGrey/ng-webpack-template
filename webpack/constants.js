@@ -96,9 +96,12 @@ const scssLoaderChain               = [
   {
     loader: "postcss-loader",
     options: {
-      config: {
-        ctx: {}
-      }
+      plugins: (loader) => [
+        require("autoprefixer")({
+          "browsers": ["last 2 versions"]
+        }),
+        require("postcss-flexbugs-fixes")
+      ],
     }
   },
   "sass-loader"
