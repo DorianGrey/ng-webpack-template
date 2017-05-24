@@ -1,9 +1,9 @@
-const path               = require("path");
+const path    = require("path");
 const {
         DefinePlugin,
         NamedModulesPlugin
-      }                  = require("webpack");
-const commons            = require("./constants");
+      }       = require("webpack");
+const commons = require("./constants");
 
 module.exports = {
   /**
@@ -39,7 +39,15 @@ module.exports = {
       {
         test: /\.ts$/,
         use: [
-          "awesome-typescript-loader?sourceMap=false,inlineSourceMap=true",
+          {
+            loader: "ts-loader",
+            options: {
+              compilerOptions: {
+                sourceMap: false,
+                inlineSourceMap: true
+              }
+            }
+          },
           "angular2-template-loader"
         ],
         exclude: [/\.e2e\.ts$/]

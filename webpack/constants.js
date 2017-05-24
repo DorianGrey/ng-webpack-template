@@ -56,9 +56,14 @@ exports.RULE_LIB_SOURCE_MAP_LOADING = {
  */
 exports.RULE_TS_LOADING = {
   test: /\.ts$/,
-  loaders: [
+  use: [
     "@angularclass/hmr-loader?pretty=true",
-    "awesome-typescript-loader",
+    {
+      loader: "ts-loader",
+      options: {
+        transpileOnly: true // Everything else is processed by the corresponding plugin.
+      }
+    },
     "angular2-template-loader",
     "angular-router-loader"
   ]

@@ -2,7 +2,7 @@ const {
         DefinePlugin,
         ProgressPlugin
       }                          = require("webpack");
-const {CheckerPlugin}            = require("awesome-typescript-loader");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const {
         root,
@@ -60,8 +60,13 @@ module.exports = function (env) {
     }),
     // Plugin for displaying bundle process stage.
     new ProgressPlugin(),
-    // Plugin of atl. to improve build and type checking speed; Will be included by default in the next major version.
-    new CheckerPlugin()
+    // Plugin to improve build and type checking speed; Will be included by default in the next major version.
+    new ForkTsCheckerWebpackPlugin({
+      watch: "./src",
+      tsconfig: "./tsconfig.json",
+      blockEmit: !env.isWatch,
+      tslint: false //"./tslint.json"
+    })
   ];
 
   if (!useAot) {
