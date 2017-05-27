@@ -3,6 +3,7 @@ const {
         DefinePlugin,
         NamedModulesPlugin
       }       = require("webpack");
+const WebpackKarmaDieHardPlugin = require("webpack-karma-die-hard");
 const commons = require("./constants");
 
 module.exports = {
@@ -42,6 +43,7 @@ module.exports = {
           {
             loader: "ts-loader",
             options: {
+              transpileOnly: true, // Everything else is processed by the corresponding plugin.
               compilerOptions: {
                 sourceMap: false,
                 inlineSourceMap: true
@@ -56,9 +58,6 @@ module.exports = {
       /**
        * Instruments JS files with Istanbul for subsequent code coverage reporting.
        * Instrument only testing sources.
-       * FIXME: This loader is currently fixed at version 0.2.0 => >=1.0.0 does NOT work atm.;
-       * It fires curious errors regarding source maps that may not be found, although they are
-       * used in the created report ...
        *
        * See: https://github.com/deepsweet/istanbul-instrumenter-loader
        */
@@ -79,7 +78,9 @@ module.exports = {
     new DefinePlugin({
       ENV: JSON.stringify(process.env.NODE_ENV || "test")
     }),
-    new NamedModulesPlugin()
+    new NamedModulesPlugin(),
+    commons.getTsCheckerPlugin({}),
+    new WebpackKarmaDieHardPlugin()
   ],
   performance: commons.getPerformanceOptions(false),
   node: commons.NODE_CONFIG

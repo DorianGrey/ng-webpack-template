@@ -2,7 +2,6 @@ const {
         DefinePlugin,
         ProgressPlugin
       }                          = require("webpack");
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const {
         root,
@@ -12,6 +11,7 @@ const {
         getLoaderOptionsPlugin,
         getPerformanceOptions,
         getDefaultContextReplacementPlugin,
+        getTsCheckerPlugin,
         RULE_LIB_SOURCE_MAP_LOADING,
         RULE_TS_LOADING,
         RULE_HTML_LOADING,
@@ -60,13 +60,7 @@ module.exports = function (env) {
     }),
     // Plugin for displaying bundle process stage.
     new ProgressPlugin(),
-    // Plugin to improve build and type checking speed; Will be included by default in the next major version.
-    new ForkTsCheckerWebpackPlugin({
-      watch: "./src",
-      tsconfig: "./tsconfig.json",
-      blockEmit: !env.isWatch,
-      tslint: false //"./tslint.json"
-    })
+    getTsCheckerPlugin(env)
   ];
 
   if (!useAot) {

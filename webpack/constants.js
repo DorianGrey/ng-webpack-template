@@ -1,10 +1,11 @@
-const path              = require("path");
+const path                       = require("path");
 const {
         ContextReplacementPlugin,
         LoaderOptionsPlugin
-      }                 = require("webpack");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+      }                          = require("webpack");
+const ExtractTextPlugin          = require("extract-text-webpack-plugin");
+const HtmlWebpackPlugin          = require("html-webpack-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 const rootDir = path.resolve(__dirname, "..");
 
@@ -182,6 +183,16 @@ exports.getHtmlTemplatePlugin = function getHtmlTemplatePlugin(isDevMode) {
     baseHref: "/",
     polyfillFile: "polyfills.dll.js",
     vendorFile: "vendor.dll.js"
+  });
+};
+
+exports.getTsCheckerPlugin = function getTsCheckerPlugin(env) {
+  // Plugin to improve build and type checking speed; Will be included by default in the next major version.
+  return new ForkTsCheckerWebpackPlugin({
+    watch: "./src",
+    tsconfig: "./tsconfig.json",
+    blockEmit: !env.isWatch,
+    tslint: "./tslint.json"
   });
 };
 
