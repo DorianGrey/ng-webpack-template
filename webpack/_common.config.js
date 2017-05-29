@@ -3,6 +3,7 @@ const {
         ProgressPlugin
       }                          = require("webpack");
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
+const StyleLintPlugin            = require("stylelint-webpack-plugin");
 const {
         root,
         DEFAULT_RESOLVE_EXTENSIONS,
@@ -60,7 +61,14 @@ module.exports = function (env) {
     }),
     // Plugin for displaying bundle process stage.
     new ProgressPlugin(),
-    getTsCheckerPlugin(env)
+    getTsCheckerPlugin(env),
+    new StyleLintPlugin({
+      quiet: false,
+      failOnError: !isDev,
+      configFile: root(".stylelintrc"),
+      files: "src/**/*.scss",
+      syntax: "scss"
+    })
   ];
 
   if (!useAot) {

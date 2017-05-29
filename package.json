@@ -1,6 +1,6 @@
 {
   "name": "ng-webpack-template",
-  "version": "5.0.0",
+  "version": "8.0.0",
   "description": "Evil brother of ng2-jspm-template",
   "author": {
     "name": "Christian Linne",
@@ -19,7 +19,6 @@
   "main": "index.js",
   "scripts": {
     "clear": "rimraf .awcache .tmp dist dist-aot src/generated",
-    "lint": "npm run stylelint:prod",
     "analyze-bundles": "cross-env NODE_ENV=production webpack --config webpack/main.config.js --env.analyzeBundles",
     "analyze-bundles:aot": "npm run analyze-bundles -- --env.useAot",
     "analyze-bundles:cc": "npm run analyze-bundles --  --env.useClosureCompiler",
@@ -27,9 +26,9 @@
     "prestart": "rimraf .tmp",
     "start": "npm run dev-dll && concurrently -r \"npm run dev-tasks\" \"wait-for-change src/generated/translations.ts && npm run dev-server\"",
     "pretest": "npm run translations:prod",
-    "test": "npm run lint && cross-env NODE_ENV=production karma start karma.conf.js",
+    "test": "cross-env NODE_ENV=production karma start karma.conf.js",
     "pretest:dev": "npm run translations:prod",
-    "test:dev": "npm run lint && cross-env NODE_ENV=development karma start karma.conf.js",
+    "test:dev": "cross-env NODE_ENV=development karma start karma.conf.js",
     "prebuild": "rimraf dist && npm run test",
     "build": "cross-env NODE_ENV=production webpack --config webpack/main.config.js",
     "prebuild:cc": "npm run prebuild",
@@ -44,10 +43,8 @@
     "prod-server:aot:cc": "npm run build:aot:cc && node example-prod-server/server.js dist-aot",
     "dev-bundle": "cross-env NODE_ENV=development webpack --config webpack/main.config.js",
     "dev-server": "cross-env NODE_ENV=development webpack-dev-server --config webpack/main.config.js --hot",
-    "dev-tasks": "concurrently -r \"npm run translations:dev\" \"npm run stylelint:dev\" \"karma start karma.conf.js\"",
+    "dev-tasks": "concurrently -r \"npm run translations:dev\" \"karma start karma.conf.js\"",
     "dev-dll": "webpack --config webpack/dll.config.js",
-    "stylelint:prod": "node bin/lint-styles.js \"src/**/*.scss\"",
-    "stylelint:dev": "npm run stylelint:prod -- -w",
     "translations:prod": "node bin/compile-translations.js \"src/**/*.i18n.yml\" src/generated/translations.ts",
     "translations:dev": "npm run translations:prod -- -w"
   },
@@ -101,6 +98,7 @@
     "source-map-loader": "^0.2.1",
     "style-loader": "^0.18.1",
     "stylelint": "^7.10.1",
+    "stylelint-webpack-plugin": "^0.7.0",
     "to-string-loader": "1.1.5",
     "ts-loader": "^2.1.0",
     "tslib": "^1.7.1",
