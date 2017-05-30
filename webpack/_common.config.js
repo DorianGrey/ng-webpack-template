@@ -63,7 +63,6 @@ module.exports = function (env) {
     new ProgressPlugin(),
     getTsCheckerPlugin(env),
     new StyleLintPlugin({
-      quiet: false,
       failOnError: !isDev,
       configFile: root(".stylelintrc"),
       files: "src/**/*.scss",
