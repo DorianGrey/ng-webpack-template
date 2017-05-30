@@ -5,17 +5,18 @@
     "comment-empty-line-before": [
       "always",
       {
+        "except": ["first-nested"],
         "ignore": [
           "stylelint-commands",
           "after-comment"
         ]
       }
     ],
-    "declaration-colon-space-after": "always",
+    "declaration-colon-space-after": "always-single-line",
     "indentation": 2,
     "max-empty-lines": 2,
     "rule-empty-line-before": [
-      "always",
+      "always-multi-line",
       {
         "except": [
           "first-nested"
@@ -26,11 +27,13 @@
       }
     ],
     "unit-whitelist": [
+      "vh",
       "em",
       "rem",
       "%",
       "s",
-      "px"
+      "px",
+      "deg"
     ]
   }
 }
