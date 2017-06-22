@@ -17,14 +17,16 @@
     "noUnusedLocals": true,
     "typeRoots": [
       "node_modules/@types"
+    ],
+    "lib": [
+      "DOM",
+      "ES5",
+      "ScriptHost",
+      "es2015.promise",
+      "es2015.iterable"
     ]
   },
   "exclude": [
     "node_modules"
-  ],
-  "awesomeTypescriptLoaderOptions": {
-    "useWebpackText": true,
-    "forkChecker": true,
-    "useCache": true
-  }
+  ]
 }
