@@ -111,7 +111,7 @@ module.exports = function (env) {
        */
       rules: [
         RULE_LIB_SOURCE_MAP_LOADING,
-        RULE_TS_LOADING, // This will get overridden by RULE_TS_AOT_LOADING if AoT mode is activated.
+        RULE_TS_LOADING(isDev), // This will get overridden by RULE_TS_AOT_LOADING if AoT mode is activated.
         RULE_HTML_LOADING,
         RULE_MAIN_SASS_LOADING(isDev),
         RULE_COMPONENT_SASS_LOADING

@@ -34,8 +34,6 @@ module.exports = {
       /**
        * Typescript loader support for .ts and Angular 2 async routes.
        * Note that the processing steps differ from the ones defined in RULE_TS_LOADING.
-       *
-       * See: https://github.com/s-panferov/awesome-typescript-loader
        */
       {
         test: /\.ts$/,

@@ -53,12 +53,10 @@ exports.RULE_LIB_SOURCE_MAP_LOADING = {
  * (3) The atl takes care of properly transpiling our code using the TypeScript compiler.
  * (4) The HMR-loader does some transformations on our code to ensure that HMR will be working properly.
  * Note that this loader automatically disables itself in production mode and leaves the code untouched in that case.
- * Thus, there is no need to make a difference between development and production mode here.
+ * However - due to the docs - it should be removed manually for production builds, thus we make a difference here.
  */
-exports.RULE_TS_LOADING = {
-  test: /\.ts$/,
-  use: [
-    "@angularclass/hmr-loader?pretty=true",
+exports.RULE_TS_LOADING = function(isDev){
+  const use = [
     {
       loader: "ts-loader",
       options: {
@@ -67,7 +65,16 @@ exports.RULE_TS_LOADING = {
     },
     "angular2-template-loader",
     "angular-router-loader"
-  ]
+  ];
+
+  if (isDev) {
+    use.unshift("@angularclass/hmr-loader?pretty=true")
+  }
+
+  return {
+    test: /\.ts$/,
+    use
+  }
 };
 
 /** Loader for dealing with out typescript files in AoT mode.
