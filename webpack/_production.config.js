@@ -58,7 +58,23 @@ module.exports = function (env) {
      *
      * See: http://webpack.github.io/docs/stylesheets.html#separate-css-bundle
      */
-    new ExtractTextPlugin("main.[contenthash].css")
+    new ExtractTextPlugin("main.[contenthash].css"),
+
+    // Generate some information about the generated bundle size
+    new BundleAnalyzerPlugin({
+      analyzerMode: "static",
+      reportFilename: root(
+        "buildStats",
+        "bundle-size-report.html"
+      ),
+      openAnalyzer: false,
+      generateStatsFile: true,
+      statsFilename: root(
+        "buildStats",
+        "bundle-size-report.json"
+      ),
+      logLevel: "silent"
+    }),
   ]);
 
   /**
@@ -86,10 +102,6 @@ module.exports = function (env) {
         comments: false
       })
     );
-  }
-
-  if (env.analyzeBundles) {
-    plugins.push(new BundleAnalyzerPlugin({analyzerPort: 5000}));
   }
 
   /**

@@ -52,15 +52,17 @@ which will fire up a webpack-dev-server using webpack's DLL feature up-front to 
 ### Production
 
 There are currently four ways to create a production build:
-- With or without [AoT compilation](https://angular.io/docs/ts/latest/cookbook/aot-compiler.html)
+- With or without [AoT compilation](https://angular.io/docs/ts/latest/cookbook/aot-compiler.html) (and optionally: [ngo](https://github.com/angular/ngo))
 - With [Closure Compiler](https://github.com/google/closure-compiler-npm) or [UglifyJS2](https://github.com/mishoo/UglifyJS2) as code minifier
 
 Each of them might bring up different results, and might be suitable for a particular situation while being problematic in another.
 
-We have recently added support for using [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification since 
+We have added support for using [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification since
 - its results are slightly smaller
 - there is currently some work going on to be able to take more advantage of its available optimization techniques
 Just note that at the moment, the `Advanced` optimization mode is not yet usable.
+
+Using [ngo](https://github.com/angular/ngo) has an even better impact on the vendor bundle's size. However, it is still extremely experimental, so **beware**. Also note that the changes it applies clash with [Closure Compiler](https://github.com/google/closure-compiler-npm), so you cannot use both in conjunction.
 
 The AoT versions are using the [@ngtools/webpack plugin](https://github.com/angular/angular-cli/blob/master/packages/webpack/README.md).
 
@@ -69,6 +71,7 @@ The AoT versions are using the [@ngtools/webpack plugin](https://github.com/angu
 The tables below will provide a full overview of the relevant commands.
 Note that each build tasks will invoke the `test` task (includes linting, generating the translations and executing the unit-tests) **before** the real build.
 
+In addition to the regular build, every production build will also generate a bundle size analyze report in HTML and JSON format (powered by [webpack-bundle-analyzer](https://github.com/th0r/webpack-bundle-analyzer)). It can be found in the `buildStats` dir once the build task completes. Please keep in mind that it will be overwritten in every cycle.
 
 #### Build tasks not including the example server
 
@@ -78,7 +81,7 @@ Note that each build tasks will invoke the `test` task (includes linting, genera
 | `yarn build:cc`     | Same as above, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification.|
 | `yarn build:aot`    | Creates a producton bundle in the `dist-aot` folder. Utilizes AoT compilation. |
 | `yarn build:aot:ngo`    | Creates a producton bundle in the `dist-aot` folder. Utilizes AoT compilation and [ngo](https://github.com/angular/ngo).<br> **Warning**: This should be considered **experimental!**|
-| `yarn build:aot:cc` | Same as above, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification. |
+| `yarn build:aot:cc` | Same as above `yarn build:aot`, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification. |
 
 #### Build tasks including the example server
 
@@ -90,16 +93,4 @@ All of these tasks will bring up the exemplary production server (see the `examp
 | `yarn prod-server:cc`     | Same as above, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification.|
 | `yarn prod-server:aot`    | Creates a producton bundle in the `dist-aot` folder and serves its contents afterwards. Utilizes AoT compilation. |
 | `yarn prod-server:aot:ngo`    | Creates a producton bundle in the `dist-aot` folder and serves its contents afterwards. Utilizes AoT compilation and [ngo](https://github.com/angular/ngo).<br> **Warning**: This should be considered **experimental!**|
-| `yarn prod-server:aot:cc` | Same as above, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification. |
-
-#### Other useful tasks
-
-|Command|Effect|
-|------|-------|
-| `yarn analyze-bundles` | Performs a production build as described above and starts the [webpack-bundle-analyzer](https://github.com/th0r/webpack-bundle-analyzer) for bundle size inspection after the build completed successfully. The server will be available at `http://localhost:5000`.|
-| `yarn analyze-bundles:aot` | Uses AoT compilation mode.|
-| `yarn analyze-bundles:aot:ngo` | Uses AoT compilation mode and [ngo](https://github.com/angular/ngo).<br> **Warning**: This should be considered **experimental!**|
-| `yarn analyze-bundles:cc` | Uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification.|
-| `yarn analyze-bundles:aot:cc` | Uses both AoT compilation mode and [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification.|
-
-
+| `yarn prod-server:aot:cc` | Same as above `yarn prod-server:aot`, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification. |

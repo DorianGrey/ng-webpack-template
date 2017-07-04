@@ -15,11 +15,6 @@
   "main": "index.js",
   "scripts": {
     "clear": "rimraf .awcache .tmp dist dist-aot src/generated",
-    "analyze-bundles": "cross-env NODE_ENV=production webpack --config webpack/main.config.js --env.analyzeBundles",
-    "analyze-bundles:aot": "npm run analyze-bundles -- --env.useAot",
-    "analyze-bundles:aot:ngo": "npm run analyze-bundles -- --env.useAot --env.useNgo",
-    "analyze-bundles:cc": "npm run analyze-bundles --  --env.useClosureCompiler",
-    "analyze-bundles:aot:cc": "npm run analyze-bundles -- --env.useAot --env.useClosureCompiler",
     "prestart": "rimraf .tmp",
     "start": "npm run dev-dll && concurrently -r \"npm run dev-tasks\" \"wait-for-change src/generated/translations.ts && npm run dev-server\"",
     "pretest": "npm run translations:prod",

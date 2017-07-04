@@ -13,4 +13,5 @@ jspm.browser.js
 /test-results
 /dist
 /dist-aot
+/buildStats
 yarn-error.log
