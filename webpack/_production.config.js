@@ -1,7 +1,8 @@
-const {NoEmitOnErrorsPlugin} = require("webpack");
-const UglifyJsPlugin         = require("webpack/lib/optimize/UglifyJsPlugin");
-const CommonsChunkPlugin     = require("webpack/lib/optimize/CommonsChunkPlugin");
-const HashedModuleIdsPlugin  = require("webpack/lib/HashedModuleIdsPlugin");
+const {NoEmitOnErrorsPlugin}    = require("webpack");
+const UglifyJsPlugin            = require("webpack/lib/optimize/UglifyJsPlugin");
+const CommonsChunkPlugin        = require("webpack/lib/optimize/CommonsChunkPlugin");
+const HashedModuleIdsPlugin     = require("webpack/lib/HashedModuleIdsPlugin");
+const ModuleConcatenationPlugin = require("webpack/lib/optimize/ModuleConcatenationPlugin");
 
 const BundleAnalyzerPlugin                 = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const ExtractTextPlugin                    = require("extract-text-webpack-plugin");
@@ -59,6 +60,8 @@ module.exports = function (env) {
      * See: http://webpack.github.io/docs/stylesheets.html#separate-css-bundle
      */
     new ExtractTextPlugin("main.[contenthash].css"),
+
+    new ModuleConcatenationPlugin(),
 
     // Generate some information about the generated bundle size
     new BundleAnalyzerPlugin({
