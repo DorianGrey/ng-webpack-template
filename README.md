@@ -77,6 +77,7 @@ Note that each build tasks will invoke the `test` task (includes linting, genera
 | `yarn build`        | Creates a producton bundle in the `dist` folder. |
 | `yarn build:cc`     | Same as above, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification.|
 | `yarn build:aot`    | Creates a producton bundle in the `dist-aot` folder. Utilizes AoT compilation. |
+| `yarn build:aot:ngo`    | Creates a producton bundle in the `dist-aot` folder. Utilizes AoT compilation and [ngo](https://github.com/angular/ngo).<br> **Warning**: This should be considered **experimental!**|
 | `yarn build:aot:cc` | Same as above, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification. |
 
 #### Build tasks including the example server
@@ -88,6 +89,7 @@ All of these tasks will bring up the exemplary production server (see the `examp
 | `yarn prod-server`        | Creates a producton bundle in the `dist` folder and serves its contents afterwards. |
 | `yarn prod-server:cc`     | Same as above, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification.|
 | `yarn prod-server:aot`    | Creates a producton bundle in the `dist-aot` folder and serves its contents afterwards. Utilizes AoT compilation. |
+| `yarn prod-server:aot:ngo`    | Creates a producton bundle in the `dist-aot` folder and serves its contents afterwards. Utilizes AoT compilation and [ngo](https://github.com/angular/ngo).<br> **Warning**: This should be considered **experimental!**|
 | `yarn prod-server:aot:cc` | Same as above, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification. |
 
 #### Other useful tasks
@@ -96,6 +98,7 @@ All of these tasks will bring up the exemplary production server (see the `examp
 |------|-------|
 | `yarn analyze-bundles` | Performs a production build as described above and starts the [webpack-bundle-analyzer](https://github.com/th0r/webpack-bundle-analyzer) for bundle size inspection after the build completed successfully. The server will be available at `http://localhost:5000`.|
 | `yarn analyze-bundles:aot` | Uses AoT compilation mode.|
+| `yarn analyze-bundles:aot:ngo` | Uses AoT compilation mode and [ngo](https://github.com/angular/ngo).<br> **Warning**: This should be considered **experimental!**|
 | `yarn analyze-bundles:cc` | Uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification.|
 | `yarn analyze-bundles:aot:cc` | Uses both AoT compilation mode and [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification.|
 

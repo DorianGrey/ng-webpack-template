@@ -3245,6 +3245,12 @@ magic-string@^0.19.0:
   dependencies:
     vlq "^0.2.1"
 
+magic-string@^0.19.1:
+  version "0.19.1"
+  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.19.1.tgz#14d768013caf2ec8fdea16a49af82fc377e75201"
+  dependencies:
+    vlq "^0.2.1"
+
 map-obj@^1.0.0, map-obj@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/map-obj/-/map-obj-1.0.1.tgz#d933ceb9205d82bdcf4886f6742bdc2b4dea146d"
@@ -3428,6 +3434,15 @@ ncname@1.0.x:
 negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
+
+"ngo-loader@github:angular/ngo":
+  version "0.0.10"
+  resolved "https://codeload.github.com/angular/ngo/tar.gz/13e7ef35e3cc5a08bbde39ae228bee8d7bf544c9"
+  dependencies:
+    loader-utils "^1.1.0"
+    magic-string "^0.19.1"
+    source-map "^0.5.6"
+    typescript "^2.4.0-dev.20170608"
 
 ngrx-store-freeze@^0.1.9:
   version "0.1.9"
@@ -5427,6 +5442,10 @@ typedarray@~0.0.5:
 typescript@^2.3.4:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.3.4.tgz#3d38321828231e434f287514959c37a82b629f42"
+
+typescript@^2.4.0-dev.20170608:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.4.1.tgz#c3ccb16ddaa0b2314de031e7e6fee89e5ba346bc"
 
 uglify-js@2.8.x, uglify-js@^2.6, uglify-js@^2.8.27:
   version "2.8.27"

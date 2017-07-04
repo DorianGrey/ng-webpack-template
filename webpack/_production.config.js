@@ -5,9 +5,9 @@ const HashedModuleIdsPlugin  = require("webpack/lib/HashedModuleIdsPlugin");
 
 const BundleAnalyzerPlugin                 = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const ExtractTextPlugin                    = require("extract-text-webpack-plugin");
-const InlineChunkManifestHtmlWebpackPlugin = require('inline-chunk-manifest-html-webpack-plugin');
+const InlineChunkManifestHtmlWebpackPlugin = require("inline-chunk-manifest-html-webpack-plugin");
 const WebpackChunkHash                     = require("webpack-chunk-hash");
-const {root}                               = require("./constants");
+const {root, RULE_NGO_LOADING}             = require("./constants");
 
 const ClosureCompilerPlugin = require("webpack-closure-compiler");
 
@@ -21,31 +21,32 @@ const ClosureCompilerPlugin = require("webpack-closure-compiler");
  * @param env Bundle environment options.
  */
 module.exports = function (env) {
-
   /*
    Plugins utilizing long term caching.
    Used plugins and setup primarily based on https://webpack.js.org/guides/caching/
 
    If you don't want or need long term caching strategies, add `--env.disableLongTermCaching` to the build parameters.
    */
-  const longTermCachingPlugins = env.disableLongTermCaching ? [] : [
-    // For more consistent module IDs
-    new HashedModuleIdsPlugin(),
-    // Creates a dynamic vendor chunk by including all entries from the `node_modules` directory.
-    new CommonsChunkPlugin({
-      name: "vendor",
-      minChunks: ({resource}) => /node_modules/.test(resource)
-    }),
-    // Externalizes the application manifest.
-    new CommonsChunkPlugin("manifest"),
-    // Extracts the chunk manifest and inlines it into the template
-    new InlineChunkManifestHtmlWebpackPlugin({
-      filename: "chunk-manifest.json",
-      dropAsset: true
-    }),
-    // More consistent chunk hashes
-    new WebpackChunkHash(),
-  ];
+  const longTermCachingPlugins = env.disableLongTermCaching
+    ? []
+    : [
+      // For more consistent module IDs
+      new HashedModuleIdsPlugin(),
+      // Creates a dynamic vendor chunk by including all entries from the `node_modules` directory.
+      new CommonsChunkPlugin({
+        name: "vendor",
+        minChunks: ({resource}) => /node_modules/.test(resource)
+      }),
+      // Externalizes the application manifest.
+      new CommonsChunkPlugin("manifest"),
+      // Extracts the chunk manifest and inlines it into the template
+      new InlineChunkManifestHtmlWebpackPlugin({
+        filename: "chunk-manifest.json",
+        dropAsset: true
+      }),
+      // More consistent chunk hashes
+      new WebpackChunkHash()
+    ];
 
   const plugins = longTermCachingPlugins.concat([
     // Plugin to let the whole build fail on any error; i.e. do not tolerate these
@@ -75,7 +76,7 @@ module.exports = function (env) {
           language_out: "ECMASCRIPT5"
           // Note: compilation_level: 'ADVANCED' does not work (yet?); it causes some weird errors regarding the usage of .prototype.
         },
-        concurrency: 3,
+        concurrency: 3
       })
     );
   } else {
@@ -97,7 +98,7 @@ module.exports = function (env) {
    *
    * See: http://webpack.github.io/docs/configuration.html#output-filename
    */
-  return {
+  const result = {
     output: {
       path: root("dist"),
       filename: "[name].[chunkhash].js",
@@ -106,4 +107,12 @@ module.exports = function (env) {
     devtool: false,
     plugins: plugins
   };
+
+  if (env.useNgo) {
+    result.module = {
+      rules: [RULE_NGO_LOADING(false)]
+    };
+  }
+
+  return result;
 };

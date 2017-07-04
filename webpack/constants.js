@@ -1,10 +1,7 @@
-const path                       = require("path");
-const {
-        ContextReplacementPlugin,
-        LoaderOptionsPlugin
-      }                          = require("webpack");
-const ExtractTextPlugin          = require("extract-text-webpack-plugin");
-const HtmlWebpackPlugin          = require("html-webpack-plugin");
+const path = require("path");
+const { ContextReplacementPlugin, LoaderOptionsPlugin } = require("webpack");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 const rootDir = path.resolve(__dirname, "..");
@@ -44,6 +41,19 @@ exports.RULE_LIB_SOURCE_MAP_LOADING = {
   exclude: [exports.EXCLUDE_SOURCE_MAPS]
 };
 
+// Ngo optimization, see https://github.com/angular/angular-cli/pull/6520
+exports.RULE_NGO_LOADING = function(useSourceMap) {
+  return {
+    test: /\.js$/,
+    use: [
+      {
+        loader: "ngo-loader",
+        options: { sourceMap: useSourceMap }
+      }
+    ]
+  };
+};
+
 /** Loader chain for typescript files in case of non-aot mode. Keep in mind that the list of loaders
  * uses topological order, i.e. they are defined in the reverse order they are used later on.
  * (1) The router loader translates the content of "loadChildren" to the code-splitting
@@ -55,7 +65,7 @@ exports.RULE_LIB_SOURCE_MAP_LOADING = {
  * Note that this loader automatically disables itself in production mode and leaves the code untouched in that case.
  * However - due to the docs - it should be removed manually for production builds, thus we make a difference here.
  */
-exports.RULE_TS_LOADING = function(isDev){
+exports.RULE_TS_LOADING = function(isDev) {
   const use = [
     {
       loader: "ts-loader",
@@ -68,13 +78,13 @@ exports.RULE_TS_LOADING = function(isDev){
   ];
 
   if (isDev) {
-    use.unshift("@angularclass/hmr-loader?pretty=true")
+    use.unshift("@angularclass/hmr-loader?pretty=true");
   }
 
   return {
     test: /\.ts$/,
     use
-  }
+  };
 };
 
 /** Loader for dealing with out typescript files in AoT mode.
@@ -83,7 +93,7 @@ exports.RULE_TS_LOADING = function(isDev){
  */
 exports.RULE_TS_AOT_LOADING = {
   test: /\.ts$/,
-  loader: "@ngtools/webpack",
+  loader: "@ngtools/webpack"
 };
 
 /** HTML is loaded as a string in raw mode without any modification.
@@ -104,22 +114,22 @@ exports.RULE_HTML_LOADING = {
  * (2) As an inline string - that what happens to all .component.scss files, since they refer
  * to a particular component, and inlining simplifies dealing with them.
  */
-const scssLoaderChain               = [
+const scssLoaderChain = [
   "css-loader?importLoaders=1",
   {
     loader: "postcss-loader",
     options: {
-      plugins: (loader) => [
+      plugins: loader => [
         require("autoprefixer")({
-          "browsers": ["last 2 versions"]
+          browsers: ["last 2 versions"]
         }),
         require("postcss-flexbugs-fixes")
-      ],
+      ]
     }
   },
   "sass-loader"
 ];
-exports.RULE_MAIN_SASS_LOADING      = function RULE_MAIN_SASS_LOADING(isDev) {
+exports.RULE_MAIN_SASS_LOADING = function RULE_MAIN_SASS_LOADING(isDev) {
   const result = {
     test: /main\.scss$/
   };
@@ -146,12 +156,14 @@ exports.RULE_COMPONENT_SASS_LOADING = {
  */
 exports.DEFAULT_RESOLVE_EXTENSIONS = [".ts", ".js", ".json"];
 
-exports.getDefaultContextReplacementPlugin = function getDefaultContextReplacementPlugin(src) {
+exports.getDefaultContextReplacementPlugin = function getDefaultContextReplacementPlugin(
+  src
+) {
   src = src || "src";
   return new ContextReplacementPlugin(
     /angular(\\|\/)core(\\|\/)@angular/, // See https://github.com/angular/angular/issues/11580#issuecomment-282705332
     exports.root(src)
-  )
+  );
 };
 
 exports.getLoaderOptionsPlugin = function getLoaderOptionsPlugin(isDevMode) {
@@ -176,7 +188,7 @@ exports.getLoaderOptionsPlugin = function getLoaderOptionsPlugin(isDevMode) {
     };
   }
 
-  return new LoaderOptionsPlugin(options)
+  return new LoaderOptionsPlugin(options);
 };
 
 exports.getHtmlTemplatePlugin = function getHtmlTemplatePlugin(isDevMode) {
@@ -211,5 +223,5 @@ exports.getPerformanceOptions = function getPerformanceOptions(isProdMode) {
      * mode.
      */
     hints: isProdMode ? "warning" : false
-  }
+  };
 };
