@@ -87,9 +87,9 @@ function stateSetter(reducer: ActionReducer<any>): ActionReducer<any> {
 const DEV_REDUCERS = [stateSetter, storeFreeze];
 // This reducer is only used in development mode and is the result of a composition of DEV_REDUCERS and
 // the reducers that are related to your {AppState}.
-const developmentReducer: (state: any, action: any) => any = compose(...DEV_REDUCERS, combineReducers)(reducers);
+const developmentReducer: ActionReducer<any> = compose(...DEV_REDUCERS, combineReducers)(reducers) as ActionReducer<any>;
 // This reducer is only used in production mode and is just a combination of the once your provided for your {AppState}.
-const productionReducer: (state: any, action: any) => any  = combineReducers(reducers);
+const productionReducer: ActionReducer<any> = combineReducers(reducers);
 
 /**
  * Regularly, the "reducer" may a function value. However, due to AoT restrictions,

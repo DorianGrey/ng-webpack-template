@@ -22,8 +22,8 @@ module.exports = function (env = {}) {
   if (!env.isDev) {
     logger.debug("Using minifier:", env.useClosureCompiler ? "Closure Compiler" : "UglifyJs");
   }
-  logger.debug("Using AoT:", env.useAot);
-  logger.debug("Using ngo:", env.useNgo);
+  logger.debug("Using AoT:", !!env.useAot);
+  logger.debug("Using ngo:", !!env.useNgo);
 
   /** See the docs for more information about how merging configs is implemented:
    * https://github.com/survivejs/webpack-merge/blob/master/README.md
