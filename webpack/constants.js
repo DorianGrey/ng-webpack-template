@@ -41,19 +41,6 @@ exports.RULE_LIB_SOURCE_MAP_LOADING = {
   exclude: [exports.EXCLUDE_SOURCE_MAPS]
 };
 
-// Ngo optimization, see https://github.com/angular/angular-cli/pull/6520
-exports.RULE_NGO_LOADING = function(useSourceMap) {
-  return {
-    test: /\.js$/,
-    use: [
-      {
-        loader: "ngo-loader",
-        options: { sourceMap: useSourceMap }
-      }
-    ]
-  };
-};
-
 /** Loader chain for typescript files in case of non-aot mode. Keep in mind that the list of loaders
  * uses topological order, i.e. they are defined in the reverse order they are used later on.
  * (1) The router loader translates the content of "loadChildren" to the code-splitting

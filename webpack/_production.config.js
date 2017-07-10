@@ -8,7 +8,8 @@ const BundleAnalyzerPlugin                 = require("webpack-bundle-analyzer").
 const ExtractTextPlugin                    = require("extract-text-webpack-plugin");
 const InlineChunkManifestHtmlWebpackPlugin = require("inline-chunk-manifest-html-webpack-plugin");
 const WebpackChunkHash                     = require("webpack-chunk-hash");
-const {root, RULE_NGO_LOADING}             = require("./constants");
+const PurifyPlugin                         = require("ngo").PurifyPlugin;
+const {root}                               = require("./constants");
 
 const ClosureCompilerPlugin = require("webpack-closure-compiler");
 
@@ -125,8 +126,22 @@ module.exports = function (env) {
 
   if (env.useNgo) {
     result.module = {
-      rules: [RULE_NGO_LOADING(false)]
+      rules: [
+        // Ngo optimization, see https://github.com/angular/angular-cli/pull/6520
+        {
+          test: /\.js$/,
+          use: [
+            {
+              loader: "ngo/webpack-loader",
+              options: {sourceMap: false}
+            }
+          ]
+        }
+      ]
     };
+    result.plugins.unshift(
+      new PurifyPlugin()
+    )
   }
 
   return result;
