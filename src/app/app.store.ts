@@ -1,12 +1,12 @@
-import {ActionReducer, combineReducers, Action} from "@ngrx/store";
-import {routerReducer, RouterState} from "@ngrx/router-store";
-import {compose} from "@ngrx/core/compose";
+import { ActionReducer, combineReducers, Action } from "@ngrx/store";
+import { routerReducer, RouterState } from "@ngrx/router-store";
+import { compose } from "@ngrx/core/compose";
 /**
  * storeFreeze prevents state from being mutated. When mutation occurs, an
  * exception will be thrown. This is useful during development mode to
  * ensure that none of the reducers accidentally mutates the state.
  */
-import {storeFreeze} from "ngrx-store-freeze";
+import { storeFreeze } from "ngrx-store-freeze";
 
 import {
   completedTodos,
@@ -14,10 +14,9 @@ import {
   todosReducer,
   State as TodoState
 } from "./todos/todos.store";
-import {watchTimeReducer} from "./+lazy-test/lazy-test.store";
-import {languageReducer} from "./i18n/language.store";
-import {createSelector} from "reselect";
-
+import { watchTimeReducer } from "./+lazy-test/lazy-test.store";
+import { languageReducer } from "./i18n/language.store";
+import { createSelector } from "reselect";
 
 /**
  * This interface describes the relevant "state" of your application,
@@ -38,12 +37,12 @@ export interface AppState {
 }
 
 // TODO: Should be more documented how this works...
-export const getTodos          = (state: AppState) => state.todos;
-export const getCurrentTodos   = createSelector(getTodos, currentTodos);
+export const getTodos = (state: AppState) => state.todos;
+export const getCurrentTodos = createSelector(getTodos, currentTodos);
 export const getCompletedTodos = createSelector(getTodos, completedTodos);
 
-export const getWatchTime   = (state: AppState) => state.watchTime;
-export const getLanguage    = (state: AppState) => state.language;
+export const getWatchTime = (state: AppState) => state.watchTime;
+export const getLanguage = (state: AppState) => state.language;
 export const getRouterState = (state: AppState) => state.router;
 
 /**
@@ -54,11 +53,11 @@ export const getRouterState = (state: AppState) => state.router;
  *   This simplifies relation management.
  */
 const reducers = {
-  todos:     todosReducer,
+  todos: todosReducer,
   watchTime: watchTimeReducer,
-  language:  languageReducer,
+  language: languageReducer,
   // This entry is NOT part of our own state, but provided by the @ngrx/router-store module.
-  router:    routerReducer
+  router: routerReducer
 };
 
 // Generate a reducer to set the root state in dev mode for HMR
@@ -75,7 +74,7 @@ const reducers = {
  */
 function stateSetter(reducer: ActionReducer<any>): ActionReducer<any> {
   "use strict";
-  return function (state: any, action: Action) {
+  return function(state: any, action: Action) {
     if (action.type === "SET_ROOT_STATE") {
       return action.payload;
     }
@@ -87,7 +86,10 @@ function stateSetter(reducer: ActionReducer<any>): ActionReducer<any> {
 const DEV_REDUCERS = [stateSetter, storeFreeze];
 // This reducer is only used in development mode and is the result of a composition of DEV_REDUCERS and
 // the reducers that are related to your {AppState}.
-const developmentReducer: ActionReducer<any> = compose(...DEV_REDUCERS, combineReducers)(reducers) as ActionReducer<any>;
+const developmentReducer: ActionReducer<any> = compose(
+  ...DEV_REDUCERS,
+  combineReducers
+)(reducers) as ActionReducer<any>;
 // This reducer is only used in production mode and is just a combination of the once your provided for your {AppState}.
 const productionReducer: ActionReducer<any> = combineReducers(reducers);
 

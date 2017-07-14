@@ -7,21 +7,34 @@ const glob = require("glob");
 const path = require("path");
 
 module.exports = {
-  getFiles (src, options) {
+  getFiles(src, options) {
     return new Promise((resolve, reject) =>
-      glob(src, options || {}, (e, files) =>
-        e ? reject(e) : resolve(files)))
-      .then(files => _.reject(files, f => _.includes(f, "*")));
+      glob(src, options || {}, (e, files) => (e ? reject(e) : resolve(files)))
+    ).then(files => _.reject(files, f => _.includes(f, "*")));
   },
-  readFile (src) {
+  readFile(src) {
     return new Promise((resolve, reject) =>
-      fs.readFile(src, "utf-8", (e, content) =>
-        e ? reject(e) : resolve(content)));
+      fs.readFile(
+        src,
+        "utf-8",
+        (e, content) => (e ? reject(e) : resolve(content))
+      )
+    );
   },
-  writeFile (dest, content, options) {
+  writeFile(dest, content, options) {
     return new Promise((resolve, reject) =>
-      mkdirp(path.dirname(dest), e =>
-        e ? reject(e) : fs.writeFile(dest, content, options || {}, e =>
-          e ? reject(e) : resolve())));
+      mkdirp(
+        path.dirname(dest),
+        e =>
+          e
+            ? reject(e)
+            : fs.writeFile(
+                dest,
+                content,
+                options || {},
+                e => (e ? reject(e) : resolve())
+              )
+      )
+    );
   }
 };

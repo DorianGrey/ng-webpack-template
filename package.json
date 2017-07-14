@@ -1,6 +1,6 @@
 {
   "name": "ng-webpack-template",
-  "version": "9.1.0",
+  "version": "10.0.0",
   "description": "Evil brother of ng2-jspm-template",
   "author": {
     "name": "Christian Linne",
@@ -45,7 +45,15 @@
     "dev-tasks": "concurrently -r \"npm run translations:dev\" \"karma start karma.conf.js\"",
     "dev-dll": "webpack --config webpack/dll.config.js",
     "translations:prod": "node bin/compile-translations.js \"src/**/*.i18n.yml\" src/generated/translations.ts",
-    "translations:dev": "npm run translations:prod -- -w"
+    "translations:dev": "npm run translations:prod -- -w",
+    "precommit": "lint-staged",
+    "format": "prettier --write \"{src,bin,dev,webpack}/**/*.{js,ts}\""
+  },
+  "lint-staged": {
+    "{src,bin,dev,webpack}/**/*.{js,ts}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "devDependencies": {
     "@angular/compiler-cli": "^4.2.6",
@@ -68,6 +76,7 @@
     "fork-ts-checker-webpack-plugin": "^0.2.6",
     "html-webpack-plugin": "^2.29.0",
     "http-proxy": "^1.16.2",
+    "husky": "^0.14.3",
     "inline-chunk-manifest-html-webpack-plugin": "^1.1.1",
     "istanbul-instrumenter-loader": "^2.0.0",
     "jasmine-core": "^2.6.4",
@@ -82,6 +91,7 @@
     "karma-remap-coverage": "^0.1.4",
     "karma-sourcemap-loader": "0.3.7",
     "karma-webpack": "^2.0.4",
+    "lint-staged": "^4.0.1",
     "lodash": "^4.17.4",
     "log4js": "^2.1.0",
     "ngo": "github:angular/ngo",
@@ -90,6 +100,7 @@
     "phantomjs-prebuilt": "^2.1.14",
     "postcss-flexbugs-fixes": "^3.0.0",
     "postcss-loader": "^2.0.6",
+    "prettier": "^1.5.2",
     "raw-loader": "0.5.1",
     "rimraf": "^2.6.1",
     "sass-loader": "^6.0.6",
@@ -102,6 +113,7 @@
     "ts-loader": "^2.2.2",
     "tslib": "^1.7.1",
     "tslint": "^5.5.0",
+    "tslint-config-prettier": "^1.1.0",
     "typescript": "^2.4.1",
     "wait-for-change": "^1.1.1",
     "webpack": "^3.2.0",

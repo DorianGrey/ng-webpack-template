@@ -1,23 +1,20 @@
-const {
-        DefinePlugin,
-        ProgressPlugin
-      }                          = require("webpack");
+const { DefinePlugin, ProgressPlugin } = require("webpack");
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
-const StyleLintPlugin            = require("stylelint-webpack-plugin");
+const StyleLintPlugin = require("stylelint-webpack-plugin");
 const {
-        root,
-        DEFAULT_RESOLVE_EXTENSIONS,
-        NODE_CONFIG,
-        getHtmlTemplatePlugin,
-        getPerformanceOptions,
-        getDefaultContextReplacementPlugin,
-        getTsCheckerPlugin,
-        RULE_LIB_SOURCE_MAP_LOADING,
-        RULE_TS_LOADING,
-        RULE_HTML_LOADING,
-        RULE_MAIN_SASS_LOADING,
-        RULE_COMPONENT_SASS_LOADING
-      }                          = require("./constants");
+  root,
+  DEFAULT_RESOLVE_EXTENSIONS,
+  NODE_CONFIG,
+  getHtmlTemplatePlugin,
+  getPerformanceOptions,
+  getDefaultContextReplacementPlugin,
+  getTsCheckerPlugin,
+  RULE_LIB_SOURCE_MAP_LOADING,
+  RULE_TS_LOADING,
+  RULE_HTML_LOADING,
+  RULE_MAIN_SASS_LOADING,
+  RULE_COMPONENT_SASS_LOADING
+} = require("./constants");
 
 /**
  * It might seem a little bit suspicious to use a mode-specific parameterized function in a "common"
@@ -27,9 +24,9 @@ const {
  * option details this way.
  * @param env Bundle environment options.
  */
-module.exports = function (env) {
-  const isDev  = env.isDev,
-        useAot = env.useAot;
+module.exports = function(env) {
+  const isDev = env.isDev,
+    useAot = env.useAot;
 
   const plugins = [
     // HTML plugin to generate proper index.html files w.r.t. the output of this build.

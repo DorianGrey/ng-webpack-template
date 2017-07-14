@@ -1,15 +1,16 @@
-const {NoEmitOnErrorsPlugin}    = require("webpack");
-const UglifyJsPlugin            = require("webpack/lib/optimize/UglifyJsPlugin");
-const CommonsChunkPlugin        = require("webpack/lib/optimize/CommonsChunkPlugin");
-const HashedModuleIdsPlugin     = require("webpack/lib/HashedModuleIdsPlugin");
+const { NoEmitOnErrorsPlugin } = require("webpack");
+const UglifyJsPlugin = require("webpack/lib/optimize/UglifyJsPlugin");
+const CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
+const HashedModuleIdsPlugin = require("webpack/lib/HashedModuleIdsPlugin");
 const ModuleConcatenationPlugin = require("webpack/lib/optimize/ModuleConcatenationPlugin");
 
-const BundleAnalyzerPlugin                 = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-const ExtractTextPlugin                    = require("extract-text-webpack-plugin");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const InlineChunkManifestHtmlWebpackPlugin = require("inline-chunk-manifest-html-webpack-plugin");
-const WebpackChunkHash                     = require("webpack-chunk-hash");
-const PurifyPlugin                         = require("ngo").PurifyPlugin;
-const {root}                               = require("./constants");
+const WebpackChunkHash = require("webpack-chunk-hash");
+const PurifyPlugin = require("ngo").PurifyPlugin;
+const { root } = require("./constants");
 
 const ClosureCompilerPlugin = require("webpack-closure-compiler");
 
@@ -22,7 +23,7 @@ const ClosureCompilerPlugin = require("webpack-closure-compiler");
  * except when the exemplary production server is started as well.
  * @param env Bundle environment options.
  */
-module.exports = function (env) {
+module.exports = function(env) {
   /*
    Plugins utilizing long term caching.
    Used plugins and setup primarily based on https://webpack.js.org/guides/caching/
@@ -32,23 +33,23 @@ module.exports = function (env) {
   const longTermCachingPlugins = env.disableLongTermCaching
     ? []
     : [
-      // For more consistent module IDs
-      new HashedModuleIdsPlugin(),
-      // Creates a dynamic vendor chunk by including all entries from the `node_modules` directory.
-      new CommonsChunkPlugin({
-        name: "vendor",
-        minChunks: ({resource}) => /node_modules/.test(resource)
-      }),
-      // Externalizes the application manifest.
-      new CommonsChunkPlugin("manifest"),
-      // Extracts the chunk manifest and inlines it into the template
-      new InlineChunkManifestHtmlWebpackPlugin({
-        filename: "chunk-manifest.json",
-        dropAsset: true
-      }),
-      // More consistent chunk hashes
-      new WebpackChunkHash()
-    ];
+        // For more consistent module IDs
+        new HashedModuleIdsPlugin(),
+        // Creates a dynamic vendor chunk by including all entries from the `node_modules` directory.
+        new CommonsChunkPlugin({
+          name: "vendor",
+          minChunks: ({ resource }) => /node_modules/.test(resource)
+        }),
+        // Externalizes the application manifest.
+        new CommonsChunkPlugin("manifest"),
+        // Extracts the chunk manifest and inlines it into the template
+        new InlineChunkManifestHtmlWebpackPlugin({
+          filename: "chunk-manifest.json",
+          dropAsset: true
+        }),
+        // More consistent chunk hashes
+        new WebpackChunkHash()
+      ];
 
   const plugins = longTermCachingPlugins.concat([
     // Plugin to let the whole build fail on any error; i.e. do not tolerate these
@@ -67,18 +68,12 @@ module.exports = function (env) {
     // Generate some information about the generated bundle size
     new BundleAnalyzerPlugin({
       analyzerMode: "static",
-      reportFilename: root(
-        "buildStats",
-        "bundle-size-report.html"
-      ),
+      reportFilename: root("buildStats", "bundle-size-report.html"),
       openAnalyzer: false,
       generateStatsFile: true,
-      statsFilename: root(
-        "buildStats",
-        "bundle-size-report.json"
-      ),
+      statsFilename: root("buildStats", "bundle-size-report.json"),
       logLevel: "silent"
-    }),
+    })
   ]);
 
   /**
@@ -133,15 +128,13 @@ module.exports = function (env) {
           use: [
             {
               loader: "ngo/webpack-loader",
-              options: {sourceMap: false}
+              options: { sourceMap: false }
             }
           ]
         }
       ]
     };
-    result.plugins.unshift(
-      new PurifyPlugin()
-    )
+    result.plugins.unshift(new PurifyPlugin());
   }
 
   return result;

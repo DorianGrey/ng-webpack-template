@@ -1,16 +1,16 @@
 const commonConfig = require("./_common.config");
-const devConfig    = require("./_dev.config");
-const prodConfig   = require("./_production.config");
-const aotConfig    = require("./_aot.config");
-const merge        = require("webpack-merge");
+const devConfig = require("./_dev.config");
+const prodConfig = require("./_production.config");
+const aotConfig = require("./_aot.config");
+const merge = require("webpack-merge");
 
 const logger = require("log4js").getLogger("webpack-build");
 
-module.exports = function (env = {}) {
+module.exports = function(env = {}) {
   process.env.NODE_ENV = process.env.NODE_ENV || "development";
   // Eval configurable parts.
-  env.isDev            = process.env.NODE_ENV !== "production";
-  env.isWatch          = /dev-server|watch/.test(process.env.npm_lifecycle_event);
+  env.isDev = process.env.NODE_ENV !== "production";
+  env.isWatch = /dev-server|watch/.test(process.env.npm_lifecycle_event);
   // # Ngo does not seem to work properly with closure compiler.
   // Generates errors like: stdin:22952: WARNING - Misplaced @abstract annotation.
   // only functions or non-static methods can be abstract
@@ -20,7 +20,10 @@ module.exports = function (env = {}) {
   logger.debug("Using build env:", JSON.stringify(env, null, 4));
   logger.debug("Build mode:", env.isDev ? "development" : "production");
   if (!env.isDev) {
-    logger.debug("Using minifier:", env.useClosureCompiler ? "Closure Compiler" : "UglifyJs");
+    logger.debug(
+      "Using minifier:",
+      env.useClosureCompiler ? "Closure Compiler" : "UglifyJs"
+    );
   }
   logger.debug("Using AoT:", !!env.useAot);
   logger.debug("Using ngo:", !!env.useNgo);

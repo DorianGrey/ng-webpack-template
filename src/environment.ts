@@ -1,6 +1,6 @@
 // Angular 2
-import {enableDebugTools} from "@angular/platform-browser";
-import {enableProdMode} from "@angular/core";
+import { enableDebugTools } from "@angular/platform-browser";
+import { enableProdMode } from "@angular/core";
 
 // Angular debug tools in the dev console
 // https://github.com/angular/angular/blob/86405345b781a9dc2438c0fbe3e9409245647019/TOOLS_JS.md
@@ -11,9 +11,7 @@ let _decorateModuleRef = function identity<T>(value: T): T {
 if ("production" === ENV) {
   // Since the debug tools are disabled by default in v4, we don't have to explicitly disable them as we had to before.
   enableProdMode();
-
 } else {
-
   _decorateModuleRef = (modRef: any) => {
     /*
       Note: In earlier versions, it was required to pick a reference to the

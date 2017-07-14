@@ -1,10 +1,7 @@
-const {AotPlugin} = require("@ngtools/webpack");
-const {
-        root,
-        RULE_TS_AOT_LOADING
-      }           = require("./constants");
+const { AotPlugin } = require("@ngtools/webpack");
+const { root, RULE_TS_AOT_LOADING } = require("./constants");
 
-module.exports = function () {
+module.exports = function() {
   return {
     output: {
       path: root("dist-aot")

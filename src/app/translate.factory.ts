@@ -1,10 +1,9 @@
-import {TranslateLoader} from "@ngx-translate/core";
-import {Observable} from "rxjs/Observable";
+import { TranslateLoader } from "@ngx-translate/core";
+import { Observable } from "rxjs/Observable";
 import translations from "../generated/translations";
 
 class ClientLocalTranslateLoader implements TranslateLoader {
-  constructor(private readonly defaultLang: string) {
-  }
+  constructor(private readonly defaultLang: string) {}
 
   getTranslation(lang: string): Observable<any> {
     return Observable.of(translations[lang] || translations[this.defaultLang]);

@@ -1,8 +1,8 @@
-import {NgModule, ModuleWithProviders} from "@angular/core";
-import {CommonModule} from "@angular/common";
-import {FormsModule} from "@angular/forms";
+import { NgModule, ModuleWithProviders } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
 
-import {TranslateModule} from "@ngx-translate/core";
+import { TranslateModule } from "@ngx-translate/core";
 
 // See https://angular.io/docs/ts/latest/guide/ngmodule.html#!#shared-module
 // for an explanation of how to properly create and use a shared module.
@@ -12,14 +12,9 @@ import {TranslateModule} from "@ngx-translate/core";
     // See description here: https://github.com/ocombe/ng2-translate/issues/232#issuecomment-251421577
     TranslateModule
   ],
-  exports: [
-    CommonModule,
-    FormsModule,
-    TranslateModule
-  ]
+  exports: [CommonModule, FormsModule, TranslateModule]
 })
 export class SharedModule {
-
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: SharedModule

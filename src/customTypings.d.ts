@@ -3,4 +3,4 @@ declare module "*.scss" {
   export default __scss__;
 }
 
-declare const ENV: "production" |"development";
+declare const ENV: "production" | "development";

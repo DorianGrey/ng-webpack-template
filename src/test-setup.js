@@ -1,4 +1,4 @@
-window.Error.stackTraceLimit            = Infinity;
+window.Error.stackTraceLimit = Infinity;
 window.jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;
 
 require("core-js/es6");
@@ -17,10 +17,12 @@ require("rxjs/Rx");
 const testing = require("@angular/core/testing");
 const browser = require("@angular/platform-browser-dynamic/testing");
 
-testing.getTestBed().initTestEnvironment(
-  browser.BrowserDynamicTestingModule,
-  browser.platformBrowserDynamicTesting()
-);
+testing
+  .getTestBed()
+  .initTestEnvironment(
+    browser.BrowserDynamicTestingModule,
+    browser.platformBrowserDynamicTesting()
+  );
 
 /*
  * Ok, this is kinda crazy. We can use the the context method on

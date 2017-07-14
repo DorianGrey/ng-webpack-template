@@ -1,77 +1,72 @@
-import {
-  TestBed,
-  inject
-} from "@angular/core/testing";
-import {TodoService} from "./todo.service";
-import {StoreModule, Store} from "@ngrx/store";
-import {
-  todosReducer,
-  TodoActionCreator,
-  ACTION_TYPES
-} from "./todos.store";
-import {Observable} from "rxjs/Observable";
+import { TestBed, inject } from "@angular/core/testing";
+import { TodoService } from "./todo.service";
+import { StoreModule, Store } from "@ngrx/store";
+import { todosReducer, TodoActionCreator, ACTION_TYPES } from "./todos.store";
+import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/do";
-import {List} from "immutable";
+import { List } from "immutable";
 
 describe("TodoService", () => {
-
   let todoService: TodoService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [TodoService, TodoActionCreator],
-      imports: [StoreModule.provideStore({todos: todosReducer}, {todos: List.of()})]
+      imports: [
+        StoreModule.provideStore({ todos: todosReducer }, { todos: List.of() })
+      ]
     });
   });
 
-  beforeEach(inject([TodoService], (_todoService: TodoService) => {
-    todoService = _todoService;
-  }));
+  beforeEach(
+    inject([TodoService], (_todoService: TodoService) => {
+      todoService = _todoService;
+    })
+  );
 
   describe("todos", () => {
-
     it("should be an Observable", () => {
       expect(todoService.todos).toBeDefined();
       expect(todoService.todos instanceof Observable).toBeTruthy();
     });
-
   });
 
   describe("completedTodos", () => {
-
     it("should be an Observable", () => {
       expect(todoService.completedTodos).toBeDefined();
       expect(todoService.completedTodos instanceof Observable).toBeTruthy();
     });
-
   });
 
   describe("add()", () => {
+    it(
+      "should add a todo to the store",
+      inject([Store], (store: Store<any>) => {
+        spyOn(store, "dispatch");
 
-    it("should add a todo to the store", inject([Store], (store: Store<any>) => {
-      spyOn(store, "dispatch");
+        todoService.add({ text: "Some Task" });
 
-      todoService.add({text: "Some Task"});
-
-      expect(store.dispatch).toHaveBeenCalledWith({
-        type: ACTION_TYPES.ADD_TODO,
-        payload: {text: "Some Task"}
-      });
-    }));
-
+        expect(store.dispatch).toHaveBeenCalledWith({
+          type: ACTION_TYPES.ADD_TODO,
+          payload: { text: "Some Task" }
+        });
+      })
+    );
   });
 
   describe("complete()", () => {
-    it("should call to move a todo to the 'completed' stage", inject([Store], (store: Store<any>) => {
-      spyOn(store, "dispatch");
+    it(
+      "should call to move a todo to the 'completed' stage",
+      inject([Store], (store: Store<any>) => {
+        spyOn(store, "dispatch");
 
-      todoService.complete({text: "Some Task"});
+        todoService.complete({ text: "Some Task" });
 
-      expect(store.dispatch).toHaveBeenCalledWith({
-        type: ACTION_TYPES.COMPLETE_TODO,
-        payload: {text: "Some Task"}
-      });
-    }));
+        expect(store.dispatch).toHaveBeenCalledWith({
+          type: ACTION_TYPES.COMPLETE_TODO,
+          payload: { text: "Some Task" }
+        });
+      })
+    );
   });
-
 });

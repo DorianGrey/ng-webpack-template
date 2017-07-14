@@ -1,8 +1,5 @@
-const path    = require("path");
-const {
-        DefinePlugin,
-        NamedModulesPlugin
-      }       = require("webpack");
+const path = require("path");
+const { DefinePlugin, NamedModulesPlugin } = require("webpack");
 const WebpackKarmaDieHardPlugin = require("webpack-karma-die-hard");
 const commons = require("./constants");
 
@@ -65,10 +62,7 @@ module.exports = {
         use: "istanbul-instrumenter-loader",
         enforce: "post",
         include: path.resolve(process.cwd(), "src"),
-        exclude: [
-          /test-setup\.js/,
-          /\.(e2e|spec)\.ts$/
-        ]
+        exclude: [/test-setup\.js/, /\.(e2e|spec)\.ts$/]
       }
     ]
   },

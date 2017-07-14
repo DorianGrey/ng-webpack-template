@@ -1,11 +1,8 @@
-const {
-        DllReferencePlugin,
-        NamedModulesPlugin
-      }                    = require("webpack");
-const {root}               = require("./constants");
-const devServerConfig      = require("./dev-server.config.js");
+const { DllReferencePlugin, NamedModulesPlugin } = require("webpack");
+const { root } = require("./constants");
+const devServerConfig = require("./dev-server.config.js");
 
-module.exports = function () {
+module.exports = function() {
   return {
     output: {
       path: root(".tmp"),

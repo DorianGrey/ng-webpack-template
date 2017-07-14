@@ -1,17 +1,17 @@
-import {BrowserModule} from "@angular/platform-browser";
+import { BrowserModule } from "@angular/platform-browser";
 
-import {StoreModule} from "@ngrx/store";
-import {RouterStoreModule} from "@ngrx/router-store";
+import { StoreModule } from "@ngrx/store";
+import { RouterStoreModule } from "@ngrx/router-store";
 
-import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
-import {createTranslateLoader} from "./translate.factory";
+import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
+import { createTranslateLoader } from "./translate.factory";
 
-import {APP_ROUTES} from "./app.routes";
-import {SharedModule} from "./shared/shared.module";
-import {InputTestModule} from "./input-test/input-test.module";
-import {TodosModule} from "./todos/todos.module";
-import {rootReducer} from "./app.store";
-import {StoreDevtoolsModule} from "@ngrx/store-devtools";
+import { APP_ROUTES } from "./app.routes";
+import { SharedModule } from "./shared/shared.module";
+import { InputTestModule } from "./input-test/input-test.module";
+import { TodosModule } from "./todos/todos.module";
+import { rootReducer } from "./app.store";
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 
 /*
   The list of app-level imports got externalized since it's not a fixed one, but may vary in the different
@@ -23,7 +23,7 @@ const imports = [
   APP_ROUTES,
   TranslateModule.forRoot({
     loader: {
-      provide:    TranslateLoader,
+      provide: TranslateLoader,
       useFactory: createTranslateLoader
     }
   }),

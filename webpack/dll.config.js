@@ -1,6 +1,6 @@
-const path        = require("path");
-const {DllPlugin} = require("webpack");
-const commons     = require("./constants");
+const path = require("path");
+const { DllPlugin } = require("webpack");
+const commons = require("./constants");
 
 /**
  * This config is used to build so-called `DLLs`, `dynamically linked libraries.
@@ -80,7 +80,7 @@ module.exports = {
     commons.getDefaultContextReplacementPlugin(),
     new DllPlugin({
       name: "[name]",
-      path: commons.root(".tmp/[name]-manifest.json"),
+      path: commons.root(".tmp/[name]-manifest.json")
     })
   ],
   performance: commons.getPerformanceOptions(false),
