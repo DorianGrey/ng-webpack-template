@@ -9,7 +9,6 @@ const {
         DEFAULT_RESOLVE_EXTENSIONS,
         NODE_CONFIG,
         getHtmlTemplatePlugin,
-        getLoaderOptionsPlugin,
         getPerformanceOptions,
         getDefaultContextReplacementPlugin,
         getTsCheckerPlugin,
@@ -38,8 +37,6 @@ module.exports = function (env) {
     new ScriptExtHtmlWebpackPlugin({
       defaultAttribute: "defer"
     }),
-    // Plugin to provide options to our loaders.
-    getLoaderOptionsPlugin(isDev),
     /**
      * Plugin to define several variables. "process.env.NODE_ENV" is forwarded so that libraries may
      * react on it (e.g. by skipping some of their code). Please keep in mind that this is only possible
@@ -114,7 +111,7 @@ module.exports = function (env) {
         RULE_TS_LOADING(isDev), // This will get overridden by RULE_TS_AOT_LOADING if AoT mode is activated.
         RULE_HTML_LOADING,
         RULE_MAIN_SASS_LOADING(isDev),
-        RULE_COMPONENT_SASS_LOADING
+        RULE_COMPONENT_SASS_LOADING(isDev)
       ]
     },
     /**

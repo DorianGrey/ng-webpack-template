@@ -1,7 +1,7 @@
-const path = require("path");
-const { ContextReplacementPlugin, LoaderOptionsPlugin } = require("webpack");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path                       = require("path");
+const {ContextReplacementPlugin} = require("webpack");
+const ExtractTextPlugin          = require("extract-text-webpack-plugin");
+const HtmlWebpackPlugin          = require("html-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 const rootDir = path.resolve(__dirname, "..");
@@ -52,11 +52,12 @@ exports.RULE_LIB_SOURCE_MAP_LOADING = {
  * Note that this loader automatically disables itself in production mode and leaves the code untouched in that case.
  * However - due to the docs - it should be removed manually for production builds, thus we make a difference here.
  */
-exports.RULE_TS_LOADING = function(isDev) {
+exports.RULE_TS_LOADING = function (isDev) {
   const use = [
     {
       loader: "ts-loader",
       options: {
+        silent: true,
         transpileOnly: true // Everything else is processed by the corresponding plugin.
       }
     },
@@ -101,38 +102,51 @@ exports.RULE_HTML_LOADING = {
  * (2) As an inline string - that what happens to all .component.scss files, since they refer
  * to a particular component, and inlining simplifies dealing with them.
  */
-const scssLoaderChain = [
-  "css-loader?importLoaders=1",
-  {
-    loader: "postcss-loader",
-    options: {
-      plugins: loader => [
-        require("autoprefixer")({
-          browsers: ["last 2 versions"]
-        }),
-        require("postcss-flexbugs-fixes")
-      ]
+const scssLoaderChain               = function (isDev) {
+  return [
+    "css-loader?importLoaders=1",
+    {
+      loader: "postcss-loader",
+      options: {
+        plugins: loader => [
+          require("autoprefixer")({
+            browsers: ["last 2 versions"]
+          }),
+          require("postcss-flexbugs-fixes")
+        ]
+      }
+    },
+    {
+      loader: "sass-loader",
+      options: {
+        sourceMap: true, // Has to be true always, since the resolve-url-loader requires it to properly map the resource paths.
+        outputStyle: isDev ? "nested" : "compressed"
+      }
     }
-  },
-  "sass-loader"
-];
-exports.RULE_MAIN_SASS_LOADING = function RULE_MAIN_SASS_LOADING(isDev) {
+  ];
+};
+exports.RULE_MAIN_SASS_LOADING      = function RULE_MAIN_SASS_LOADING(isDev) {
   const result = {
     test: /main\.scss$/
   };
+
+  const scssChain = scssLoaderChain(isDev);
+
   if (isDev) {
-    result.use = ["style-loader"].concat(scssLoaderChain);
+    result.use = ["style-loader"].concat(scssChain);
   } else {
     result.use = ExtractTextPlugin.extract({
       fallback: "style-loader",
-      use: scssLoaderChain
+      use: scssChain
     });
   }
   return result;
 };
-exports.RULE_COMPONENT_SASS_LOADING = {
-  test: /\.component\.scss$/,
-  loaders: ["to-string-loader"].concat(scssLoaderChain)
+exports.RULE_COMPONENT_SASS_LOADING = function (isDev) {
+  return {
+    test: /\.component\.scss$/,
+    use: ["to-string-loader"].concat(scssLoaderChain(isDev))
+  }
 };
 
 /** A list of file extensions that may be tried resolved automatically by webpack
@@ -143,39 +157,12 @@ exports.RULE_COMPONENT_SASS_LOADING = {
  */
 exports.DEFAULT_RESOLVE_EXTENSIONS = [".ts", ".js", ".json"];
 
-exports.getDefaultContextReplacementPlugin = function getDefaultContextReplacementPlugin(
-  src
-) {
+exports.getDefaultContextReplacementPlugin = function getDefaultContextReplacementPlugin(src) {
   src = src || "src";
   return new ContextReplacementPlugin(
     /angular(\\|\/)core(\\|\/)@angular/, // See https://github.com/angular/angular/issues/11580#issuecomment-282705332
     exports.root(src)
   );
-};
-
-exports.getLoaderOptionsPlugin = function getLoaderOptionsPlugin(isDevMode) {
-  const options = {
-    options: {
-      // Forwards options to the postcss-loader; put more of them here as required.
-      // In its current state, only
-      /*postcss: {
-       plugins: [
-       require("autoprefixer")({
-       "browsers": ["last 2 versions"]
-       })
-       ]
-       }*/
-    }
-  };
-
-  if (!isDevMode) {
-    // Forwards options to the sass-loader (and thus: node-sass); put more of them here as required.
-    options.options.sassLoader = {
-      outputStyle: "compressed"
-    };
-  }
-
-  return new LoaderOptionsPlugin(options);
 };
 
 exports.getHtmlTemplatePlugin = function getHtmlTemplatePlugin(isDevMode) {
@@ -197,7 +184,8 @@ exports.getTsCheckerPlugin = function getTsCheckerPlugin(env) {
   return new ForkTsCheckerWebpackPlugin({
     watch: "./src",
     tsconfig: "./tsconfig.json",
-    blockEmit: !env.isWatch,
+    async: !env.isWatch,
+    formatter: "codeframe",
     tslint: "./tslint.json"
   });
 };

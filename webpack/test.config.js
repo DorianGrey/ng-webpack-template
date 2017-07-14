@@ -41,6 +41,7 @@ module.exports = {
           {
             loader: "ts-loader",
             options: {
+              silent: true,
               transpileOnly: true, // Everything else is processed by the corresponding plugin.
               compilerOptions: {
                 sourceMap: false,

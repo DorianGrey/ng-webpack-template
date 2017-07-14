@@ -24,5 +24,6 @@ script:
   - yarn build
   - yarn build:cc
   - yarn build:aot
+  - yarn build:aot:ngo
   - yarn build:aot:cc
 
