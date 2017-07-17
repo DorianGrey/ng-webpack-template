@@ -1,0 +1,21 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug ng-webpack-template tests",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/scripts/test.js",
+      "args": [
+        "--no-watch",
+        "--runInBand",
+        "--no-cache",
+        "--env=jsdom"
+      ],
+      "cwd": "${workspaceRoot}",
+      "protocol": "inspector",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    }
+  ]
+}

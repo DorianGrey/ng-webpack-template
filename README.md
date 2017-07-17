@@ -44,7 +44,11 @@ The intended project structure, how to work with it and possibly extend it is do
 ## Additional docs
 - [The impact of using long term caching strategies on your assets size](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/longterm_caching_impact.md)
 - [Troubleshooting / known issues](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/troubleshooting.md)
-- In case you updated to a commit or version after the [12.0.0 release](https://github.com/DorianGrey/ng-webpack-template/releases/tag/12.0.0), you might want to take a look at the [migration guide](https://github.com/DorianGrey/ng-webpack-template/blob/master/migration/MIGRATION__12_0_0.md).
+
+## Migration guides
+Even if we always attempt to avoid breaking changes, there are a couple of situations where this is not possible. For these cases, corresponding migration guides will be provided. The already existing ones are listed below.
+- Update from < 12.0.0 to >= 12.0.0 ([12.0.0 release](https://github.com/DorianGrey/ng-webpack-template/releases/tag/12.0.0)): [Guide](https://github.com/DorianGrey/ng-webpack-template/blob/master/migration/MIGRATION__12_0_0.md)
+- Update from < 18.0.0 to >= 18.0.0 ([18.0.0 release](https://github.com/DorianGrey/ng-webpack-template/releases/tag/18.0.0)): [Guide](https://github.com/DorianGrey/ng-webpack-template/blob/master/migration/MIGRATION__18_0_0.md)
 
 ## Workflow
 
@@ -58,6 +62,25 @@ which will fire up a webpack-dev-server using webpack's DLL feature up-front to 
 
 For configuring you development environment, check out the [development configuration](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/dev_configuration.md) docs.
 
+### Testing
+
+#### E2E
+E2E-testing is currently not included in the default setup. This might change in the future, but for the moment you will have to setup tools like [protractor](https://github.com/angular/protractor) or [cypress](https://github.com/cypress-io/cypress) on your own
+
+#### Unit
+This project uses [jest](https://facebook.github.io/jest/) for unit testing. It includes both the test runner and framework. If you are not familiar with it yet, just have a look at its [docs](https://facebook.github.io/jest/docs/en/getting-started.html) - should be simple enough. Just note that we're using the `BDD` structure variant with `describe`, `beforeAll`, `beforeEach`, `it` etc. which should be quite familiar in case you have used `jasmine` or `mocha` before.
+The setup is based on [jest-preset-angular](https://github.com/thymikee/jest-preset-angular). In case you have to modify it for your particular purpose, you can change the global mocks in `config/jest/jestGlobalMocks.ts`, the test setup `config/jest/testSetup.ts` and `jest` itself via `jest.config.js`. If you are facing any problems, take a look at the [troubleshooting guide](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/troubleshooting.md).
+
+The tasks below are pre-defined for testing.
+| Command    | Effect    |
+| ---------- | --------- | 
+| test       | Starts the test runner in watch mode. Suitable for quick TDD, but not for explicit debugging or coverage reports. |
+| test:debug | Starts the test environment in a debug-compatible (i.e. inspectable) mode. Please have a look at the [node inspector docs](https://nodejs.org/en/docs/inspector/) for instructions how to use it. If you are using VSCode, you might use the provided launch task instead of this command.|
+| test:ci    | Starts the test runner in a CI optimized mode. Ignores caches and creates a coverage report. |
+
+Generated reports are stored in the `test-results` directory like, containing:
+- `junit` contains a xunit compatible report. Compatible with most report tools used by CI systems.
+- `coverage` contains coverage reports in `lcov`, `json`, `html` and `cobertura` formats. The reporters in use can be configured in the `jest.config.js` via the `coverageReporters` key.
 
 ### Production
 
