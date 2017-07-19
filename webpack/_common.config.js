@@ -28,6 +28,23 @@ module.exports = function(env) {
   const isDev = env.isDev,
     useAot = env.useAot;
 
+  /*
+  There is a curious glitch in the stylelint plugin:
+  - In dev (watch) mode, if quiet is set to `false`, every output is generated twice.
+  - In build mode, if it is not set to `false`, no error detail output is generated. However,
+    it gets generated properly once this field is set to `false`.
+ */
+  const styleLintConfig = {
+    failOnError: !isDev,
+    configFile: root("stylelint.config.js"),
+    files: "src/**/*.scss",
+    syntax: "scss"
+  };
+
+  if (!isDev) {
+    styleLintConfig.quiet = false;
+  }
+
   const plugins = [
     // HTML plugin to generate proper index.html files w.r.t. the output of this build.
     getHtmlTemplatePlugin(isDev),
@@ -56,12 +73,7 @@ module.exports = function(env) {
     // Plugin for displaying bundle process stage.
     new ProgressPlugin(),
     getTsCheckerPlugin(env),
-    new StyleLintPlugin({
-      failOnError: !isDev,
-      configFile: root(".stylelintrc"),
-      files: "src/**/*.scss",
-      syntax: "scss"
-    })
+    new StyleLintPlugin(styleLintConfig)
   ];
 
   if (!useAot) {
