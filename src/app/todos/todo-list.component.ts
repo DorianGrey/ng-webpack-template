@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { Observable } from "rxjs/Observable";
 import { List } from "immutable";
 import assign from "lodash-es/assign";
@@ -9,7 +9,8 @@ import { Todo } from "./todo.model";
 @Component({
   selector: "todo-list",
   styleUrls: ["./todo-list.component.scss"],
-  templateUrl: "./todo-list.component.html"
+  templateUrl: "./todo-list.component.html",
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TodoListComponent {
   todoText: string;

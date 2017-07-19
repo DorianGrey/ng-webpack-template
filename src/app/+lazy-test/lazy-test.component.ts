@@ -1,11 +1,12 @@
-import { Component, OnDestroy } from "@angular/core";
+import { ChangeDetectionStrategy, Component, OnDestroy } from "@angular/core";
 import { Observable } from "rxjs/Observable";
 import { LazyTestService } from "./lazy-test.service";
 
 @Component({
   selector: "lazy-test",
   styleUrls: ["./lazy-test.component.scss"],
-  templateUrl: "./lazy-test.component.html"
+  templateUrl: "./lazy-test.component.html",
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LazyTestComponent implements OnDestroy {
   watchTime: Observable<number>;
