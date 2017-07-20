@@ -52,7 +52,7 @@ which will fire up a webpack-dev-server using webpack's DLL feature up-front to 
 ### Production
 
 There are currently four ways to create a production build:
-- With or without [AoT compilation](https://angular.io/docs/ts/latest/cookbook/aot-compiler.html) (and optionally: [ngo](https://github.com/angular/ngo))
+- With or without [AoT compilation](https://angular.io/docs/ts/latest/cookbook/aot-compiler.html) (and optionally: [build-optimizer](https://github.com/angular/devkit/tree/master/packages/angular_devkit/build_optimizer))
 - With [Closure Compiler](https://github.com/google/closure-compiler-npm) or [UglifyJS2](https://github.com/mishoo/UglifyJS2) as code minifier
 
 Each of them might bring up different results, and might be suitable for a particular situation while being problematic in another.
@@ -62,7 +62,7 @@ We have added support for using [Closure Compiler](https://github.com/google/clo
 - there is currently some work going on to be able to take more advantage of its available optimization techniques
 Just note that at the moment, the `Advanced` optimization mode is not yet usable.
 
-Using [ngo](https://github.com/angular/ngo) has an even better impact on the vendor bundle's size. However, it is still extremely experimental, so **beware**. Also note that the changes it applies clash with [Closure Compiler](https://github.com/google/closure-compiler-npm), so you cannot use both in conjunction.
+Using [build-optimizer](https://github.com/angular/devkit/tree/master/packages/angular_devkit/build_optimizer) has an even better impact on the vendor bundle's size. However, it is still extremely experimental, so **beware**. Also note that the changes it applies clash with [Closure Compiler](https://github.com/google/closure-compiler-npm), so you cannot use both in conjunction.
 
 The AoT versions are using the [@ngtools/webpack plugin](https://github.com/angular/angular-cli/blob/master/packages/webpack/README.md).
 
@@ -80,7 +80,7 @@ In addition to the regular build, every production build will also generate a bu
 | `yarn build`        | Creates a producton bundle in the `dist` folder. |
 | `yarn build:cc`     | Same as above, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification.|
 | `yarn build:aot`    | Creates a producton bundle in the `dist-aot` folder. Utilizes AoT compilation. |
-| `yarn build:aot:ngo`    | Creates a producton bundle in the `dist-aot` folder. Utilizes AoT compilation and [ngo](https://github.com/angular/ngo).<br> **Warning**: This should be considered **experimental!**|
+| `yarn build:aot:bo`    | Creates a producton bundle in the `dist-aot` folder. Utilizes AoT compilation and [build-optimizer](https://github.com/angular/devkit/tree/master/packages/angular_devkit/build_optimizer).<br> **Warning**: This should be considered **experimental!**|
 | `yarn build:aot:cc` | Same as above `yarn build:aot`, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification. |
 
 #### Build tasks including the example server
@@ -92,5 +92,5 @@ All of these tasks will bring up the exemplary production server (see the `examp
 | `yarn prod-server`        | Creates a producton bundle in the `dist` folder and serves its contents afterwards. |
 | `yarn prod-server:cc`     | Same as above, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification.|
 | `yarn prod-server:aot`    | Creates a producton bundle in the `dist-aot` folder and serves its contents afterwards. Utilizes AoT compilation. |
-| `yarn prod-server:aot:ngo`    | Creates a producton bundle in the `dist-aot` folder and serves its contents afterwards. Utilizes AoT compilation and [ngo](https://github.com/angular/ngo).<br> **Warning**: This should be considered **experimental!**|
+| `yarn prod-server:aot:bo`    | Creates a producton bundle in the `dist-aot` folder and serves its contents afterwards. Utilizes AoT compilation and [build-optimizer](https://github.com/angular/devkit/tree/master/packages/angular_devkit/build_optimizer).<br> **Warning**: This should be considered **experimental!**|
 | `yarn prod-server:aot:cc` | Same as above `yarn prod-server:aot`, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification. |

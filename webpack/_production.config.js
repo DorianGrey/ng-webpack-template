@@ -9,7 +9,7 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const InlineChunkManifestHtmlWebpackPlugin = require("inline-chunk-manifest-html-webpack-plugin");
 const WebpackChunkHash = require("webpack-chunk-hash");
-const PurifyPlugin = require("ngo").PurifyPlugin;
+const PurifyPlugin = require("@angular-devkit/build-optimizer").PurifyPlugin;
 const { root } = require("./constants");
 
 const ClosureCompilerPlugin = require("webpack-closure-compiler");
@@ -77,6 +77,40 @@ module.exports = function(env) {
   ]);
 
   /**
+   * In general, [hash] identifies the whole build, whereas [chunkhash] identifies the particular chunk.
+   * Using these is one way to simplify cache busting.
+   *
+   * See: http://webpack.github.io/docs/configuration.html#output-filename
+   */
+  const result = {
+    output: {
+      path: root("dist"),
+      filename: "[name].[chunkhash].js",
+      chunkFilename: "[id].chunk.[chunkhash].js"
+    },
+    devtool: false,
+    plugins: plugins
+  };
+
+  if (env.useBo) {
+    result.module = {
+      rules: [
+        // Ngo optimization, see https://github.com/angular/angular-cli/pull/6520
+        {
+          test: /\.js$/,
+          use: [
+            {
+              loader: "@angular-devkit/build-optimizer/webpack-loader",
+              options: { sourceMap: false }
+            }
+          ]
+        }
+      ]
+    };
+    result.plugins.push(new PurifyPlugin());
+  }
+
+  /**
    * Plugin to properly minify the build output in one of two ways.
    *
    * See:
@@ -95,46 +129,14 @@ module.exports = function(env) {
       })
     );
   } else {
-    plugins.push(
-      new UglifyJsPlugin({
-        beautify: false,
-        comments: false
-      })
-    );
-  }
-
-  /**
-   * In general, [hash] identifies the whole build, whereas [chunkhash] identifies the particular chunk.
-   * Using these is one way to simplify cache busting.
-   *
-   * See: http://webpack.github.io/docs/configuration.html#output-filename
-   */
-  const result = {
-    output: {
-      path: root("dist"),
-      filename: "[name].[chunkhash].js",
-      chunkFilename: "[id].chunk.[chunkhash].js"
-    },
-    devtool: false,
-    plugins: plugins
-  };
-
-  if (env.useNgo) {
-    result.module = {
-      rules: [
-        // Ngo optimization, see https://github.com/angular/angular-cli/pull/6520
-        {
-          test: /\.js$/,
-          use: [
-            {
-              loader: "ngo/webpack-loader",
-              options: { sourceMap: false }
-            }
-          ]
-        }
-      ]
+    const uglifyOptions = {
+      beautify: false,
+      comments: false
     };
-    result.plugins.unshift(new PurifyPlugin());
+    if (env.useBo) {
+      uglifyOptions.pure_getters = true;
+    }
+    plugins.push(new UglifyJsPlugin(uglifyOptions));
   }
 
   return result;

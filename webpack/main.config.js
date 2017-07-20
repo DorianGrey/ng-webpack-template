@@ -15,7 +15,7 @@ module.exports = function(env = {}) {
   // Generates errors like: stdin:22952: WARNING - Misplaced @abstract annotation.
   // only functions or non-static methods can be abstract
   // # It's quite useless in dev mode, thus, it's forcefully disabled.
-  env.useNgo = env.useNgo && !env.isDev && !env.useClosureCompiler;
+  env.useBo = env.useBo && !env.isDev && !env.useClosureCompiler;
 
   logger.debug("Using build env:", JSON.stringify(env, null, 4));
   logger.debug("Build mode:", env.isDev ? "development" : "production");
@@ -26,7 +26,7 @@ module.exports = function(env = {}) {
     );
   }
   logger.debug("Using AoT:", !!env.useAot);
-  logger.debug("Using ngo:", !!env.useNgo);
+  logger.debug("Using ngo:", !!env.useBo);
 
   /** See the docs for more information about how merging configs is implemented:
    * https://github.com/survivejs/webpack-merge/blob/master/README.md
