@@ -53,7 +53,6 @@ module.exports = {
       "@angular/platform-browser",
       "@angular/platform-browser-dynamic",
       "@angular/router",
-      "@ngrx/core",
       "@ngrx/store",
       "@ngrx/router-store",
       "immutable",

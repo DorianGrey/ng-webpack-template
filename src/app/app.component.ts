@@ -2,10 +2,10 @@ import indexOf from "lodash-es/indexOf";
 import { Component } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { TranslateService } from "@ngx-translate/core";
-
-import { AppState, getLanguage } from "./app.store";
 import { Observable } from "rxjs/Observable";
-import { LangActionCreator } from "./i18n/language.store";
+
+import { CoreAppState, getLanguage } from "./app.store";
+import { SetLanguageAction } from "./i18n/language.store";
 
 @Component({
   selector: "app-root",
@@ -19,8 +19,7 @@ export class AppComponent {
 
   constructor(
     private translate: TranslateService,
-    private store: Store<AppState>,
-    private langCreator: LangActionCreator
+    private store: Store<CoreAppState>
   ) {
     this.currentLanguage = this.store.select(getLanguage);
     this.availableLanguages = this.translate.getLangs();
@@ -33,7 +32,7 @@ export class AppComponent {
         this.availableLanguages.length;
       const nextLang = this.availableLanguages[idx];
       this.translate.use(nextLang);
-      this.store.dispatch(this.langCreator.setLang(nextLang));
+      this.store.dispatch(new SetLanguageAction(nextLang));
     });
   }
 }
