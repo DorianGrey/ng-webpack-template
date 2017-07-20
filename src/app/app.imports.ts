@@ -1,7 +1,7 @@
 import { BrowserModule } from "@angular/platform-browser";
 
 import { StoreModule } from "@ngrx/store";
-import { RouterStoreModule } from "@ngrx/router-store";
+import { StoreRouterConnectingModule } from "@ngrx/router-store";
 
 import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { createTranslateLoader } from "./translate.factory";
@@ -10,7 +10,7 @@ import { APP_ROUTES } from "./app.routes";
 import { SharedModule } from "./shared/shared.module";
 import { InputTestModule } from "./input-test/input-test.module";
 import { TodosModule } from "./todos/todos.module";
-import { rootReducer } from "./app.store";
+import { reducers, metaReducers } from "./app.store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 
 /*
@@ -30,8 +30,8 @@ const imports = [
   SharedModule.forRoot(),
   InputTestModule,
   TodosModule,
-  StoreModule.provideStore(rootReducer),
-  RouterStoreModule.connectRouter()
+  StoreModule.forRoot(reducers, { metaReducers }),
+  StoreRouterConnectingModule
 ];
 
 /*
@@ -39,7 +39,7 @@ const imports = [
  If you want to use in production as well, just remove the ENV-specific condition.
  */
 if ("production" !== process.env.NODE_ENV) {
-  imports.push(StoreDevtoolsModule.instrumentOnlyWithExtension());
+  imports.push(StoreDevtoolsModule.instrument({ maxAge: 50 }));
 }
 
 export const APP_IMPORTS = imports;

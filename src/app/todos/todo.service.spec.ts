@@ -1,7 +1,7 @@
 import { TestBed, inject } from "@angular/core/testing";
 import { TodoService } from "./todo.service";
 import { StoreModule, Store } from "@ngrx/store";
-import { todosReducer, TodoActionCreator, ACTION_TYPES } from "./todos.store";
+import { todosReducer, AddTodoAction, CompleteTodoAction } from "./todos.store";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/do";
 import { List } from "immutable";
@@ -11,9 +11,19 @@ describe("TodoService", () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [TodoService, TodoActionCreator],
+      providers: [TodoService],
       imports: [
-        StoreModule.provideStore({ todos: todosReducer }, { todos: List.of() })
+        StoreModule.forRoot(
+          { todos: todosReducer },
+          {
+            initialState: {
+              todos: {
+                current: List.of(),
+                completed: List.of()
+              }
+            }
+          }
+        )
       ]
     });
   });
@@ -46,10 +56,9 @@ describe("TodoService", () => {
 
         todoService.add({ text: "Some Task" });
 
-        expect(store.dispatch).toHaveBeenCalledWith({
-          type: ACTION_TYPES.ADD_TODO,
-          payload: { text: "Some Task" }
-        });
+        expect(store.dispatch).toHaveBeenCalledWith(
+          new AddTodoAction({ text: "Some Task" })
+        );
       })
     );
   });
@@ -62,10 +71,9 @@ describe("TodoService", () => {
 
         todoService.complete({ text: "Some Task" });
 
-        expect(store.dispatch).toHaveBeenCalledWith({
-          type: ACTION_TYPES.COMPLETE_TODO,
-          payload: { text: "Some Task" }
-        });
+        expect(store.dispatch).toHaveBeenCalledWith(
+          new CompleteTodoAction({ text: "Some Task" })
+        );
       })
     );
   });

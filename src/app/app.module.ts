@@ -5,6 +5,7 @@ import "rxjs/add/operator/take";
 import { TranslateService } from "@ngx-translate/core";
 
 import { Store } from "@ngrx/store";
+import { RouterStateSerializer } from "@ngrx/router-store";
 
 import {
   createNewHosts,
@@ -14,22 +15,28 @@ import {
 
 import { AppComponent } from "./app.component";
 import { appRoutingProviders } from "./app.routes";
-import { AppState, getLanguage } from "./app.store";
+import {
+  CoreAppState,
+  CustomRouterStateSerializer,
+  getLanguage
+} from "./app.store";
 import { NotFoundComponent } from "./not-found/not-found.component";
 import translations from "../generated/translations";
-import { LangActionCreator } from "./i18n/language.store";
 import { APP_IMPORTS } from "./app.imports";
 
 @NgModule({
   imports: APP_IMPORTS,
-  providers: [appRoutingProviders, LangActionCreator],
+  providers: [
+    appRoutingProviders,
+    { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer }
+  ],
   declarations: [NotFoundComponent, AppComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {
   constructor(
     public appRef: ApplicationRef,
-    private _store: Store<AppState>,
+    private _store: Store<CoreAppState>,
     translate: TranslateService
   ) {
     translate.addLangs(Object.keys(translations));
