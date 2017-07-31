@@ -33,7 +33,6 @@ The intended project structure, how to work with it and possibly extend it is do
 
 - [General structure](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/general_structure.md)
 - [The application state and how to extend it](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/app_state.md)
-- [The linters and why they are not tied to the webpack build](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/linters.md)
 
 ## Additional docs
 - [The impact of using long term caching strategies on your assets size](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/longterm_caching_impact.md)
