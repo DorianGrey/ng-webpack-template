@@ -1,6 +1,7 @@
 # ng-webpack-template
 
 [![Build Status](https://travis-ci.org/DorianGrey/ng-webpack-template.svg?branch=master)](https://travis-ci.org/DorianGrey/ng-webpack-template)
+[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 This project provides a template for an [angular](https://angular.io/) project setup with [webpack](http://webpack.github.io).
 It started as a companion of [ng-jspm-template](https://github.com/flaviait/ng2-jspm-template), with the primary purpose to provide an almost identical codebase and feature set compared to its brother to make it easier to figure out which template fits better to the daily requirements of development with [angular](https://angular.io/).
@@ -10,7 +11,8 @@ It started as a companion of [ng-jspm-template](https://github.com/flaviait/ng2-
 To start using this template, you might either
  - pick the [latest release](https://github.com/DorianGrey/ng-webpack-template/releases/latest)
  - clone the repository directly for the most recent features and updates:
- - git clone https://github.com/DorianGrey/ng-webpack-template.git
+
+   `git clone https://github.com/DorianGrey/ng-webpack-template.git`
 
 You need to install a node.js version >= 6.9, since this project uses ES2015 language features, and we only support node versions from the most recent LTS upwards.
 Things might work from 4.x upwards, but we do not provide any official support for this.
@@ -26,7 +28,7 @@ The version favors to use [yarn](https://github.com/yarnpkg/yarn) for faster and
 ```
 npm install -g yarn
 ```
-Alternatively, you might use good old `npm`, if you REALLY want to. If that is the case, just replace the `yarn` part of the commands listed below with `npm`.
+Alternatively, you might use good old `npm`, if you REALLY want to. If that is the case, I recommend to use a version >= 5.x to get a proper `package-lock.json`. Just replace the `yarn` part of the commands listed below with `npm`.
 
 ## Project structure
 The intended project structure, how to work with it and possibly extend it is documented in the [docs folder](https://github.com/DorianGrey/ng-webpack-template/tree/master/docs).
@@ -64,8 +66,9 @@ Just note that at the moment, the `Advanced` optimization mode is not yet usable
 Using [build-optimizer](https://github.com/angular/devkit/tree/master/packages/angular_devkit/build_optimizer) has an even better impact on the vendor bundle's size. However, it is still extremely experimental, so **beware**. Also note that the changes it applies clash with [Closure Compiler](https://github.com/google/closure-compiler-npm), so you cannot use both in conjunction.
 
 The AoT versions are using the [@ngtools/webpack plugin](https://github.com/angular/angular-cli/blob/master/packages/webpack/README.md).
+Please keep an eye on the list of [issues marked as related to it](https://github.com/angular/angular-cli/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20aot) in case you're facing any errors.
 
-**Beware**: The whole AoT processing currently enforces rather strict rules (see a rather good explanation [here](https://medium.com/@isaacplmann/making-your-angular-2-library-statically-analyzable-for-aot-e1c6f3ebedd5)) on how not only your own code has to be written, but also the code of the libraries you are using. Before you consider using AoT optimization, you will have to check if all your libraries support it. However, **I'd strongly recommend** to head this way if it is possible in any way. You should also keep an eye on the list of [issues marked as related to it](https://github.com/angular/angular-cli/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20aot).
+**Beware**: The whole AoT processing currently enforces rather strict rules (see a rather good explanation [here](https://medium.com/@isaacplmann/making-your-angular-2-library-statically-analyzable-for-aot-e1c6f3ebedd5)) on how not only your own code has to be written, but also the code of the libraries you are using. While **I'd strongly recommend** to head this way if it is possible in any way, esp. the latter restriction might screw up this plan.
 
 The tables below will provide a full overview of the relevant commands.
 Note that each build tasks will invoke the `test` task (includes linting, generating the translations and executing the unit-tests) **before** the real build.

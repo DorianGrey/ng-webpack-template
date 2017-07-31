@@ -55,6 +55,7 @@ module.exports = {
       "@angular/router",
       "@ngrx/core",
       "@ngrx/store",
+      "@ngrx/router-store",
       "immutable",
       "lodash-es",
       "@ngx-translate/core",
