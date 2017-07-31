@@ -15,10 +15,14 @@ const prodSpecificConfig = {
   coverageReporter: {
     type: "in-memory"
   },
-  remapCoverageReporter: {
-    "text-summary": null,
-    json: "./test-results/coverage/coverage.json",
-    html: "./test-results/coverage/html"
+  remapIstanbulReporter: {
+    reports: {
+      "text-summary": null,
+      lcovonly: "./test-results/coverage/lcov.info",
+      json: "./test-results/coverage/coverage.json",
+      html: "./test-results/coverage/html/",
+      cobertura: "./test-results/coverage/coverage.xml"
+    }
   },
   // The junit reporter is primarily used to provide a report that may be picked
   // up be almost every tool that can handle XUnit conforming reports. E.g. CI systems like Jenkins
@@ -39,7 +43,7 @@ module.exports = config => {
     webpack: webpackTestConfig,
     webpackServer: {noInfo: true},
     // See the comments above for an explanation of this difference.
-    reporters: ENV === "production" ? ["mocha", "coverage", "remap-coverage", "junit"] : ["mocha"],
+    reporters: ENV === "production" ? ["mocha", "coverage", "karma-remap-istanbul", "junit"] : ["mocha"],
     mochaReporter: {
       output: "minimal"
     },
