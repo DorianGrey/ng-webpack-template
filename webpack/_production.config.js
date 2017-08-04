@@ -131,10 +131,15 @@ module.exports = function(env) {
   } else {
     const uglifyOptions = {
       beautify: false,
-      comments: false
+      comments: false,
+      warnings: false
     };
     if (env.useBo) {
-      uglifyOptions.pure_getters = true;
+      uglifyOptions.compress = {
+        pure_getters: true,
+        passes: 3,
+        warnings: false
+      };
     }
     plugins.push(new UglifyJsPlugin(uglifyOptions));
   }

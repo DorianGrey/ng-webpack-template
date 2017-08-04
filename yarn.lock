@@ -2,12 +2,11 @@
 # yarn lockfile v1
 
 
-"@angular-devkit/build-optimizer@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/build-optimizer/-/build-optimizer-0.0.7.tgz#41ad519c6e8d18b23ddee95fb86b38dcf25f25c3"
+"@angular-devkit/build-optimizer@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/build-optimizer/-/build-optimizer-0.0.10.tgz#77aadd35ae6310154c5cadb6d9879797a4d3c13b"
   dependencies:
     loader-utils "^1.1.0"
-    magic-string "^0.19.1"
     source-map "^0.5.6"
     typescript "^2.3.3"
 
@@ -3738,12 +3737,6 @@ lru-cache@~2.6.5:
 macaddress@^0.2.8:
   version "0.2.8"
   resolved "https://registry.yarnpkg.com/macaddress/-/macaddress-0.2.8.tgz#5904dc537c39ec6dbefeae902327135fa8511f12"
-
-magic-string@^0.19.1:
-  version "0.19.1"
-  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.19.1.tgz#14d768013caf2ec8fdea16a49af82fc377e75201"
-  dependencies:
-    vlq "^0.2.1"
 
 magic-string@^0.22.3:
   version "0.22.4"
