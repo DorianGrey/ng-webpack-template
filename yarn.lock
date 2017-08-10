@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@angular-devkit/build-optimizer@^0.0.11":
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/build-optimizer/-/build-optimizer-0.0.11.tgz#5b7d0b7166262bea1ca01a73dbad7f41d64dcba3"
+"@angular-devkit/build-optimizer@^0.0.13":
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/build-optimizer/-/build-optimizer-0.0.13.tgz#cf397af76abe899aa909d4a735106694ca1f08cf"
   dependencies:
     loader-utils "^1.1.0"
     source-map "^0.5.6"
@@ -106,9 +106,9 @@
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/@ngrx/store/-/store-2.2.3.tgz#e7bd1149f1c44208f1cc4744353f0f98a0f1f57b"
 
-"@ngtools/webpack@^1.5.5":
-  version "1.5.5"
-  resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-1.5.5.tgz#d6e2a933184015653de3be33d38437fdd81009e7"
+"@ngtools/webpack@^1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-1.6.0.tgz#6262f110283fcbfefa2ad45bc79c2c855c3963bb"
   dependencies:
     loader-utils "^1.0.2"
     magic-string "^0.22.3"
@@ -6730,9 +6730,9 @@ webpack-sources@^1.0.1:
     source-list-map "^2.0.0"
     source-map "~0.5.3"
 
-webpack@^3.5.1:
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-3.5.1.tgz#b749ee3d2b5a118dad53e8e41585b3f71e75499a"
+webpack@^3.5.2:
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-3.5.2.tgz#a9601066e23af3c80f3bf9758fd794ca9778f251"
   dependencies:
     acorn "^5.0.0"
     acorn-dynamic-import "^2.0.0"
