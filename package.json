@@ -1,6 +1,6 @@
 {
   "name": "ng-webpack-template",
-  "version": "11.0.0",
+  "version": "11.1.0",
   "description": "Evil brother of ng2-jspm-template",
   "author": {
     "name": "Christian Linne",
@@ -57,8 +57,8 @@
   },
   "devDependencies": {
     "@angular-devkit/build-optimizer": "^0.0.13",
-    "@angular/compiler-cli": "^4.3.3",
-    "@angular/platform-server": "^4.3.3",
+    "@angular/compiler-cli": "^4.3.4",
+    "@angular/platform-server": "^4.3.4",
     "@angularclass/hmr": "^2.1.3",
     "@angularclass/hmr-loader": "^3.0.4",
     "@ngrx/store-devtools": "^3.2.4",
@@ -118,7 +118,7 @@
     "tslint-config-prettier": "^1.3.0",
     "typescript": "^2.4.2",
     "wait-for-change": "^1.1.1",
-    "webpack": "^3.5.2",
+    "webpack": "^3.5.3",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-chunk-hash": "^0.4.0",
     "webpack-closure-compiler": "^2.1.5",
@@ -127,14 +127,14 @@
     "webpack-merge": "^4.1.0"
   },
   "dependencies": {
-    "@angular/common": "^4.3.3",
-    "@angular/compiler": "^4.3.3",
-    "@angular/core": "^4.3.3",
-    "@angular/forms": "^4.3.3",
-    "@angular/http": "^4.3.3",
-    "@angular/platform-browser": "^4.3.3",
-    "@angular/platform-browser-dynamic": "^4.3.3",
-    "@angular/router": "^4.3.3",
+    "@angular/common": "^4.3.4",
+    "@angular/compiler": "^4.3.4",
+    "@angular/core": "^4.3.4",
+    "@angular/forms": "^4.3.4",
+    "@angular/http": "^4.3.4",
+    "@angular/platform-browser": "^4.3.4",
+    "@angular/platform-browser-dynamic": "^4.3.4",
+    "@angular/router": "^4.3.4",
     "@ngrx/core": "1.2.0",
     "@ngrx/router-store": "^1.2.6",
     "@ngrx/store": "^2.2.3",
@@ -146,7 +146,7 @@
     "lodash-es": "^4.17.4",
     "normalize.css": "^7.0.0",
     "reselect": "^3.0.1",
-    "rxjs": "^5.4.2",
+    "rxjs": "5.4.2",
     "zone.js": "^0.8.16"
   },
   "engines": {
