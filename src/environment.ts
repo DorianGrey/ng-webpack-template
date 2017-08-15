@@ -8,7 +8,7 @@ let _decorateModuleRef = function identity<T>(value: T): T {
   return value;
 };
 
-if ("production" === ENV) {
+if ("production" === process.env.NODE_ENV) {
   // Since the debug tools are disabled by default in v4, we don't have to explicitly disable them as we had to before.
   enableProdMode();
 } else {

@@ -102,11 +102,11 @@ const productionReducer: ActionReducer<any> = combineReducers(reducers);
  */
 export function rootReducer(state: any, action: any): any {
   // It might seem ineffective to evaluate this statement multiple times.
-  // Don't worry: "ENV" is provided by webpack's DefinePlugin, so it is treated as a constant value.
+  // Don't worry: "process.env.NODE_ENV" is provided by webpack's EnvironmentPlugin, so it is treated as a constant value.
   // Thus, the result of this expression is also constant.
   // As a result, webpack can use it as a condition to drop some parts of the code w.r.t. to the result
   // of this expression.
-  if (ENV !== "production") {
+  if ("production" !== process.env.NODE_ENV) {
     return developmentReducer(state, action);
   } else {
     return productionReducer(state, action);

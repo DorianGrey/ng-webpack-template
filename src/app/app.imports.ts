@@ -38,7 +38,7 @@ const imports = [
  Note: We only consider this extension to be useful in development mode.
  If you want to use in production as well, just remove the ENV-specific condition.
  */
-if (ENV !== "production") {
+if ("production" !== process.env.NODE_ENV) {
   imports.push(StoreDevtoolsModule.instrumentOnlyWithExtension());
 }
 

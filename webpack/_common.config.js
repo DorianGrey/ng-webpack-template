@@ -1,4 +1,4 @@
-const { DefinePlugin, ProgressPlugin } = require("webpack");
+const { EnvironmentPlugin, ProgressPlugin } = require("webpack");
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const StyleLintPlugin = require("stylelint-webpack-plugin");
 const {
@@ -52,7 +52,8 @@ module.exports = function(env) {
       defaultAttribute: "defer"
     }),
     /**
-     * Plugin to define several variables. "process.env.NODE_ENV" is forwarded so that libraries may
+     * Plugin to define several variables on "process.env". These are properly stringified automatically.
+     * "process.env.NODE_ENV" is forwarded so that libraries may
      * react on it (e.g. by skipping some of their code). Please keep in mind that this is only possible
      * since our node config enables shimming the "process" variable.
      *
@@ -64,12 +65,10 @@ module.exports = function(env) {
      * Then the code inside the braces will be dropped during the bundle process.
      * We're using this for conditionally executing development / production code.
      */
-    new DefinePlugin({
-      ENV: JSON.stringify(process.env.NODE_ENV || "development"),
-      "process.env": {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV || "development")
-      }
+    new EnvironmentPlugin({
+      NODE_ENV: process.env.NODE_ENV || "development"
     }),
+
     // Plugin for displaying bundle process stage.
     new ProgressPlugin(),
     getTsCheckerPlugin(env),

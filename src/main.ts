@@ -8,7 +8,7 @@ import { bootloader } from "@angularclass/hmr";
 import { AppModule } from "./app/app.module";
 import { decorateModuleRef } from "./environment";
 
-if ("production" === ENV) {
+if ("production" === process.env.NODE_ENV) {
   enableProdMode();
 }
 
