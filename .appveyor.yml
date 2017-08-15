@@ -1,0 +1,29 @@
+environment:
+  matrix:
+    - nodejs_version: "6"
+
+matrix:
+  fast_finish: true
+
+install:
+  - ps: Install-Product node 6.11.1
+  - npm install -g yarn
+  - yarn install
+
+test_script:
+  - node --version
+  - yarn --version
+  - yarn test
+
+build_script:
+  - node --version
+  - yarn --version
+  - yarn build
+  - yarn build:cc
+  - yarn build:aot
+  - yarn build:aot:bo
+  - yarn build:aot:cc
+
+
+cache:
+  - node_modules

@@ -1,6 +1,7 @@
 # ng-webpack-template
 
 [![Build Status](https://travis-ci.org/DorianGrey/ng-webpack-template.svg?branch=master)](https://travis-ci.org/DorianGrey/ng-webpack-template)
+[![Build status](https://ci.appveyor.com/api/projects/status/rmlgxb0kwrbj0e6u/branch/master?svg=true)](https://ci.appveyor.com/project/DorianGrey/ng-webpack-template/branch/master)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 This project provides a template for an [angular](https://angular.io/) project setup with [webpack](http://webpack.github.io).
