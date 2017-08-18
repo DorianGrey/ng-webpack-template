@@ -142,7 +142,6 @@ export function stateSetter(reducer: ActionReducer<any>): ActionReducer<any> {
 /**
  * For dev mode, the regular reducers should be used in conjunction with "meta" reducers,
  * in our case `stateSetter` and `storeFreeze`.
- * TODO: `storeFreeze` temporarily disabled, since it causes errors with zone.js.
  * See https://github.com/ngrx/platform/blob/1bbd5bfa1e646eb42a34e8c9d1904f15f9173ed6/docs/store/api.md#meta-reducers
  *
  * The meta-reducers provided in this list get composed from right to left. If the list is empty,

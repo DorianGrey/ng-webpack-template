@@ -40,7 +40,13 @@ export class AppModule {
     translate: TranslateService
   ) {
     translate.addLangs(Object.keys(translations));
-    // TODO: It might be useful to put this to a different position... however, for now, it's perfectly valid.
+    /*
+      This subscription causes a language change on the translate service each time it
+      is changed in the store. As a result, the store should be considered as the
+      single source of truth for this parameter: If you want to change the language,
+      you will only have to dispatch the corresponding to the store, and every part of
+      the app relying on it - including the translate service - will be notified properly.
+     */
     _store.select(getLanguage).subscribe(lang => {
       translate.use(lang);
     });
