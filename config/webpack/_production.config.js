@@ -3,16 +3,15 @@ const UglifyJsPlugin = require("webpack/lib/optimize/UglifyJsPlugin");
 const CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 const HashedModuleIdsPlugin = require("webpack/lib/HashedModuleIdsPlugin");
 const ModuleConcatenationPlugin = require("webpack/lib/optimize/ModuleConcatenationPlugin");
-
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
-  .BundleAnalyzerPlugin;
+const { AotPlugin } = require("@ngtools/webpack");
+const {BundleAnalyzerPlugin} = require("webpack-bundle-analyzer");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const InlineChunkManifestHtmlWebpackPlugin = require("inline-chunk-manifest-html-webpack-plugin");
 const WebpackChunkHash = require("webpack-chunk-hash");
 const PurifyPlugin = require("@angular-devkit/build-optimizer").PurifyPlugin;
-const { root } = require("./constants");
-
 const ClosureCompilerPlugin = require("webpack-closure-compiler");
+
+const paths = require("../paths");
 
 /**
  * The production build may or may not include the BundleAnalyzerPlugin to visualize the build
@@ -21,16 +20,16 @@ const ClosureCompilerPlugin = require("webpack-closure-compiler");
  *
  * At the time of writing, the plugin is used in every production build (with and without AoT),
  * except when the exemplary production server is started as well.
- * @param env Bundle environment options.
+ * @param buildCfg Bundle config options.
  */
-module.exports = function(env) {
+module.exports = function(buildCfg) {
   /*
    Plugins utilizing long term caching.
    Used plugins and setup primarily based on https://webpack.js.org/guides/caching/
 
    If you don't want or need long term caching strategies, add `--env.disableLongTermCaching` to the build parameters.
    */
-  const longTermCachingPlugins = env.disableLongTermCaching
+  const longTermCachingPlugins = buildCfg.disableLongTermCaching
     ? []
     : [
         // For more consistent module IDs
@@ -68,10 +67,10 @@ module.exports = function(env) {
     // Generate some information about the generated bundle size
     new BundleAnalyzerPlugin({
       analyzerMode: "static",
-      reportFilename: root("buildStats", "bundle-size-report.html"),
+      reportFilename: paths.resolveApp("buildStats", "bundle-size-report.html"),
       openAnalyzer: false,
       generateStatsFile: true,
-      statsFilename: root("buildStats", "bundle-size-report.json"),
+      statsFilename: paths.resolveApp("buildStats", "bundle-size-report.json"),
       logLevel: "silent"
     })
   ]);
@@ -84,7 +83,7 @@ module.exports = function(env) {
    */
   const result = {
     output: {
-      path: root("dist"),
+      path: buildCfg.outputDir,
       filename: "[name].[chunkhash].js",
       chunkFilename: "[id].chunk.[chunkhash].js"
     },
@@ -92,7 +91,15 @@ module.exports = function(env) {
     plugins: plugins
   };
 
-  if (env.useBo) {
+  if (buildCfg.useAot) {
+    result.plugins.push(
+      new AotPlugin({
+        tsConfigPath: paths.resolveApp("tsconfig.aot.json")
+      })
+    )
+  }
+
+  if (buildCfg.useBuildOptimizer) {
     result.module = {
       rules: [
         // Ngo optimization, see https://github.com/angular/angular-cli/pull/6520
@@ -117,7 +124,7 @@ module.exports = function(env) {
    * - http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
    * - https://github.com/roman01la/webpack-closure-compiler
    */
-  if (env.useClosureCompiler) {
+  if (buildCfg.useClosureCompiler) {
     plugins.push(
       new ClosureCompilerPlugin({
         compiler: {
@@ -134,7 +141,7 @@ module.exports = function(env) {
       comments: false,
       warnings: false
     };
-    if (env.useBo) {
+    if (buildCfg.useBuildOptimizer) {
       uglifyOptions.compress = {
         pure_getters: true,
         passes: 3,

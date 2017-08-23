@@ -1,8 +1,8 @@
 const { EnvironmentPlugin, ProgressPlugin } = require("webpack");
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const StyleLintPlugin = require("stylelint-webpack-plugin");
+const paths = require("../paths");
 const {
-  root,
   DEFAULT_RESOLVE_EXTENSIONS,
   NODE_CONFIG,
   getHtmlTemplatePlugin,
@@ -11,6 +11,7 @@ const {
   getTsCheckerPlugin,
   RULE_LIB_SOURCE_MAP_LOADING,
   RULE_TS_LOADING,
+  RULE_TS_AOT_LOADING,
   RULE_HTML_LOADING,
   RULE_MAIN_SASS_LOADING,
   RULE_COMPONENT_SASS_LOADING
@@ -36,7 +37,7 @@ module.exports = function(env) {
  */
   const styleLintConfig = {
     failOnError: !isDev,
-    configFile: root("stylelint.config.js"),
+    configFile: paths.resolveConfig("stylelint.config.js"),
     files: "src/**/*.scss",
     syntax: "scss"
   };
@@ -84,7 +85,7 @@ module.exports = function(env) {
 
   return {
     entry: {
-      bundle: root("src/main.ts")
+      bundle: paths.resolveApp("src/main.ts")
     },
     /**
      * Options affecting the resolving of modules.
@@ -116,7 +117,7 @@ module.exports = function(env) {
        */
       rules: [
         RULE_LIB_SOURCE_MAP_LOADING,
-        RULE_TS_LOADING(isDev), // This will get overridden by RULE_TS_AOT_LOADING if AoT mode is activated.
+        env.useAot ? RULE_TS_AOT_LOADING : RULE_TS_LOADING(isDev),
         RULE_HTML_LOADING,
         RULE_MAIN_SASS_LOADING(isDev),
         RULE_COMPONENT_SASS_LOADING(isDev)

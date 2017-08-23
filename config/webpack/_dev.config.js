@@ -1,11 +1,11 @@
 const { DllReferencePlugin, NamedModulesPlugin } = require("webpack");
-const { root } = require("./constants");
+const paths = require("../paths");
 const devServerConfig = require("./dev-server.config.js");
 
 module.exports = function() {
   return {
     output: {
-      path: root(".tmp"),
+      path: paths.resolveApp(".tmp"),
       filename: "[name].js",
       chunkFilename: "[id].chunk.js"
     },
@@ -22,11 +22,11 @@ module.exports = function() {
       // Note that they are referencing the generated manifests and not the files themselves.
       new DllReferencePlugin({
         context: ".",
-        manifest: require(root(".tmp/polyfills-manifest.json"))
+        manifest: require(paths.resolveApp(".tmp/polyfills-manifest.json"))
       }),
       new DllReferencePlugin({
         context: ".",
-        manifest: require(root(".tmp/vendor-manifest.json"))
+        manifest: require(paths.resolveApp(".tmp/vendor-manifest.json"))
       }),
       new NamedModulesPlugin()
     ],

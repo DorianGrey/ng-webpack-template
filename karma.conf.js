@@ -1,4 +1,4 @@
-const webpackTestConfig = require("./webpack/test.config");
+const webpackTestConfig = require("./config/webpack/test.config");
 
 const ENV                = process.env.NODE_ENV || "development";
 const devSpecificConfig  = {
@@ -51,9 +51,9 @@ module.exports = config => {
     colors: true,
     // Reduce output noise to a minimum in dev mode, so that the results are easier to keep an eye on.
     logLevel: ENV === "production" ? config.LOG_INFO : config.LOG_WARN,
-    autoWatch: ENV !== "production",
-    browsers: ["PhantomJS"],
-    singleRun: ENV === "production"
+    autoWatch: false,
+    browsers: ["Electron"],
+    singleRun: true
   };
 
   config.set(

@@ -1,10 +1,9 @@
 const commonConfig = require("./_common.config");
 const devConfig = require("./_dev.config");
-const prodConfig = require("./_production.config");
-const aotConfig = require("./_aot.config");
 const merge = require("webpack-merge");
 
 const logger = require("log4js").getLogger("webpack-build");
+logger.level = "DEBUG";
 
 module.exports = function(env = {}) {
   process.env.NODE_ENV = process.env.NODE_ENV || "development";
@@ -15,7 +14,7 @@ module.exports = function(env = {}) {
   // Generates errors like: stdin:22952: WARNING - Misplaced @abstract annotation.
   // only functions or non-static methods can be abstract
   // # It's quite useless in dev mode, thus, it's forcefully disabled.
-  env.useBo = env.useBo && !env.isDev && !env.useClosureCompiler;
+  env.useBuildOptimizer = !!(env.useBuildOptimizer && !env.isDev && !env.useClosureCompiler);
 
   logger.debug("Using build env:", JSON.stringify(env, null, 4));
   logger.debug("Build mode:", env.isDev ? "development" : "production");
@@ -25,8 +24,6 @@ module.exports = function(env = {}) {
       env.useClosureCompiler ? "Closure Compiler" : "UglifyJs"
     );
   }
-  logger.debug("Using AoT:", !!env.useAot);
-  logger.debug("Using ngo:", !!env.useBo);
 
   /** See the docs for more information about how merging configs is implemented:
    * https://github.com/survivejs/webpack-merge/blob/master/README.md
@@ -42,9 +39,13 @@ module.exports = function(env = {}) {
    *          least one of them is an array (this holds true for RULE_TS_LOADING)
    *      This strategy enables the overwrite of the TS-rule in case of AoT mode.
    */
-  return merge.smart(
-    commonConfig(env),
-    env.isDev ? devConfig() : prodConfig(env),
-    env.useAot ? aotConfig() : {}
-  );
+  if (env.isDev) {
+    return merge.smart(
+      commonConfig(env),
+      devConfig()
+    );
+  } else {
+    logger.error("Main config is no longer usable for creating production configs!");
+    process.exit(1);
+  }
 };

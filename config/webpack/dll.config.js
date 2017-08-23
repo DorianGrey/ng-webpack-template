@@ -1,4 +1,4 @@
-const path = require("path");
+const paths = require("../paths");
 const { DllPlugin } = require("webpack");
 const commons = require("./constants");
 
@@ -62,7 +62,7 @@ module.exports = {
     ]
   },
   output: {
-    path: commons.root(".tmp"),
+    path: paths.resolveApp(".tmp"),
     filename: "[name].dll.js",
     library: "[name]"
   },
@@ -80,7 +80,7 @@ module.exports = {
     commons.getDefaultContextReplacementPlugin(),
     new DllPlugin({
       name: "[name]",
-      path: commons.root(".tmp/[name]-manifest.json")
+      path: paths.resolveApp(".tmp/[name]-manifest.json")
     })
   ],
   performance: commons.getPerformanceOptions(false),

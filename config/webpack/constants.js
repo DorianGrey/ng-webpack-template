@@ -1,14 +1,9 @@
-const path = require("path");
+const paths = require("../paths");
 const { ContextReplacementPlugin } = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
-const rootDir = path.resolve(__dirname, "..");
-
-exports.root = function root(...relativePathSegments) {
-  return path.resolve(rootDir, ...relativePathSegments);
-};
 
 /*
  * Include polyfills or mocks for various node stuff
@@ -29,8 +24,8 @@ exports.NODE_CONFIG = {
 // If any other packages have - just reference them here in the same style.
 exports.EXCLUDE_SOURCE_MAPS = [
   // these packages have problems with their sourcemaps
-  exports.root("node_modules/@angular"),
-  exports.root("node_modules/rxjs")
+  paths.resolveApp("node_modules/@angular"),
+  paths.resolveApp("node_modules/rxjs")
 ];
 
 // We should not use plain js files in our case, however,
@@ -91,7 +86,7 @@ exports.RULE_TS_AOT_LOADING = {
 exports.RULE_HTML_LOADING = {
   test: /\.html/,
   loader: "raw-loader",
-  exclude: [exports.root("src/index.template.html")]
+  exclude: [paths.resolveApp("src/index.template.html")]
 };
 
 /** Stylesheets in .scss format may be loaded in two different ways:
@@ -164,7 +159,7 @@ exports.getDefaultContextReplacementPlugin = function getDefaultContextReplaceme
   src = src || "src";
   return new ContextReplacementPlugin(
     /angular(\\|\/)core(\\|\/)@angular/, // See https://github.com/angular/angular/issues/11580#issuecomment-282705332
-    exports.root(src)
+    paths.resolveApp(src)
   );
 };
 
