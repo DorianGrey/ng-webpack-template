@@ -14,7 +14,11 @@ module.exports = function(env = {}) {
   // Generates errors like: stdin:22952: WARNING - Misplaced @abstract annotation.
   // only functions or non-static methods can be abstract
   // # It's quite useless in dev mode, thus, it's forcefully disabled.
-  env.useBuildOptimizer = !!(env.useBuildOptimizer && !env.isDev && !env.useClosureCompiler);
+  env.useBuildOptimizer = !!(
+    env.useBuildOptimizer &&
+    !env.isDev &&
+    !env.useClosureCompiler
+  );
 
   logger.debug("Using build env:", JSON.stringify(env, null, 4));
   logger.debug("Build mode:", env.isDev ? "development" : "production");
@@ -40,12 +44,11 @@ module.exports = function(env = {}) {
    *      This strategy enables the overwrite of the TS-rule in case of AoT mode.
    */
   if (env.isDev) {
-    return merge.smart(
-      commonConfig(env),
-      devConfig()
-    );
+    return merge.smart(commonConfig(env), devConfig());
   } else {
-    logger.error("Main config is no longer usable for creating production configs!");
+    logger.error(
+      "Main config is no longer usable for creating production configs!"
+    );
     process.exit(1);
   }
 };

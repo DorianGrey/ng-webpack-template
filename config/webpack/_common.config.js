@@ -1,7 +1,11 @@
-const { EnvironmentPlugin, ProgressPlugin } = require("webpack");
+const { EnvironmentPlugin } = require("webpack");
+const chalk = require("chalk");
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const StyleLintPlugin = require("stylelint-webpack-plugin");
+const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
+const ProgressBarPlugin = require("progress-bar-webpack-plugin");
 const paths = require("../paths");
+const formatUtil = require("../../scripts/util/formatUtil");
 const {
   DEFAULT_RESOLVE_EXTENSIONS,
   NODE_CONFIG,
@@ -70,11 +74,26 @@ module.exports = function(env) {
       NODE_ENV: process.env.NODE_ENV || "development"
     }),
 
-    // Plugin for displaying bundle process stage.
-    new ProgressPlugin(),
+    new CaseSensitivePathsPlugin(),
+
     getTsCheckerPlugin(env),
     new StyleLintPlugin(styleLintConfig)
   ];
+
+  if (process.stdout.isTTY) {
+    plugins.push(
+      // Plugin for displaying bundle process stage.
+      new ProgressBarPlugin({
+        clear: true,
+        complete: ".",
+        format: `${formatUtil.formatIndicator(">")}${chalk.cyan(
+          ":bar"
+        )} ${chalk.cyan(":percent")} (:elapsed seconds)`,
+        summary: false,
+        width: 50
+      })
+    );
+  }
 
   if (!useAot) {
     // Fix the angular2 context w.r.t. to webpack and the usage of System.import in their "load a component lazily" code.

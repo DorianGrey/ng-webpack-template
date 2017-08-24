@@ -4,12 +4,13 @@ const CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 const HashedModuleIdsPlugin = require("webpack/lib/HashedModuleIdsPlugin");
 const ModuleConcatenationPlugin = require("webpack/lib/optimize/ModuleConcatenationPlugin");
 const { AotPlugin } = require("@ngtools/webpack");
-const {BundleAnalyzerPlugin} = require("webpack-bundle-analyzer");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const InlineChunkManifestHtmlWebpackPlugin = require("inline-chunk-manifest-html-webpack-plugin");
 const WebpackChunkHash = require("webpack-chunk-hash");
 const PurifyPlugin = require("@angular-devkit/build-optimizer").PurifyPlugin;
 const ClosureCompilerPlugin = require("webpack-closure-compiler");
+const path = require("path");
 
 const paths = require("../paths");
 
@@ -85,9 +86,12 @@ module.exports = function(buildCfg) {
     output: {
       path: buildCfg.outputDir,
       filename: "[name].[chunkhash].js",
-      chunkFilename: "[id].chunk.[chunkhash].js"
+      chunkFilename: "[id].chunk.[chunkhash].js",
+      publicPath: buildCfg.publicPath,
+      devtoolModuleFilenameTemplate: info =>
+        path.relative(paths.appSrc, info.absoluteResourcePath)
     },
-    devtool: false,
+    devtool: buildCfg.devtool,
     plugins: plugins
   };
 
@@ -96,7 +100,7 @@ module.exports = function(buildCfg) {
       new AotPlugin({
         tsConfigPath: paths.resolveApp("tsconfig.aot.json")
       })
-    )
+    );
   }
 
   if (buildCfg.useBuildOptimizer) {
@@ -108,7 +112,7 @@ module.exports = function(buildCfg) {
           use: [
             {
               loader: "@angular-devkit/build-optimizer/webpack-loader",
-              options: { sourceMap: false }
+              options: { sourceMap: buildCfg.devtool !== false }
             }
           ]
         }
@@ -137,16 +141,21 @@ module.exports = function(buildCfg) {
     );
   } else {
     const uglifyOptions = {
-      beautify: false,
-      comments: false,
-      warnings: false
+      compress: {
+        warnings: false,
+        // This feature has been reported as buggy a few times, such as:
+        // https://github.com/mishoo/UglifyJS2/issues/1964
+        // We'll wait with enabling it by default until it is more solid.
+        reduce_vars: false
+      },
+      output: {
+        comments: false
+      },
+      sourceMap: buildCfg.devtool !== false
     };
     if (buildCfg.useBuildOptimizer) {
-      uglifyOptions.compress = {
-        pure_getters: true,
-        passes: 3,
-        warnings: false
-      };
+      uglifyOptions.compress.pure_getters = true;
+      uglifyOptions.compress.passes = 3;
     }
     plugins.push(new UglifyJsPlugin(uglifyOptions));
   }

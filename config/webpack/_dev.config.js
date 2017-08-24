@@ -1,4 +1,5 @@
 const { DllReferencePlugin, NamedModulesPlugin } = require("webpack");
+const path = require("path");
 const paths = require("../paths");
 const devServerConfig = require("./dev-server.config.js");
 
@@ -7,7 +8,9 @@ module.exports = function() {
     output: {
       path: paths.resolveApp(".tmp"),
       filename: "[name].js",
-      chunkFilename: "[id].chunk.js"
+      chunkFilename: "[id].chunk.js",
+      devtoolModuleFilenameTemplate: info =>
+        path.relative(paths.appSrc, info.absoluteResourcePath)
     },
     /**
      * This is a rather expensive source map w.r.t. rebuild performance, but also a really

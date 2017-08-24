@@ -4,7 +4,6 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
-
 /*
  * Include polyfills or mocks for various node stuff
  * Description: Node configuration
@@ -188,13 +187,9 @@ exports.getTsCheckerPlugin = function getTsCheckerPlugin(env) {
   });
 };
 
-exports.getPerformanceOptions = function getPerformanceOptions(isProdMode) {
+exports.getPerformanceOptions = function getPerformanceOptions() {
   return {
-    /**
-     * Show performance hints / warnings / errors. Especially displays warnings about too large entry points and chunks.
-     * This is not useful in development mode (since no optimization is performed at this stage), but for any production
-     * mode.
-     */
-    hints: isProdMode ? "warning" : false
+    // Size warnings are created in a custom configurable way, thus they are disabled here.
+    hints: false
   };
 };
