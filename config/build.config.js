@@ -29,17 +29,44 @@ const buildConfig = {
   gzipDisplayOpts: { level: 6 }
 };
 
+function isValidOptionOverride(key, value) {
+  switch (key) {
+    case "devtool":
+      const type = typeof value;
+      return type === "string" || type === "boolean";
+    case "categorizeAssets":
+      return typeof value === "object" || value === false;
+      break;
+    default:
+      return typeof buildConfig[key] === typeof value;
+  }
+}
+
+function sanitizeOptions(result) {
+  // BO check - does not work in conjunction with closure compiler.
+  if (result.useBuildOptimizer && result.useClosureCompiler) {
+    result.useClosureCompiler = false; // BO has higher priority.
+    // TODO: Some kind of logging might be useful here.
+  }
+
+  // A level outside of the 1..9 range may yield curious results...
+  result.gzipDisplayOpts.level = Math.max(
+    1,
+    Math.min(result.gzipDisplayOpts.level, 9)
+  );
+}
+
 module.exports = function(env = {}) {
   const result = {};
-  // TODO: We need to validate the `env` content.
   Object.getOwnPropertyNames(buildConfig).forEach(key => {
-    if (env.hasOwnProperty(key)) {
+    if (env.hasOwnProperty(key) && isValidOptionOverride(key, env[key])) {
       result[key] = env[key];
     } else {
       result[key] = buildConfig[key];
     }
   });
-  // TODO: We have to perform a "sanity" check here, e.g. for build optimizer.
+
+  sanitizeOptions(result);
 
   return result;
 };

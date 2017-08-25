@@ -15,16 +15,16 @@ install:
 test_script:
   - node --version
   - yarn --version
-  - yarn test
+  - yarn test:ci
 
 build_script:
   - node --version
   - yarn --version
+  - yarn test:ci
   - yarn build
+  - yarn build:bo
   - yarn build:cc
-  - yarn build:aot
-  - yarn build:aot:bo
-  - yarn build:aot:cc
+  - yarn build:no-aot
 
 
 cache:

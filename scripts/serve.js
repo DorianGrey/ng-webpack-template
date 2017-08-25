@@ -1,10 +1,11 @@
 "use strict";
 
 const express = require("express");
+const yargs = require("yargs");
 const path = require("path");
 const logger = require("log4js").getLogger("server");
 logger.level = "debug";
-const buildConfig = require("../config/build.config")();
+const buildConfig = require("../config/build.config")(yargs.argv);
 
 const serverPort = 9988;
 

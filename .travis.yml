@@ -21,9 +21,9 @@ install: npm install yarn -g && yarn install
 # We need to test all potentially used production build version to ensure that none of them fails,
 # and to get a proper output if any of them does.
 script:
+  - yarn test:ci
   - yarn build
+  - yarn build:bo
   - yarn build:cc
-  - yarn build:aot
-  - yarn build:aot:bo
-  - yarn build:aot:cc
+  - yarn build:no-aot
 
