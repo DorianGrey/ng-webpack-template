@@ -80,7 +80,10 @@ module.exports = function(env) {
     new StyleLintPlugin(styleLintConfig)
   ];
 
-  if (process.stdout.isTTY) {
+  // process.env.CI is available on Travis & Appveyor.
+  // On Travis, proces.stdout.isTTY is `true`, but we don't want the progress
+  // displayed there - it's irritating and does not work well.
+  if (process.stdout.isTTY && !process.env.CI) {
     plugins.push(
       // Plugin for displaying bundle process stage.
       new ProgressBarPlugin({

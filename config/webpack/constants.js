@@ -183,7 +183,8 @@ exports.getTsCheckerPlugin = function getTsCheckerPlugin(env) {
     tsconfig: "./tsconfig.json",
     async: !env.isWatch,
     formatter: "codeframe",
-    tslint: "./tslint.json"
+    tslint: "./tslint.json",
+    memoryLimit: process.env.APPVEYOR ? 1024 : 2048 // 2048 is too much for appveyor...
   });
 };
 
