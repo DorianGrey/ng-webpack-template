@@ -72,8 +72,8 @@ module.exports = {
   module: {
     rules: [
       commons.RULE_LIB_SOURCE_MAP_LOADING,
-      commons.RULE_TS_LOADING(true),
-      commons.RULE_HTML_LOADING
+      commons.RULE_TS_LOADING(true)
+      // commons.RULE_HTML_LOADING
     ]
   },
   plugins: [

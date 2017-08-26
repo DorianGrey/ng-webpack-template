@@ -17,8 +17,10 @@ const {
   RULE_TS_LOADING,
   RULE_TS_AOT_LOADING,
   RULE_HTML_LOADING,
+  RULE_HTML_RAW_LOADING,
   RULE_MAIN_SASS_LOADING,
-  RULE_COMPONENT_SASS_LOADING
+  RULE_COMPONENT_SASS_LOADING,
+  RULE_IMG_LOADING
 } = require("./constants");
 
 /**
@@ -52,7 +54,7 @@ module.exports = function(env) {
 
   const plugins = [
     // HTML plugin to generate proper index.html files w.r.t. the output of this build.
-    getHtmlTemplatePlugin(isDev),
+    getHtmlTemplatePlugin(isDev, env),
     new ScriptExtHtmlWebpackPlugin({
       defaultAttribute: "defer"
     }),
@@ -129,6 +131,7 @@ module.exports = function(env) {
      * See: http://webpack.github.io/docs/configuration.html#module
      */
     module: {
+      strictExportPresence: true,
       /**
        * An array of rules to be applied..
        * Note that the syntax has changed in 2.1.0-beta.24 : https://github.com/webpack/webpack/releases/tag/v2.1.0-beta.24
@@ -141,8 +144,10 @@ module.exports = function(env) {
         RULE_LIB_SOURCE_MAP_LOADING,
         env.useAot ? RULE_TS_AOT_LOADING : RULE_TS_LOADING(isDev),
         RULE_HTML_LOADING,
+        RULE_HTML_RAW_LOADING,
         RULE_MAIN_SASS_LOADING(isDev),
-        RULE_COMPONENT_SASS_LOADING(isDev)
+        RULE_COMPONENT_SASS_LOADING(isDev),
+        RULE_IMG_LOADING(isDev, env)
       ]
     },
     /**

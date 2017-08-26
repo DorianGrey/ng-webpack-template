@@ -98,7 +98,7 @@ function printFileSizesOnAssetCategory(
     const assetTooLarge = asset.originalFileSize > assetsSizeWarnLimit;
     const assetMayBeExtractedChunk =
       asset.originalFileSize < potentiallyExtractedChunkSizeLimit &&
-      /\.js/.test(asset.name);
+      /\.js$/.test(asset.name);
     if (assetTooLarge) {
       exceptionalAssetCnt.tooLarge++;
     }
@@ -129,12 +129,15 @@ function printFileSizesOnAssetCategory(
  * Utility function to print output file stats for a build.
  *
  * @param buildConfig The build config. See config/build.config for details.
- * @param webpackStats
+ * @param webpackStats The stats received from webpack.
+ * @param staticAssets Additional static assets, got copied from `public`
  */
-function printFileSizes(buildConfig, webpackStats) {
+function printFileSizes(buildConfig, webpackStats, staticAssets = []) {
   // Prints a detailed summary of build files.
   const jsonStats = webpackStats.toJson();
   const assetsStats = jsonStats.assets;
+  staticAssets = staticAssets.map(s => ({ name: s }));
+  assetsStats.push(...staticAssets);
 
   const assetCategories =
     buildConfig.categorizeAssets === false

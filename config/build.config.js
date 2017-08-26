@@ -10,7 +10,9 @@ const buildConfig = {
   useClosureCompiler: false,
   isDev: false,
   isWatch: false,
-  publicPath: "/",
+  publicUrl: "",
+  baseHref: "/",
+  hashDigits: 12,
   // The asset categorization map.
   // Just set to "false" to not categorize the build output.
   // categorizeAssets: false,
@@ -19,6 +21,7 @@ const buildConfig = {
     Scripts: /\.js$/,
     Styles: /\.css$/,
     "Source maps": /\.map$/,
+    Favicons: /favicon(\d+x\d+)?\.png$/,
     Images: /\.(jpe?g|png|gif|bmp)$/,
     Fonts: /\.(woff2?|eot|ttf|svg)$/
   },

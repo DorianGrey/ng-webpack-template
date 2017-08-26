@@ -49,7 +49,7 @@ exports.RULE_LIB_SOURCE_MAP_LOADING = {
 exports.RULE_TS_LOADING = function(isDev) {
   const use = [
     {
-      loader: "ts-loader",
+      loader: require.resolve("ts-loader"),
       options: {
         silent: true,
         transpileOnly: true // Everything else is processed by the corresponding plugin.
@@ -75,17 +75,55 @@ exports.RULE_TS_LOADING = function(isDev) {
  */
 exports.RULE_TS_AOT_LOADING = {
   test: /\.ts$/,
-  loader: "@ngtools/webpack"
+  loader: require.resolve("@ngtools/webpack")
 };
 
-/** HTML is loaded as a string in raw mode without any modification.
- * The only exception that the index template, which is dealt with by the
- * HtmlWebpackPlugin during build time.
+/**
+ * HTML rule to load is loaded as-is, but evaluated to determine external references, e.g. to images.
  */
 exports.RULE_HTML_LOADING = {
   test: /\.html/,
-  loader: "raw-loader",
-  exclude: [paths.resolveApp("src/index.template.html")]
+  use: require.resolve("html-loader"),
+  include: [/\.component\.html$/]
+};
+
+/**
+ * HTML rule to load as a string without any evaluation or modification.
+ */
+exports.RULE_HTML_RAW_LOADING = {
+  test: /\.html/,
+  use: require.resolve("raw-loader"),
+  exclude: [/\.component\.html$/]
+};
+
+/**
+ * Directly referenced images are pushed through an appropriate minifier first,
+ * and than path-adopted by the file-loader to get a fixed reference incl. hash.
+ *
+ * Note that this only aims at files in `src/assets`, since that folder is intended
+ * for directly referenced resources.
+ */
+exports.RULE_IMG_LOADING = function(isDev, env) {
+  return {
+    test: /\.(gif|png|jpe?g)$/i,
+    use: [
+      {
+        loader: require.resolve("file-loader"),
+        query: {
+          name: isDev
+            ? "static/media/[name].[ext]"
+            : `static/media/[name].[hash:${env.hashDigits}].[ext]`
+        }
+      },
+      {
+        loader: require.resolve("image-webpack-loader"),
+        query: {
+          bypassOnDebug: isDev
+        }
+      }
+    ],
+    include: [paths.resolveApp("src", "assets")]
+  };
 };
 
 /** Stylesheets in .scss format may be loaded in two different ways:
@@ -98,9 +136,16 @@ exports.RULE_HTML_LOADING = {
  */
 const scssLoaderChain = function(isDev) {
   return [
-    "css-loader?importLoaders=1",
     {
-      loader: "postcss-loader",
+      loader: require.resolve("css-loader"),
+      options: {
+        importLoaders: 1,
+        minimize: !isDev,
+        sourceMap: isDev
+      }
+    },
+    {
+      loader: require.resolve("postcss-loader"),
       options: {
         plugins: loader => [
           require("autoprefixer")({
@@ -112,9 +157,9 @@ const scssLoaderChain = function(isDev) {
       }
     },
     {
-      loader: "sass-loader",
+      loader: require.resolve("sass-loader"),
       options: {
-        sourceMap: isDev, // Has to be true always, since the resolve-url-loader requires it to properly map the resource paths.
+        sourceMap: isDev,
         outputStyle: isDev ? "nested" : "compressed"
       }
     }
@@ -128,10 +173,10 @@ exports.RULE_MAIN_SASS_LOADING = function RULE_MAIN_SASS_LOADING(isDev) {
   const scssChain = scssLoaderChain(isDev);
 
   if (isDev) {
-    result.use = ["style-loader"].concat(scssChain);
+    result.use = [require.resolve("style-loader")].concat(scssChain);
   } else {
     result.use = ExtractTextPlugin.extract({
-      fallback: "style-loader",
+      fallback: require.resolve("style-loader"),
       use: scssChain
     });
   }
@@ -140,7 +185,7 @@ exports.RULE_MAIN_SASS_LOADING = function RULE_MAIN_SASS_LOADING(isDev) {
 exports.RULE_COMPONENT_SASS_LOADING = function(isDev) {
   return {
     test: /\.component\.scss$/,
-    use: ["to-string-loader"].concat(scssLoaderChain(isDev))
+    use: [require.resolve("to-string-loader")].concat(scssLoaderChain(isDev))
   };
 };
 
@@ -162,15 +207,35 @@ exports.getDefaultContextReplacementPlugin = function getDefaultContextReplaceme
   );
 };
 
-exports.getHtmlTemplatePlugin = function getHtmlTemplatePlugin(isDevMode) {
+exports.getHtmlTemplatePlugin = function getHtmlTemplatePlugin(
+  isDevMode,
+  buildConfig
+) {
+  const minify = isDevMode
+    ? false
+    : {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true
+      };
+
   return new HtmlWebpackPlugin({
-    template: "src/index.template.html",
+    template: paths.appHtml,
     filename: "index.html", // Keep in mind that the output path gets prepended to this name automatically.
     inject: "body",
+    minify,
     // Custom config.
     title: "Demo App",
     devMode: isDevMode,
-    baseHref: "/",
+    baseHref: buildConfig.baseHref,
+    publicUrl: buildConfig.publicUrl,
     polyfillFile: "polyfills.dll.js",
     vendorFile: "vendor.dll.js"
   });

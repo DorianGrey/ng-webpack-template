@@ -7,8 +7,9 @@ module.exports = function() {
   return {
     output: {
       path: paths.resolveApp(".tmp"),
-      filename: "[name].js",
-      chunkFilename: "[id].chunk.js",
+      filename: "static/js/[name].js",
+      chunkFilename: "static/js/[id].chunk.js",
+      pathinfo: true,
       devtoolModuleFilenameTemplate: info =>
         path.relative(paths.appSrc, info.absoluteResourcePath)
     },

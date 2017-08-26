@@ -1,10 +1,12 @@
 process.env.NODE_ENV = "production";
 
 const chalk = require("chalk");
+const path = require("path");
 const webpack = require("webpack");
 const fs = require("fs-extra");
 const merge = require("webpack-merge");
 const yargs = require("yargs");
+const glob = require("globby");
 
 const compileTranslations = require("../dev/translations").compile;
 const paths = require("../config/paths");
@@ -61,10 +63,25 @@ function handleBuildSetup() {
   });
 }
 
+function handleCopyStatics(config, buildConfig) {
+  writer(formatUtil.formatInfo("Copying non-referenced static files...\n"));
+  fs.copySync(paths.appPublic, buildConfig.outputDir, {
+    dereference: true,
+    filter: file => file !== paths.appHtml
+  });
+  return [config, buildConfig];
+}
+
 function handleBuild(config, buildConfig) {
   return new Promise((resolve, reject) => {
     info("Building app...");
     info("Build config in use: " + JSON.stringify(buildConfig, null, 4));
+
+    // Determine copied paths, and add the generated service worker stuff (once it's added) as well
+    // used for properly generating an output.
+    const staticAssets = glob
+      .sync([paths.appPublic + "**/*", `!${paths.appPublic}/index.{ejs,html}`])
+      .map(p => path.relative(paths.appPublic, p));
 
     let compiler;
     try {
@@ -89,7 +106,7 @@ function handleBuild(config, buildConfig) {
         return reject(formattedStats.errors);
       } else {
         const hasYarn = fs.existsSync(paths.yarnLockFile);
-        printFileSizes(buildConfig, stats);
+        printFileSizes(buildConfig, stats, staticAssets);
         printPreviewInformation(buildConfig, hasYarn);
         resolve();
       }
@@ -104,6 +121,7 @@ formatUtil.cls();
 Promise.resolve()
   .then(handleTranslations)
   .then(handleBuildSetup)
+  .then(([config, buildConfig]) => handleCopyStatics(config, buildConfig))
   .then(([config, buildConfig]) => handleBuild(config, buildConfig))
   .catch(e => {
     writer(formatUtil.formatError("Build failed.\n"));

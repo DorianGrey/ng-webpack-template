@@ -61,7 +61,9 @@ module.exports = function(buildCfg) {
      *
      * See: http://webpack.github.io/docs/stylesheets.html#separate-css-bundle
      */
-    new ExtractTextPlugin("main.[contenthash].css"),
+    new ExtractTextPlugin(
+      `static/css/[name].[contenthash:${buildCfg.hashDigits}].css`
+    ),
 
     new ModuleConcatenationPlugin(),
 
@@ -83,11 +85,12 @@ module.exports = function(buildCfg) {
    * See: http://webpack.github.io/docs/configuration.html#output-filename
    */
   const result = {
+    bail: true,
     output: {
       path: buildCfg.outputDir,
-      filename: "[name].[chunkhash].js",
-      chunkFilename: "[id].chunk.[chunkhash].js",
-      publicPath: buildCfg.publicPath,
+      filename: `static/js/[name].[chunkhash:${buildCfg.hashDigits}].js`,
+      chunkFilename: `static/js/[id].chunk.[chunkhash:${buildCfg.hashDigits}].js`,
+      publicPath: buildCfg.publicUrl,
       devtoolModuleFilenameTemplate: info =>
         path.relative(paths.appSrc, info.absoluteResourcePath)
     },
