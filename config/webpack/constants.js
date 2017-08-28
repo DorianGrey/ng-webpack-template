@@ -69,9 +69,8 @@ exports.RULE_TS_LOADING = function(isDev) {
   };
 };
 
-/** Loader for dealing with out typescript files in AoT mode.
- Note that you MUST NOT configure another loader here, since this might break the whole step.
- This loader already takes care of delegating work to others if required.
+/**
+ * Loader for dealing with out typescript files in AoT mode.
  */
 exports.RULE_TS_AOT_LOADING = {
   test: /\.ts$/,

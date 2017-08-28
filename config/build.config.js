@@ -7,7 +7,6 @@ const buildConfig = {
   devtool: "source-map",
   useAot: true,
   useBuildOptimizer: false,
-  useClosureCompiler: false,
   isDev: false,
   isWatch: false,
   publicUrl: "",
@@ -46,12 +45,6 @@ function isValidOptionOverride(key, value) {
 }
 
 function sanitizeOptions(result) {
-  // BO check - does not work in conjunction with closure compiler.
-  if (result.useBuildOptimizer && result.useClosureCompiler) {
-    result.useClosureCompiler = false; // BO has higher priority.
-    // TODO: Some kind of logging might be useful here.
-  }
-
   // A level outside of the 1..9 range may yield curious results...
   result.gzipDisplayOpts.level = Math.max(
     1,

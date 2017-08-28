@@ -32,6 +32,4 @@ script:
   - yarn test:ci
   - yarn build
   - yarn build:bo
-  - yarn build:cc
-  - yarn build:no-aot
 

@@ -7,14 +7,11 @@ const logger = require("log4js").getLogger("server");
 logger.level = "debug";
 const buildConfig = require("../config/build.config")(yargs.argv);
 
-const serverPort = 9988;
+const serverPort = yargs.argv.port || 9988;
 
 const app = express();
 
-const serveDirs = process.argv.slice(2);
-if (serveDirs.length === 0) {
-  serveDirs.push(buildConfig.outputDir);
-}
+const serveDirs = [buildConfig.outputDir];
 
 app.use(require("./util/proxy"));
 
