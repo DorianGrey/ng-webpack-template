@@ -1,7 +1,7 @@
 const fs = require("fs-extra");
 const { Server, config } = require("karma");
 
-const compileTranslations = require("../dev/translations").compile;
+const compileTranslations = require("./translations").compile;
 const paths = require("../config/paths");
 
 function runKarma() {

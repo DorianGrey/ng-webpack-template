@@ -4,14 +4,12 @@ const chalk = require("chalk");
 const path = require("path");
 const webpack = require("webpack");
 const fs = require("fs-extra");
-const merge = require("webpack-merge");
 const yargs = require("yargs");
 const glob = require("globby");
 
-const compileTranslations = require("../dev/translations").compile;
+const compileTranslations = require("./translations").compile;
 const paths = require("../config/paths");
-const commonConfig = require("../config/webpack/_common.config");
-const prodConfig = require("../config/webpack/_production.config");
+const prodConfig = require("../config/webpack/prod");
 const buildConfigFactory = require("../config/build.config");
 
 const formatUtil = require("./util/formatUtil");
@@ -46,7 +44,7 @@ function handleBuildSetup() {
     let config;
 
     try {
-      config = merge.smart(commonConfig(buildConfig), prodConfig(buildConfig));
+      config = prodConfig(buildConfig);
     } catch (e) {
       return reject(e);
     }

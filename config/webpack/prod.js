@@ -11,7 +11,9 @@ const WebpackChunkHash = require("webpack-chunk-hash");
 const PurifyPlugin = require("@angular-devkit/build-optimizer").PurifyPlugin;
 const ClosureCompilerPlugin = require("webpack-closure-compiler");
 const path = require("path");
+const merge = require("webpack-merge");
 
+const commonConfig = require("./_common.config");
 const paths = require("../paths");
 
 /**
@@ -21,16 +23,16 @@ const paths = require("../paths");
  *
  * At the time of writing, the plugin is used in every production build (with and without AoT),
  * except when the exemplary production server is started as well.
- * @param buildCfg Bundle config options.
+ * @param env Bundle config options.
  */
-module.exports = function(buildCfg) {
+module.exports = function(env) {
   /*
    Plugins utilizing long term caching.
    Used plugins and setup primarily based on https://webpack.js.org/guides/caching/
 
    If you don't want or need long term caching strategies, add `--env.disableLongTermCaching` to the build parameters.
    */
-  const longTermCachingPlugins = buildCfg.disableLongTermCaching
+  const longTermCachingPlugins = env.disableLongTermCaching
     ? []
     : [
         // For more consistent module IDs
@@ -62,7 +64,7 @@ module.exports = function(buildCfg) {
      * See: http://webpack.github.io/docs/stylesheets.html#separate-css-bundle
      */
     new ExtractTextPlugin(
-      `static/css/[name].[contenthash:${buildCfg.hashDigits}].css`
+      `static/css/[name].[contenthash:${env.hashDigits}].css`
     ),
 
     new ModuleConcatenationPlugin(),
@@ -87,18 +89,18 @@ module.exports = function(buildCfg) {
   const result = {
     bail: true,
     output: {
-      path: buildCfg.outputDir,
-      filename: `static/js/[name].[chunkhash:${buildCfg.hashDigits}].js`,
-      chunkFilename: `static/js/[id].chunk.[chunkhash:${buildCfg.hashDigits}].js`,
-      publicPath: buildCfg.publicUrl,
+      path: env.outputDir,
+      filename: `static/js/[name].[chunkhash:${env.hashDigits}].js`,
+      chunkFilename: `static/js/[id].chunk.[chunkhash:${env.hashDigits}].js`,
+      publicPath: env.publicUrl,
       devtoolModuleFilenameTemplate: info =>
         path.relative(paths.appSrc, info.absoluteResourcePath)
     },
-    devtool: buildCfg.devtool,
+    devtool: env.devtool,
     plugins: plugins
   };
 
-  if (buildCfg.useAot) {
+  if (env.useAot) {
     result.plugins.push(
       new AotPlugin({
         tsConfigPath: paths.resolveApp("tsconfig.aot.json")
@@ -106,7 +108,7 @@ module.exports = function(buildCfg) {
     );
   }
 
-  if (buildCfg.useBuildOptimizer) {
+  if (env.useBuildOptimizer) {
     result.module = {
       rules: [
         // Ngo optimization, see https://github.com/angular/angular-cli/pull/6520
@@ -115,7 +117,7 @@ module.exports = function(buildCfg) {
           use: [
             {
               loader: "@angular-devkit/build-optimizer/webpack-loader",
-              options: { sourceMap: buildCfg.devtool !== false }
+              options: { sourceMap: env.devtool !== false }
             }
           ]
         }
@@ -131,7 +133,7 @@ module.exports = function(buildCfg) {
    * - http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
    * - https://github.com/roman01la/webpack-closure-compiler
    */
-  if (buildCfg.useClosureCompiler) {
+  if (env.useClosureCompiler) {
     plugins.push(
       new ClosureCompilerPlugin({
         compiler: {
@@ -154,14 +156,14 @@ module.exports = function(buildCfg) {
       output: {
         comments: false
       },
-      sourceMap: buildCfg.devtool !== false
+      sourceMap: env.devtool !== false
     };
-    if (buildCfg.useBuildOptimizer) {
+    if (env.useBuildOptimizer) {
       uglifyOptions.compress.pure_getters = true;
       uglifyOptions.compress.passes = 3;
     }
     plugins.push(new UglifyJsPlugin(uglifyOptions));
   }
 
-  return result;
+  return merge.smart(commonConfig(env), result);
 };

@@ -1,14 +1,19 @@
 const { DllReferencePlugin, NamedModulesPlugin } = require("webpack");
+const HotModuleReplacementPlugin = require("webpack/lib/HotModuleReplacementPlugin");
 const path = require("path");
-const paths = require("../paths");
-const devServerConfig = require("./dev-server.config.js");
+const merge = require("webpack-merge");
 
-module.exports = function() {
-  return {
+const ErrorFormatterPlugin = require("./plugins/ErrorFormatterPlugin");
+const paths = require("../paths");
+const commonConfig = require("./_common.config");
+
+module.exports = function(env) {
+  return merge.smart(commonConfig(env), {
     output: {
-      path: paths.resolveApp(".tmp"),
+      path: env.outputDir,
       filename: "static/js/[name].js",
       chunkFilename: "static/js/[id].chunk.js",
+      publicPath: env.publicUrl,
       pathinfo: true,
       devtoolModuleFilenameTemplate: info =>
         path.relative(paths.appSrc, info.absoluteResourcePath)
@@ -20,7 +25,7 @@ module.exports = function() {
      * you just have to switch to a cheaper one.
      * See the docs: http://webpack.github.io/docs/build-performance.html#sourcemaps
      */
-    devtool: "inline-source-map",
+    devtool: env.devtool,
     plugins: [
       // These plugins are referencing the DLLs build from the definitions in dll.config.js .
       // Note that they are referencing the generated manifests and not the files themselves.
@@ -32,8 +37,9 @@ module.exports = function() {
         context: ".",
         manifest: require(paths.resolveApp(".tmp/vendor-manifest.json"))
       }),
-      new NamedModulesPlugin()
-    ],
-    devServer: devServerConfig
-  };
+      new HotModuleReplacementPlugin(),
+      new NamedModulesPlugin(),
+      new ErrorFormatterPlugin()
+    ]
+  });
 };

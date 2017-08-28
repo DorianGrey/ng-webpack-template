@@ -25,8 +25,6 @@ module.exports = {
       "url",
       "punycode",
       "events",
-      "webpack-dev-server/client/socket.js",
-      "webpack/hot/emitter.js",
       // Library polyfills and utilities that do not belong to
       // a particular libary.
       "tslib",

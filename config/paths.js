@@ -11,6 +11,7 @@ const resolveConfig = (...relativePath) =>
 module.exports = {
   resolveApp,
   resolveConfig,
+  devTmp: resolveApp(".tmp"),
   appSrc: resolveApp("src"),
   appPublic: resolveApp("public"),
   appHtml: resolveApp("public", "index.ejs"),
