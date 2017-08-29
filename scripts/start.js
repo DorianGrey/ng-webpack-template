@@ -66,10 +66,13 @@ function startServer(translationsWatcher) {
   const devServerConfig = require("../config/webpack/dev-server");
   const { DEFAULT_PORT, HOST } = require("../config/hostInfo");
 
+  info("Build config in use: " + JSON.stringify(devOptions, null, 4));
+
   const config = devConfig(devOptions);
   const devServerConfigBuilt = devServerConfig(
     config.output.publicPath,
-    DEFAULT_PORT
+    DEFAULT_PORT,
+    devOptions.isHot
   );
 
   addDevServerEntryPoints(config, devServerConfigBuilt);

@@ -2,7 +2,7 @@ const paths = require("../paths");
 const { PUBLIC_ADDRESS } = require("../hostInfo");
 
 // For further config see here: https://github.com/webpack/docs/wiki/webpack-dev-server#api
-module.exports = function(publicPath, port) {
+module.exports = function(publicPath, port, isHot) {
   return {
     publicPath,
     port,
@@ -21,8 +21,8 @@ module.exports = function(publicPath, port) {
     },
     compress: true,
     inline: true,
-    hot: true,
-    clientLogLevel: "none",
+    hot: isHot,
+    // clientLogLevel: "none",
     quiet: true
   };
 };

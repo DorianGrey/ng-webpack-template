@@ -14,7 +14,8 @@
   "keywords": [
     "webpack",
     "angular",
-    "hot module reload"
+    "hot module reload",
+    "ngrx"
   ],
   "main": "index.js",
   "scripts": {

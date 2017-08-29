@@ -1,5 +1,7 @@
 const paths = require("./paths");
 
+// A list of keys that are used for configuration, but might not be overridden.
+const nonOverridableKeys = ["isDev", "isWatch"];
 const buildConfig = {
   outputDir: paths.resolveApp("build"),
   statsDir: paths.resolveApp("buildStats"),
@@ -55,7 +57,11 @@ function sanitizeOptions(result) {
 module.exports = function(env = {}) {
   const result = {};
   Object.getOwnPropertyNames(buildConfig).forEach(key => {
-    if (env.hasOwnProperty(key) && isValidOptionOverride(key, env[key])) {
+    if (
+      env.hasOwnProperty(key) &&
+      isValidOptionOverride(key, env[key]) &&
+      !nonOverridableKeys.includes(key)
+    ) {
       result[key] = env[key];
     } else {
       result[key] = buildConfig[key];

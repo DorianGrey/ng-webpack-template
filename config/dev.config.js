@@ -1,11 +1,14 @@
 const paths = require("./paths");
 
+// A list of keys that are used for configuration, but might not be overridden.
+const nonOverridableKeys = ["isDev", "isWatch", "useAot"];
 const buildConfig = {
   outputDir: paths.devTmp,
   devtool: "inline-source-map",
   useAot: false,
   isDev: true,
   isWatch: true,
+  isHot: true,
   publicUrl: "",
   baseHref: "/"
 };
@@ -23,7 +26,11 @@ function isValidOptionOverride(key, value) {
 module.exports = function(env = {}) {
   const result = {};
   Object.getOwnPropertyNames(buildConfig).forEach(key => {
-    if (env.hasOwnProperty(key) && isValidOptionOverride(key, env[key])) {
+    if (
+      env.hasOwnProperty(key) &&
+      isValidOptionOverride(key, env[key]) &&
+      !nonOverridableKeys.includes(key)
+    ) {
       result[key] = env[key];
     } else {
       result[key] = buildConfig[key];

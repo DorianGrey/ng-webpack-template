@@ -8,6 +8,25 @@ const paths = require("../paths");
 const commonConfig = require("./_common.config");
 
 module.exports = function(env) {
+  const plugins = [
+    // These plugins are referencing the DLLs build from the definitions in dll.config.js .
+    // Note that they are referencing the generated manifests and not the files themselves.
+    new DllReferencePlugin({
+      context: ".",
+      manifest: require(paths.resolveApp(".tmp/polyfills-manifest.json"))
+    }),
+    new DllReferencePlugin({
+      context: ".",
+      manifest: require(paths.resolveApp(".tmp/vendor-manifest.json"))
+    }),
+    new NamedModulesPlugin(),
+    new ErrorFormatterPlugin()
+  ];
+
+  if (env.isHot) {
+    plugins.push(new HotModuleReplacementPlugin());
+  }
+
   return merge.smart(commonConfig(env), {
     output: {
       path: env.outputDir,
@@ -26,20 +45,6 @@ module.exports = function(env) {
      * See the docs: http://webpack.github.io/docs/build-performance.html#sourcemaps
      */
     devtool: env.devtool,
-    plugins: [
-      // These plugins are referencing the DLLs build from the definitions in dll.config.js .
-      // Note that they are referencing the generated manifests and not the files themselves.
-      new DllReferencePlugin({
-        context: ".",
-        manifest: require(paths.resolveApp(".tmp/polyfills-manifest.json"))
-      }),
-      new DllReferencePlugin({
-        context: ".",
-        manifest: require(paths.resolveApp(".tmp/vendor-manifest.json"))
-      }),
-      new HotModuleReplacementPlugin(),
-      new NamedModulesPlugin(),
-      new ErrorFormatterPlugin()
-    ]
+    plugins
   });
 };
