@@ -2,7 +2,6 @@ const paths = require("./paths");
 
 const buildConfig = {
   outputDir: paths.devTmp,
-  disableLongTermCaching: false,
   devtool: "inline-source-map",
   useAot: false,
   isDev: true,

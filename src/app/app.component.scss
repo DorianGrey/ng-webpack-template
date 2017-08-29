@@ -20,6 +20,8 @@ h1, h2 {
 
 nav {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 
   & > a {
     text-decoration: none;
@@ -30,6 +32,7 @@ nav {
     flex-grow: 1;
     font-size: 1.4em;
     text-align: center;
+    margin: 0.25rem;
 
     &:not(:first-child) {
       margin-left: 10px;

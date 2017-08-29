@@ -17,6 +17,11 @@
   <app-root>
     Loading...
   </app-root>
+
+  <footer>
+    <span>Build version:&nbsp;</span><%= htmlWebpackPlugin.options.versionInfo %>
+  </footer>
+
   <% if (htmlWebpackPlugin.options.devMode) { %>
   <script src="<%= htmlWebpackPlugin.options.polyfillFile %>"></script>
   <script src="<%= htmlWebpackPlugin.options.vendorFile %>"></script>

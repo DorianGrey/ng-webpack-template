@@ -206,10 +206,25 @@ exports.getDefaultContextReplacementPlugin = function getDefaultContextReplaceme
   );
 };
 
-exports.getHtmlTemplatePlugin = function getHtmlTemplatePlugin(
-  isDevMode,
-  buildConfig
-) {
+/**
+ * Creates a version information based on the environment configuration.
+ * It is displayed in the footer.
+ *
+ * @param env The current configuration, either from `config/dev.config.js` or `build.config.js`.
+ */
+function createVersionString(env) {
+  const src = [process.env.NODE_ENV];
+  src[0] = src[0].charAt(0).toUpperCase() + src[0].slice(1);
+  if (env.useAot) {
+    src.push("AoT mode");
+  }
+  if (env.useBuildOptimizer) {
+    src.push("with build optimization");
+  }
+  return src.join(", ");
+}
+
+exports.getHtmlTemplatePlugin = function getHtmlTemplatePlugin(isDevMode, env) {
   const minify = isDevMode
     ? false
     : {
@@ -233,10 +248,11 @@ exports.getHtmlTemplatePlugin = function getHtmlTemplatePlugin(
     // Custom config.
     title: "Demo App",
     devMode: isDevMode,
-    baseHref: buildConfig.baseHref,
-    publicUrl: buildConfig.publicUrl,
+    baseHref: env.baseHref,
+    publicUrl: env.publicUrl,
     polyfillFile: "polyfills.dll.js",
-    vendorFile: "vendor.dll.js"
+    vendorFile: "vendor.dll.js",
+    versionInfo: createVersionString(env)
   });
 };
 
