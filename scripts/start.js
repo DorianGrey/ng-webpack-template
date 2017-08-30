@@ -52,10 +52,13 @@ function handleWatchTranslations() {
     info("Watching translations for changes...");
     const translationsWatcher = watchTranslations(
       "src/**/*.i18n.yml",
-      "src/generated/translations.ts"
+      "src/generated/translations.ts",
+      { chokidarOpts: { ignoreInitial: true } }
     );
 
-    translationsWatcher.on("ready", () => resolve(translationsWatcher));
+    translationsWatcher.on("ready", () => {
+      resolve(translationsWatcher);
+    });
   });
 }
 
@@ -102,7 +105,7 @@ function startServer(translationsWatcher) {
 
 Promise.resolve()
   .then(cleanTmp)
-  .then(buildDlls)
   .then(handleTranslations)
+  .then(buildDlls)
   .then(handleWatchTranslations)
   .then(startServer);

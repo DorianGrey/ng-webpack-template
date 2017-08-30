@@ -1,6 +1,19 @@
 const paths = require("../paths");
 const { DllPlugin } = require("webpack");
-const commons = require("./constants");
+const {
+  DEFAULT_RESOLVE_EXTENSIONS,
+  NODE_CONFIG,
+  PERFORMANCE_OPTIONS
+} = require("./factories/constants");
+
+const {
+  RULE_LIB_SOURCE_MAP_LOADING,
+  RULE_TS_LOADING
+} = require("./factories/rules");
+
+const {
+  PLUGIN_CONTEXT_REPLACEMENT_ANGULAR_CORE
+} = require("./factories/plugins");
 
 /**
  * This config is used to build so-called `DLLs`, `dynamically linked libraries.
@@ -65,22 +78,18 @@ module.exports = {
     library: "[name]"
   },
   resolve: {
-    extensions: commons.DEFAULT_RESOLVE_EXTENSIONS
+    extensions: DEFAULT_RESOLVE_EXTENSIONS
   },
   module: {
-    rules: [
-      commons.RULE_LIB_SOURCE_MAP_LOADING,
-      commons.RULE_TS_LOADING(true)
-      // commons.RULE_HTML_LOADING
-    ]
+    rules: [RULE_LIB_SOURCE_MAP_LOADING, RULE_TS_LOADING(true)]
   },
   plugins: [
-    commons.getDefaultContextReplacementPlugin(),
+    PLUGIN_CONTEXT_REPLACEMENT_ANGULAR_CORE(),
     new DllPlugin({
       name: "[name]",
       path: paths.resolveApp(".tmp/[name]-manifest.json")
     })
   ],
-  performance: commons.getPerformanceOptions(false),
-  node: commons.NODE_CONFIG
+  performance: PERFORMANCE_OPTIONS,
+  node: NODE_CONFIG
 };

@@ -9,19 +9,25 @@ const formatUtil = require("../../scripts/util/formatUtil");
 const {
   DEFAULT_RESOLVE_EXTENSIONS,
   NODE_CONFIG,
-  getHtmlTemplatePlugin,
-  getPerformanceOptions,
-  getDefaultContextReplacementPlugin,
-  getTsCheckerPlugin,
+  PERFORMANCE_OPTIONS
+} = require("./factories/constants");
+
+const {
+  RULE_HTML_LOADING,
+  RULE_HTML_RAW_LOADING,
+  RULE_IMG_LOADING,
   RULE_LIB_SOURCE_MAP_LOADING,
   RULE_TS_LOADING,
   RULE_TS_AOT_LOADING,
-  RULE_HTML_LOADING,
-  RULE_HTML_RAW_LOADING,
   RULE_MAIN_SASS_LOADING,
-  RULE_COMPONENT_SASS_LOADING,
-  RULE_IMG_LOADING
-} = require("./constants");
+  RULE_COMPONENT_SASS_LOADING
+} = require("./factories/rules");
+
+const {
+  PLUGIN_CONTEXT_REPLACEMENT_ANGULAR_CORE,
+  PLUGIN_INDEX_HTML,
+  PLUGIN_TS_CHECKER
+} = require("./factories/plugins");
 
 /**
  * It might seem a little bit suspicious to use a mode-specific parameterized function in a "common"
@@ -54,7 +60,7 @@ module.exports = function(env) {
 
   const plugins = [
     // HTML plugin to generate proper index.html files w.r.t. the output of this build.
-    getHtmlTemplatePlugin(isDev, env),
+    PLUGIN_INDEX_HTML(env),
     new ScriptExtHtmlWebpackPlugin({
       defaultAttribute: "defer"
     }),
@@ -78,7 +84,7 @@ module.exports = function(env) {
 
     new CaseSensitivePathsPlugin(),
 
-    getTsCheckerPlugin(env),
+    PLUGIN_TS_CHECKER(env),
     new StyleLintPlugin(styleLintConfig)
   ];
 
@@ -104,7 +110,7 @@ module.exports = function(env) {
     // Fix the angular2 context w.r.t. to webpack and the usage of System.import in their "load a component lazily" code.
     // Note: Since a version > 1.2.4 of the @ngtools/webpack plugin, the context replacement conflicts with it (seems to deal with it itself).
     // Thus, we only add this plugin in case we're NOT aiming at AoT compilation.
-    plugins.push(getDefaultContextReplacementPlugin());
+    plugins.push(PLUGIN_CONTEXT_REPLACEMENT_ANGULAR_CORE());
   }
 
   return {
@@ -147,7 +153,7 @@ module.exports = function(env) {
         RULE_HTML_RAW_LOADING,
         RULE_MAIN_SASS_LOADING(isDev),
         RULE_COMPONENT_SASS_LOADING(isDev),
-        RULE_IMG_LOADING(isDev, env)
+        RULE_IMG_LOADING(env)
       ]
     },
     /**
@@ -162,6 +168,6 @@ module.exports = function(env) {
      * See: http://webpack.github.io/docs/configuration.html#plugins
      */
     plugins: plugins,
-    performance: getPerformanceOptions(!isDev)
+    performance: PERFORMANCE_OPTIONS
   };
 };

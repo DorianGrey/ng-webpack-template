@@ -5,7 +5,8 @@ const chokidar = require("chokidar");
 
 module.exports = (pattern, onChange, opts) => {
   opts = opts || {};
-  const watcher = chokidar.watch(pattern);
+
+  const watcher = chokidar.watch(pattern, opts.chokidarOpts || {});
 
   const files = [];
   const debouncedCallback = _.debounce(() => {

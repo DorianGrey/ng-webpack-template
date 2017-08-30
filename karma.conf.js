@@ -1,7 +1,7 @@
 const withCoverage = /ci$/i.test(process.env.npm_lifecycle_event);
 const isWatchMode = process.argv.indexOf("--watch") > -1;
 
-const webpackTestConfig = require("./config/webpack/test.config");
+const webpackTestConfig = require("./config/webpack/test");
 
 const noCoverageConfig = {
   // In dev mode, we don't need to see the coverage stuff on every run ...

@@ -180,6 +180,7 @@ exports.compile = (src, dest, opts) =>
  * @param opts Specific build options. Atm., the following are supported:
  *             "verbose": Log some additional information.
  *             "duplicateThreshold": Limit the allowed translation duplication (in percent).
+ *             "chokidarOpts": Options to be forwarded to chokidar.
  * @return The watcher created by `chokidar`.
  */
 exports.watch = (src, dest, opts) => {
@@ -194,6 +195,9 @@ exports.watch = (src, dest, opts) => {
           err => logger.error("Error processing translation:", err)
         );
     },
-    { events: ["change", "unlink"] }
+    {
+      events: ["change", "unlink"],
+      chokidarOpts: opts.chokidarOpts
+    }
   );
 };

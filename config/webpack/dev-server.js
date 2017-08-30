@@ -17,7 +17,7 @@ module.exports = function(publicPath, port, isHot) {
     public: `${PUBLIC_ADDRESS}:${port}`,
     stats: "minimal",
     watchOptions: {
-      ignored: /node_modules/
+      ignored: /node_modules|\.tmp/
     },
     compress: true,
     inline: true,

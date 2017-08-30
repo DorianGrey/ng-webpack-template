@@ -1,7 +1,17 @@
 const path = require("path");
 const { DefinePlugin, NamedModulesPlugin } = require("webpack");
 const WebpackKarmaDieHardPlugin = require("webpack-karma-die-hard");
-const commons = require("./constants");
+const {
+  DEFAULT_RESOLVE_EXTENSIONS,
+  EXCLUDE_SOURCE_MAPS,
+  NODE_CONFIG,
+  PERFORMANCE_OPTIONS
+} = require("./factories/constants");
+
+const {
+  PLUGIN_CONTEXT_REPLACEMENT_ANGULAR_CORE,
+  PLUGIN_TS_CHECKER
+} = require("./factories/plugins");
 
 module.exports = {
   /**
@@ -12,7 +22,7 @@ module.exports = {
    */
   devtool: "inline-source-map",
   resolve: {
-    extensions: commons.DEFAULT_RESOLVE_EXTENSIONS
+    extensions: DEFAULT_RESOLVE_EXTENSIONS
   },
   module: {
     rules: [
@@ -25,8 +35,8 @@ module.exports = {
       {
         test: /\.js$/,
         enforce: "pre",
-        use: "source-map-loader",
-        exclude: [commons.EXCLUDE_SOURCE_MAPS]
+        use: require.resolve("source-map-loader"),
+        exclude: [EXCLUDE_SOURCE_MAPS]
       },
       /**
        * Typescript loader support for .ts and Angular 2 async routes.
@@ -36,7 +46,7 @@ module.exports = {
         test: /\.ts$/,
         use: [
           {
-            loader: "ts-loader",
+            loader: require.resolve("ts-loader"),
             options: {
               silent: true,
               transpileOnly: true, // Everything else is processed by the corresponding plugin.
@@ -46,7 +56,7 @@ module.exports = {
               }
             }
           },
-          "angular2-template-loader"
+          require.resolve("angular2-template-loader")
         ],
         exclude: [/\.e2e\.ts$/]
       },
@@ -59,7 +69,7 @@ module.exports = {
        */
       {
         test: /\.(js|ts)$/,
-        use: "istanbul-instrumenter-loader",
+        use: require.resolve("istanbul-instrumenter-loader"),
         enforce: "post",
         include: path.resolve(process.cwd(), "src"),
         exclude: [/test-setup\.js/, /\.(e2e|spec)\.ts$/]
@@ -67,14 +77,14 @@ module.exports = {
     ]
   },
   plugins: [
-    commons.getDefaultContextReplacementPlugin(),
+    PLUGIN_CONTEXT_REPLACEMENT_ANGULAR_CORE(),
+    PLUGIN_TS_CHECKER({}),
     new DefinePlugin({
       ENV: JSON.stringify(process.env.NODE_ENV || "test")
     }),
     new NamedModulesPlugin(),
-    commons.getTsCheckerPlugin({}),
     new WebpackKarmaDieHardPlugin()
   ],
-  performance: commons.getPerformanceOptions(false),
-  node: commons.NODE_CONFIG
+  performance: PERFORMANCE_OPTIONS,
+  node: NODE_CONFIG
 };

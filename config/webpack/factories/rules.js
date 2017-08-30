@@ -1,38 +1,14 @@
-const paths = require("../paths");
-const { ContextReplacementPlugin } = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const paths = require("../../paths");
 
-/*
- * Include polyfills or mocks for various node stuff
- * Description: Node configuration
- *
- * See: https://webpack.github.io/docs/configuration.html#node
- */
-exports.NODE_CONFIG = {
-  global: true,
-  crypto: "empty",
-  process: true,
-  module: false,
-  clearImmediate: false,
-  setImmediate: false
-};
-
-// These packages have problems with their source-maps.
-// If any other packages have - just reference them here in the same style.
-exports.EXCLUDE_SOURCE_MAPS = [
-  // these packages have problems with their sourcemaps
-  paths.resolveApp("node_modules/@angular"),
-  paths.resolveApp("node_modules/rxjs")
-];
+const constants = require("./constants");
 
 // We should not use plain js files in our case, however,
 // some of the libs may contain them. We're interested in their source-maps.
 exports.RULE_LIB_SOURCE_MAP_LOADING = {
   test: /\.js$/,
-  loader: "source-map-loader",
-  exclude: [exports.EXCLUDE_SOURCE_MAPS]
+  use: require.resolve("source-map-loader"),
+  exclude: [constants.EXCLUDE_SOURCE_MAPS]
 };
 
 /** Loader chain for typescript files in case of non-aot mode. Keep in mind that the list of loaders
@@ -55,12 +31,17 @@ exports.RULE_TS_LOADING = function(isDev) {
         transpileOnly: true // Everything else is processed by the corresponding plugin.
       }
     },
-    "angular2-template-loader",
-    "angular-router-loader"
+    require.resolve("angular2-template-loader"),
+    require.resolve("angular-router-loader")
   ];
 
   if (isDev) {
-    use.unshift("@angularclass/hmr-loader?pretty=true");
+    use.unshift({
+      loader: require.resolve("@angularclass/hmr-loader"),
+      options: {
+        pretty: true
+      }
+    });
   }
 
   return {
@@ -102,14 +83,14 @@ exports.RULE_HTML_RAW_LOADING = {
  * Note that this only aims at files in `src/assets`, since that folder is intended
  * for directly referenced resources.
  */
-exports.RULE_IMG_LOADING = function(isDev, env) {
+exports.RULE_IMG_LOADING = function(env) {
   return {
     test: /\.(gif|png|jpe?g)$/i,
     use: [
       {
         loader: require.resolve("file-loader"),
         query: {
-          name: isDev
+          name: env.isDev
             ? "static/media/[name].[ext]"
             : `static/media/[name].[hash:${env.hashDigits}].[ext]`
         }
@@ -117,7 +98,7 @@ exports.RULE_IMG_LOADING = function(isDev, env) {
       {
         loader: require.resolve("image-webpack-loader"),
         query: {
-          bypassOnDebug: isDev
+          bypassOnDebug: env.isDev
         }
       }
     ],
@@ -185,92 +166,5 @@ exports.RULE_COMPONENT_SASS_LOADING = function(isDev) {
   return {
     test: /\.component\.scss$/,
     use: [require.resolve("to-string-loader")].concat(scssLoaderChain(isDev))
-  };
-};
-
-/** A list of file extensions that may be tried resolved automatically by webpack
- * in case you did not provide them explicitly.
- * Add others here if that is required, but take care that this may slow down the
- * compilation process, since the attempts are executed in the order their corresponding
- * extensions are listed here.
- */
-exports.DEFAULT_RESOLVE_EXTENSIONS = [".ts", ".js", ".json"];
-
-exports.getDefaultContextReplacementPlugin = function getDefaultContextReplacementPlugin(
-  src
-) {
-  src = src || "src";
-  return new ContextReplacementPlugin(
-    /angular(\\|\/)core(\\|\/)@angular/, // See https://github.com/angular/angular/issues/11580#issuecomment-282705332
-    paths.resolveApp(src)
-  );
-};
-
-/**
- * Creates a version information based on the environment configuration.
- * It is displayed in the footer.
- *
- * @param env The current configuration, either from `config/dev.config.js` or `build.config.js`.
- */
-function createVersionString(env) {
-  const src = [process.env.NODE_ENV];
-  src[0] = src[0].charAt(0).toUpperCase() + src[0].slice(1);
-  if (env.useAot) {
-    src.push("AoT mode");
-  }
-  if (env.useBuildOptimizer) {
-    src.push("with build optimization");
-  }
-  return src.join(", ");
-}
-
-exports.getHtmlTemplatePlugin = function getHtmlTemplatePlugin(isDevMode, env) {
-  const minify = isDevMode
-    ? false
-    : {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeRedundantAttributes: true,
-        useShortDoctype: true,
-        removeEmptyAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        keepClosingSlash: true,
-        minifyJS: true,
-        minifyCSS: true,
-        minifyURLs: true
-      };
-
-  return new HtmlWebpackPlugin({
-    template: paths.appHtml,
-    filename: "index.html", // Keep in mind that the output path gets prepended to this name automatically.
-    inject: "body",
-    minify,
-    // Custom config.
-    title: "Demo App",
-    devMode: isDevMode,
-    baseHref: env.baseHref,
-    publicPath: env.publicPath,
-    polyfillFile: "polyfills.dll.js",
-    vendorFile: "vendor.dll.js",
-    versionInfo: createVersionString(env)
-  });
-};
-
-exports.getTsCheckerPlugin = function getTsCheckerPlugin(env) {
-  // Plugin to improve build and type checking speed; Will be included by default in the next major version.
-  return new ForkTsCheckerWebpackPlugin({
-    watch: "./src",
-    tsconfig: "./tsconfig.json",
-    async: env.isWatch,
-    formatter: "codeframe",
-    tslint: "./tslint.json",
-    memoryLimit: process.env.APPVEYOR ? 1024 : 2048 // 2048 is too much for appveyor...
-  });
-};
-
-exports.getPerformanceOptions = function getPerformanceOptions() {
-  return {
-    // Size warnings are created in a custom configurable way, thus they are disabled here.
-    hints: false
   };
 };
