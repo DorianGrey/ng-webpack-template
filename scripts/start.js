@@ -61,36 +61,41 @@ function handleWatchTranslations() {
 
 function startServer(translationsWatcher) {
   info("Starting development server...");
-  const WebpackDevServer = require("webpack-dev-server");
-  const addDevServerEntryPoints = require("webpack-dev-server/lib/util/addDevServerEntrypoints");
-  const devServerConfig = require("../config/webpack/dev-server");
-  const { DEFAULT_PORT, HOST } = require("../config/hostInfo");
 
-  info("Build config in use: " + JSON.stringify(devOptions, null, 4));
+  const { HOST, selectPort } = require("../config/hostInfo");
 
-  const config = devConfig(devOptions);
-  const devServerConfigBuilt = devServerConfig(
-    config.output.publicPath,
-    DEFAULT_PORT,
-    devOptions.isHot
-  );
+  return selectPort(devOptions.port).then(selectedPort => {
+    devOptions.port = selectedPort;
+    info("Build config in use: " + JSON.stringify(devOptions, null, 4));
 
-  addDevServerEntryPoints(config, devServerConfigBuilt);
+    const WebpackDevServer = require("webpack-dev-server");
+    const addDevServerEntryPoints = require("webpack-dev-server/lib/util/addDevServerEntrypoints");
+    const devServerConfig = require("../config/webpack/dev-server");
 
-  const compiler = webpack(config);
-  const devServer = new WebpackDevServer(compiler, devServerConfigBuilt);
+    const config = devConfig(devOptions);
+    const devServerConfigBuilt = devServerConfig(
+      config.output.publicPath,
+      selectedPort,
+      devOptions.isHot
+    );
 
-  devServer.listen(DEFAULT_PORT, HOST, err => {
-    if (err) {
-      return console.error(err);
-    }
-  });
+    addDevServerEntryPoints(config, devServerConfigBuilt);
 
-  ["SIGINT", "SIGTERM"].forEach(sig => {
-    process.on(sig, () => {
-      translationsWatcher.close();
-      devServer.close();
-      process.exit();
+    const compiler = webpack(config);
+    const devServer = new WebpackDevServer(compiler, devServerConfigBuilt);
+
+    devServer.listen(selectedPort, HOST, err => {
+      if (err) {
+        return console.error(err);
+      }
+    });
+
+    ["SIGINT", "SIGTERM"].forEach(sig => {
+      process.on(sig, () => {
+        translationsWatcher.close();
+        devServer.close();
+        process.exit();
+      });
     });
   });
 }

@@ -11,7 +11,7 @@ const buildConfig = {
   useBuildOptimizer: false,
   isDev: false,
   isWatch: false,
-  publicUrl: "",
+  publicPath: "/",
   baseHref: "/",
   hashDigits: 12,
   // The asset categorization map.
@@ -69,6 +69,24 @@ module.exports = function(env = {}) {
   });
 
   sanitizeOptions(result);
+
+  return result;
+};
+
+/**
+ * Helper function to determine which serve-relevant fields
+ * differ from the default configuration. Is used e.g. for
+ * printing the preview information.
+ *
+ * @param compare The build config to compare to.
+ */
+module.exports.getNonDefaultFields = function(compare) {
+  const result = {};
+  ["outputDir", "publicPath"].map(field => {
+    if (compare[field] !== buildConfig[field]) {
+      result[field] = compare[field];
+    }
+  });
 
   return result;
 };

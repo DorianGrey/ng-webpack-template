@@ -9,8 +9,9 @@ const buildConfig = {
   isDev: true,
   isWatch: true,
   isHot: true,
-  publicUrl: "",
-  baseHref: "/"
+  publicPath: "/",
+  baseHref: "/",
+  port: 9987
 };
 
 function isValidOptionOverride(key, value) {

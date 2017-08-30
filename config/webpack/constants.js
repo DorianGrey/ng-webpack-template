@@ -249,7 +249,7 @@ exports.getHtmlTemplatePlugin = function getHtmlTemplatePlugin(isDevMode, env) {
     title: "Demo App",
     devMode: isDevMode,
     baseHref: env.baseHref,
-    publicUrl: env.publicUrl,
+    publicPath: env.publicPath,
     polyfillFile: "polyfills.dll.js",
     vendorFile: "vendor.dll.js",
     versionInfo: createVersionString(env)
@@ -261,7 +261,7 @@ exports.getTsCheckerPlugin = function getTsCheckerPlugin(env) {
   return new ForkTsCheckerWebpackPlugin({
     watch: "./src",
     tsconfig: "./tsconfig.json",
-    async: !env.isWatch,
+    async: env.isWatch,
     formatter: "codeframe",
     tslint: "./tslint.json",
     memoryLimit: process.env.APPVEYOR ? 1024 : 2048 // 2048 is too much for appveyor...

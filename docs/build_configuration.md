@@ -12,8 +12,8 @@ The build config file can be found in `config/build.config.js`.
   - **devtool** The source-map type to be used. Is directly forwarded to webpack. Defaults to `source-map`.
   - **useAot** Determines whether AoT mode is used or not. Defaults to `true`.
   - **useBuildOptimizer** Determines whether the build optimizer should be used or not. Since this is still an experimental technology, it defaults to `false`.
-  - **publicUrl** The public url for your build. Sometimes also called "context". E.g. if you app should be available on `https://whatever.example.com/test`, this value should be `test`. Defaults to `""`.
-  - **baseHref** The base href for your build. This gets included in the generated `index.html` directly. In most cases, this should be `/` followed by whatever you defined for `publicUrl` Defaults to `/`.
+  - **publicPath** The public url for your build. Sometimes also called "context". E.g. if you app should be available on `https://whatever.example.com/test`, this value should be `/test`. Defaults to `"/"`.
+  - **baseHref** The base href for your build. In most cases, this should be `/`. This gets included in the generated `index.html` directly. Defaults to `/`.
   - **hashDigits** The amount of digits used in the hashed of the generated output. Defaults to `12`.
   - **categorizeAssets** is used to determine if and how your assets are categorized when generating the build information. If you don't want any kind of categorization, just set this to `false`. It's a hash of `categoryName` to `regex to match`. Default value:
     ```

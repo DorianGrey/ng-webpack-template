@@ -12,8 +12,28 @@ const PurifyPlugin = require("@angular-devkit/build-optimizer").PurifyPlugin;
 const path = require("path");
 const merge = require("webpack-merge");
 
-const commonConfig = require("./_common.config");
+const commonConfig = require("./common");
 const paths = require("../paths");
+
+/**
+ * Helper function to ensure that the provided path ends with a / or not,
+ * depending on the requirements.
+ *
+ * @param path {String} The path to check for.
+ * @param needsSlash {Boolean} Indicated whether it is required to have a trailing slash or not.
+ * @return {String} The provided value if it already satisfies the "must (not) have" condition,
+ *                  or the fixed string otherwise.
+ */
+function ensureEndingSlash(path, needsSlash) {
+  const hasSlash = path.endsWith("/");
+  if (hasSlash && !needsSlash) {
+    return path.slice(0, -1);
+  } else if (!hasSlash && needsSlash) {
+    return `${path}/`;
+  } else {
+    return path;
+  }
+}
 
 /**
  * The production build may or may not include the BundleAnalyzerPlugin to visualize the build
@@ -71,10 +91,10 @@ module.exports = function(env) {
     // Generate some information about the generated bundle size
     new BundleAnalyzerPlugin({
       analyzerMode: "static",
-      reportFilename: paths.resolveApp("buildStats", "bundle-size-report.html"),
+      reportFilename: path.join(env.statsDir, "bundle-size-report.html"),
       openAnalyzer: false,
       generateStatsFile: true,
-      statsFilename: paths.resolveApp("buildStats", "bundle-size-report.json"),
+      statsFilename: path.join(env.statsDir, "bundle-size-report.json"),
       logLevel: "silent"
     })
   ]);
@@ -91,7 +111,7 @@ module.exports = function(env) {
       path: env.outputDir,
       filename: `static/js/[name].[chunkhash:${env.hashDigits}].js`,
       chunkFilename: `static/js/[id].chunk.[chunkhash:${env.hashDigits}].js`,
-      publicPath: env.publicUrl,
+      publicPath: ensureEndingSlash(env.publicPath, true),
       devtoolModuleFilenameTemplate: info =>
         path.relative(paths.appSrc, info.absoluteResourcePath)
     },

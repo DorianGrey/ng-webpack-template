@@ -55,6 +55,7 @@
     "concurrently": "^3.5.0",
     "cross-env": "^5.0.5",
     "css-loader": "^0.28.5",
+    "detect-port": "^1.2.1",
     "electron": "^1.7.5",
     "express": "^4.15.4",
     "extract-text-webpack-plugin": "^3.0.0",

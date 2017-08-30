@@ -2,11 +2,21 @@
 
 const chalk = require("chalk");
 const path = require("path");
+const { kebabCase } = require("lodash");
 
 const formatUtil = require("./formatUtil");
+const { getNonDefaultFields } = require("../../config/build.config");
 
 function printPreviewInformation(buildConfig, hasYarn) {
-  const serveMessage = hasYarn ? "yarn serve" : "npm run serve";
+  let serveMessage = hasYarn ? "yarn serve" : "npm run serve";
+  const nonDefaultFields = getNonDefaultFields(buildConfig);
+  const additionalInfoString = Object.getOwnPropertyNames(nonDefaultFields)
+    .map(k => `--${kebabCase(k)} "${nonDefaultFields[k]}"`)
+    .join(" ");
+
+  if (additionalInfoString) {
+    serveMessage = `${serveMessage} -- ${additionalInfoString}`;
+  }
 
   process.stdout.write(
     formatUtil.formatNote(

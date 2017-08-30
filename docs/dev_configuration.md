@@ -9,8 +9,9 @@ The build config file can be found in `config/build.config.js`.
   - **outputDir** is used to configure the root directory of the temporarily created files. Defaults to `<rootDir>/.tmp`.
   - **devtool** The source-map type to be used. Is directly forwarded to webpack. Defaults to `inline-source-map`.
   - **isHot**: Determines whether you want to use HMR or not. Defaults to `true`, which offers the best development experience.
-  - **publicUrl** The public url for your environment. Sometimes also called "context". E.g. if you app should be available on `https://whatever.example.com/test`, this value should be `test`. Defaults to `""`.
-  - **baseHref** The base href for your build. In most cases, this should be `/` followed by whatever you defined for `publicUrl`. This gets included in the generated `index.html` directly. Defaults to `/`.
+  - **publicPath** The public url for your environment. Sometimes also called "context". E.g. if you app should be available on `https://whatever.example.com/test`, this value should be `/test`. Defaults to `"/"`.
+  - **baseHref** The base href for your build. In most cases, this should be `/`. This gets included in the generated `index.html` directly. Defaults to `/`.
+  - **port** The port to listen to. Defaults to `9987`. Note that a different port gets selected automatically in case the selected is in use.
 
 Options that cannot be overridden:
   - **isDev** Determines development mode.

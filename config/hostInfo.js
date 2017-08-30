@@ -4,6 +4,10 @@
  For simplicity, we're picking up the first matching address
  */
 const ifaces = require("os").networkInterfaces();
+const detectPort = require("detect-port");
+const chalk = require("chalk");
+
+const formatUtils = require("../scripts/util/formatUtil");
 
 function determinePublicAddress() {
   // Iterate over interfaces ...
@@ -47,13 +51,32 @@ function selectPublicAddress(defaultHost) {
   }
 }
 
-const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 9987;
 const HOST = process.env.HOST || "0.0.0.0";
-
 const PUBLIC_ADDRESS = selectPublicAddress(HOST);
 
+function selectPort(requested) {
+  return new Promise((resolve, reject) => {
+    detectPort(requested, (err, foundPort) => {
+      if (err) {
+        reject(err);
+      } else {
+        if (requested !== foundPort) {
+          process.stdout.write(
+            formatUtils.formatNote(
+              `Port ${chalk.cyan(
+                requested.toString()
+              )} was occupied, selected ${chalk.cyan(foundPort)} instead.`
+            ) + "\n"
+          );
+        }
+        resolve(foundPort);
+      }
+    });
+  });
+}
+
 module.exports = {
-  DEFAULT_PORT,
   HOST,
-  PUBLIC_ADDRESS
+  PUBLIC_ADDRESS,
+  selectPort
 };

@@ -5,7 +5,7 @@ const merge = require("webpack-merge");
 
 const ErrorFormatterPlugin = require("./plugins/ErrorFormatterPlugin");
 const paths = require("../paths");
-const commonConfig = require("./_common.config");
+const commonConfig = require("./common");
 
 module.exports = function(env) {
   const plugins = [
@@ -32,7 +32,7 @@ module.exports = function(env) {
       path: env.outputDir,
       filename: "static/js/[name].js",
       chunkFilename: "static/js/[id].chunk.js",
-      publicPath: env.publicUrl,
+      publicPath: env.publicPath,
       pathinfo: true,
       devtoolModuleFilenameTemplate: info =>
         path.relative(paths.appSrc, info.absoluteResourcePath)
