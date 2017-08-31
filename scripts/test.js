@@ -1,15 +1,16 @@
 const fs = require("fs-extra");
-const { Server, config } = require("karma");
+const { Server } = require("karma");
 
 const compileTranslations = require("./translations").compile;
 const paths = require("../config/paths");
 
 function runKarma() {
-  const karmaConfig = config.parseConfig(paths.resolveApp("karma.conf.js"));
-
-  const server = new Server(karmaConfig, function(exitCode) {
-    process.exit(exitCode);
-  });
+  const server = new Server(
+    { configFile: paths.resolveApp("karma.conf.js") },
+    function(exitCode) {
+      process.exit(exitCode);
+    }
+  );
 
   server.start();
 }
