@@ -19,7 +19,6 @@
   ],
   "main": "index.js",
   "scripts": {
-    "clear": "rimraf .awcache .tmp dist dist-aot src/generated",
     "start": "node scripts/start.js",
     "test": "node scripts/test.js",
     "test:watch": "node scripts/test.js --watch",
