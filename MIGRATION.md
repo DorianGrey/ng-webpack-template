@@ -32,6 +32,7 @@ Both folders got removed, their contents (if anymore required) got moved:
 ### Others
 The files below have just been moved, without any further modification except path adoptions.
 - `/stylelint.config.js` => `config/stylelint.config.js`
+- `src/index.template.html` => `public/index.ejs`; is now an `ejs` template since the HTML version did no longer get processed correctly. This does not have any impact on the syntax used inside before.
 
 # Technical changes
 - Phantomjs was replaced by electron as test runner. See `docs/troubleshooting.md` if you face any problems.
@@ -43,7 +44,7 @@ The files below have just been moved, without any further modification except pa
 - Test execution was added as a pre-push hook to make sure they get executed before the corresponding commit gets published.
 - Component templates (i.e. `*.component.html`) are now processed by `html-loader` instead of `raw-loader`. As a result, you might reference assets from those files to get them processed by webpack (e.g. images).
 - **Assets**: There is now a suggested structure to deal with assets, either with directly  (i.e. processed by webpack) or indirectly referenced ones.
-  - The `public` folder is intended for indirectly referenced assets, i.e. those that are not processed by webpack.
+  - The `public` folder is intended for indirectly referenced assets, i.e. those that are not processed by webpack. The contents of this folder are recursively copied to your defined output folder in build mode except the `index.ejs` template. In development mode, they get served by the dev-server.
   - The `src/app` folder contains assets that are referenced by webpack, e.g. in case they are imported from your code or referenced by templates using relative paths.
 
 # Tasks / Scripts
