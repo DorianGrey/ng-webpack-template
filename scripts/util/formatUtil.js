@@ -7,6 +7,10 @@ exports.formatIndicator = function(indicator) {
   return `${chalk.bgCyan.white.bold("", indicator, "")}  `;
 };
 
+exports.formatDebug = function(text) {
+  return `${chalk.bgBlack.white("", "D", "")} ${text}`;
+};
+
 exports.formatNote = function(text) {
   return `${chalk.bgWhite.black("", "N", "")} ${text}`;
 };

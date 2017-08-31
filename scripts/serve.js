@@ -3,11 +3,11 @@
 const express = require("express");
 const yargs = require("yargs");
 const path = require("path");
-const logger = require("log4js").getLogger("server");
-logger.level = "debug";
 
 const { selectPort } = require("../config/hostInfo");
 const buildConfig = require("../config/build.config")(yargs.argv);
+const formatUtil = require("./util/formatUtil");
+const writer = s => process.stdout.write(`${s}\n`);
 
 const intendedPort = yargs.argv.port || 9988;
 
@@ -27,7 +27,9 @@ selectPort(intendedPort).then(serverPort => {
   );
 
   app.listen(serverPort, () => {
-    logger.info(`Serving files from ${serveDir} ...`);
-    logger.info(`Listening on http://localhost:${serverPort} ...`);
+    writer(formatUtil.formatInfo(`Serving files from ${serveDir} ...`));
+    writer(
+      formatUtil.formatInfo(`Listening on http://localhost:${serverPort} ...`)
+    );
   });
 });

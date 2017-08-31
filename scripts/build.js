@@ -21,7 +21,7 @@ const printPreviewInformation = require("./util/printPreviewInformation");
 const writer = process.stdout.write.bind(process.stdout);
 
 process.on("unhandledRejection", err => {
-  logger.error(err);
+  writer(formatUtil.formatError(err) + "\n");
   throw err;
 });
 
@@ -62,7 +62,9 @@ function handleBuildSetup() {
 }
 
 function handleCopyStatics(config, buildConfig) {
-  writer(formatUtil.formatInfo("Copying non-referenced static files...\n"));
+  writer(
+    formatUtil.formatInfo("Copying non-referenced static files...") + "\n"
+  );
   fs.copySync(paths.appPublic, buildConfig.outputDir, {
     dereference: true,
     filter: file => file !== paths.appHtml
@@ -93,7 +95,9 @@ function handleBuild(config, buildConfig) {
         return reject(err);
       }
       writer("\n");
-      writer(formatUtil.formatSuccess("Build completed successfully.\n\n"));
+      writer(
+        formatUtil.formatSuccess("Build completed successfully." + "\n\n")
+      );
 
       const jsonified = formatWebpackMessages(stats.toJson({}, true));
       const formattedStats = statsFormatter.formatStats(jsonified);
@@ -122,7 +126,7 @@ Promise.resolve()
   .then(([config, buildConfig]) => handleCopyStatics(config, buildConfig))
   .then(([config, buildConfig]) => handleBuild(config, buildConfig))
   .catch(e => {
-    writer(formatUtil.formatError("Build failed.\n"));
+    writer(formatUtil.formatError("Build failed." + "\n"));
     writer(formatUtil.formatError(e) + "\n");
     process.exit(1);
   });

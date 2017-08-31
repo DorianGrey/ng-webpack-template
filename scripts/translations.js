@@ -2,11 +2,10 @@
 
 const yaml = require("js-yaml");
 const _ = require("lodash");
-const fs = require("fs");
-const path = require("path");
-const logger = require("log4js").getLogger("translations");
 
 const utils = require("./util/fileUtils");
+const formatUtil = require("./util/formatUtil");
+const writer = s => process.stdout.write(`${s}\n`);
 
 const parseYaml = file => {
   try {
@@ -87,10 +86,12 @@ const statistics = opts => partials => {
 
   if (_.size(conflictingKeys) > 0) {
     _.each(conflictingKeys, (translations, key) => {
-      logger.error(`Conflict for "${key}":`);
+      writer(formatUtil.formatError(`Conflict for "${key}":`));
       _.each(translations, t => {
-        logger.error(
-          `${_.padEnd(`${t.file} `, maxFileNameLength + 2, "-")}> ${t.value}`
+        writer(
+          formatUtil.formatError(
+            `${_.padEnd(`${t.file} `, maxFileNameLength + 2, "-")}> ${t.value}`
+          )
         );
       });
     });
@@ -100,10 +101,12 @@ const statistics = opts => partials => {
   }
   if (opts.verbose) {
     _.each(duplicatedValues, (translations, value) => {
-      logger.debug(`Duplicated value for "${value}":`);
+      writer(formatUtil.formatDebug(`Duplicated value for "${value}":`));
       _.each(translations, t => {
-        logger.debug(
-          `${_.padEnd(`${t.file} `, maxFileNameLength + 2, "-")}> ${t.key}`
+        writer(
+          formatUtil.formatDebug(
+            `${_.padEnd(`${t.file} `, maxFileNameLength + 2, "-")}> ${t.key}`
+          )
         );
       });
     });
@@ -122,10 +125,12 @@ const statistics = opts => partials => {
       );
     }
   }
-  logger.debug(
-    `Translation duplicates: ${_.size(
-      duplicatedValues
-    )} (${duplicatedValuesPercent.toFixed(1)}%)`
+  writer(
+    formatUtil.formatDebug(
+      `Translation duplicates: ${_.size(
+        duplicatedValues
+      )} (${duplicatedValuesPercent.toFixed(1)}%)`
+    )
   );
   return partials;
 };
@@ -191,8 +196,12 @@ exports.watch = (src, dest, opts) => {
       exports
         .compile(src, dest, opts)
         .then(
-          () => logger.log(`Translations written to ${dest}`),
-          err => logger.error("Error processing translation:", err)
+          () =>
+            writer(formatUtil.formatDebug(`Translations written to ${dest}`)),
+          err =>
+            writer(
+              formatUtil.formatError(`Error processing translation: ${err}`)
+            )
         );
     },
     {

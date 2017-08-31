@@ -85,7 +85,6 @@
     "karma-webpack": "^2.0.4",
     "lint-staged": "^4.0.4",
     "lodash": "^4.17.4",
-    "log4js": "^2.3.3",
     "ngrx-store-freeze": "^0.1.9",
     "node-sass": "^4.5.3",
     "postcss-flexbugs-fixes": "^3.2.0",
