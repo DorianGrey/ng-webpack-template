@@ -29,16 +29,20 @@ The version favors to use [yarn](https://github.com/yarnpkg/yarn) for faster and
 ```
 npm install -g yarn
 ```
-Alternatively, you might use good old `npm`, if you REALLY want to. If that is the case, I recommend to use a version >= 5.x to get a proper `package-lock.json`. Just replace the `yarn` part of the commands listed below with `npm`.
+Alternatively, you might use good old `npm`, if you REALLY want to. If that is the case, I'd strongly recommend to use a version >= 5.x to get a proper `package-lock.json` - at least, that is the restriction mentioned in the project's `package.json`. Just replace the `yarn` part of the commands listed below with `npm`.
 
 ## Project structure
 The intended project structure, how to work with it and possibly extend it is documented in the [docs folder](https://github.com/DorianGrey/ng-webpack-template/tree/master/docs).
 
 - [General structure](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/general_structure.md)
 - [The application state and how to extend it](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/app_state.md)
+- [Development configuration](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/dev_configuration.md)
+- [Build configuration](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/build_configuration.md)
 
 ## Additional docs
 - [The impact of using long term caching strategies on your assets size](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/longterm_caching_impact.md)
+- [Troubleshooting / known issues](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/troubleshooting.md)
+- In case you updated to a commit or version after the [12.0.0 release](https://github.com/DorianGrey/ng-webpack-template/releases/tag/12.0.0), you might want to take a look at the [migration guide](https://github.com/DorianGrey/ng-webpack-template/blob/master/MIGRATION.md).
 
 ## Workflow
 
@@ -49,6 +53,8 @@ Just run
 yarn start
 ```
 which will fire up a webpack-dev-server using webpack's DLL feature up-front to speed up everything, and provide HMR functionality. The latter is based on [ngrx/store](https://github.com/ngrx/store).
+
+For configuring you development environment, check out the [development configuration](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/dev_configuration.md) docs.
 
 
 ### Production
@@ -79,6 +85,7 @@ The build can be configured in two ways:
 - Statically in the `config/build.config.js` file.
 - Dynamically by adding options through the command line. Just use `yarn build -- --[your-option]=[your-option-value]`. You might override every entry, while every not provided parameter will fall back to the default. Options are evaluated using [yargs](https://github.com/yargs/yargs).
 
+See the [build configuration documentation](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/build_configuration.md) for details.
 
 The preconfigured tasks are listed below.
 
