@@ -3,7 +3,8 @@ env:
   - CXX=g++-4.8 CI=true
 language: node_js
 node_js:
-  - "6.11.1"
+  - "6"
+  - "8"
 addons:
   apt:
     sources:
