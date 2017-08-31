@@ -20,6 +20,7 @@ $font-family-sans-serif:
 
 html {
   box-sizing: border-box;
+  height: 100%;
 }
 
 *,
@@ -30,9 +31,26 @@ html {
 }
 
 body {
+  background: #EEEEEE;
   font-family: $font-family-sans-serif;
   margin: 0;
-  background: #EEEEEE;
+  min-height: calc(100% - 1.35rem);
+  padding-bottom: 4rem;
+  position: relative;
+
+  > footer {
+    background-color: red;
+    color: #FFFFFF;
+    padding: 0.5rem 1rem;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    span {
+      font-weight: 600;
+    }
+  }
 }
 
 [hidden] {

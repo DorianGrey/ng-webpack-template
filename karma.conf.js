@@ -1,13 +1,15 @@
-const webpackTestConfig = require("./webpack/test.config");
+const withCoverage = /ci$/i.test(process.env.npm_lifecycle_event);
+const isWatchMode = process.argv.indexOf("--watch") > -1;
 
-const ENV                = process.env.NODE_ENV || "development";
-const devSpecificConfig  = {
+const webpackTestConfig = require("./config/webpack/test");
+
+const noCoverageConfig = {
   // In dev mode, we don't need to see the coverage stuff on every run ...
   preprocessors: {
     "./src/test-setup.js": ["webpack", "sourcemap"]
   },
 };
-const prodSpecificConfig = {
+const withCoverageConfig = {
   // In prod-test mode, we do want to see and store the coverage, thus ...
   preprocessors: {
     "./src/test-setup.js": ["coverage", "webpack", "sourcemap"]
@@ -43,20 +45,20 @@ module.exports = config => {
     webpack: webpackTestConfig,
     webpackServer: {noInfo: true},
     // See the comments above for an explanation of this difference.
-    reporters: ENV === "production" ? ["mocha", "coverage", "karma-remap-istanbul", "junit"] : ["mocha"],
+    reporters: withCoverage ? ["mocha", "coverage", "karma-remap-istanbul", "junit"] : ["mocha"],
     mochaReporter: {
       output: "minimal"
     },
     port: 9876,
     colors: true,
     // Reduce output noise to a minimum in dev mode, so that the results are easier to keep an eye on.
-    logLevel: ENV === "production" ? config.LOG_INFO : config.LOG_WARN,
-    autoWatch: ENV !== "production",
-    browsers: ["PhantomJS"],
-    singleRun: ENV === "production"
+    logLevel: withCoverage ? config.LOG_INFO : config.LOG_WARN,
+    autoWatch: isWatchMode,
+    browsers: ["Electron"],
+    singleRun: !isWatchMode
   };
 
   config.set(
-    Object.assign(baseConfig, ENV === "production" ? prodSpecificConfig : devSpecificConfig)
+    Object.assign(baseConfig, withCoverage ? withCoverageConfig : noCoverageConfig)
   );
 };

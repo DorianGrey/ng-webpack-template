@@ -4,13 +4,24 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F5F5F5">
+
   <base href="<%= htmlWebpackPlugin.options.baseHref %>">
+
+  <link rel="shortcut icon" type="image/x-icon" href="<%= htmlWebpackPlugin.options.publicPath %>/favicon64x64.png">
+  <link rel="manifest" href="<%= htmlWebpackPlugin.options.publicPath %>/manifest.json">
+
   <title><%= htmlWebpackPlugin.options.title %></title>
 </head>
 <body>
   <app-root>
     Loading...
   </app-root>
+
+  <footer>
+    <span>Build version:&nbsp;</span><%= htmlWebpackPlugin.options.versionInfo %>
+  </footer>
+
   <% if (htmlWebpackPlugin.options.devMode) { %>
   <script src="<%= htmlWebpackPlugin.options.polyfillFile %>"></script>
   <script src="<%= htmlWebpackPlugin.options.vendorFile %>"></script>

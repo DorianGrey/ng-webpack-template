@@ -3,16 +3,18 @@ const UglifyJsPlugin = require("webpack/lib/optimize/UglifyJsPlugin");
 const CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 const HashedModuleIdsPlugin = require("webpack/lib/HashedModuleIdsPlugin");
 const ModuleConcatenationPlugin = require("webpack/lib/optimize/ModuleConcatenationPlugin");
-
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
-  .BundleAnalyzerPlugin;
+const { AotPlugin } = require("@ngtools/webpack");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const InlineChunkManifestHtmlWebpackPlugin = require("inline-chunk-manifest-html-webpack-plugin");
 const WebpackChunkHash = require("webpack-chunk-hash");
 const PurifyPlugin = require("@angular-devkit/build-optimizer").PurifyPlugin;
-const { root } = require("./constants");
+const path = require("path");
+const merge = require("webpack-merge");
 
-const ClosureCompilerPlugin = require("webpack-closure-compiler");
+const commonConfig = require("./common");
+const paths = require("../paths");
+const { ensureEndingSlash } = require("./util");
 
 /**
  * The production build may or may not include the BundleAnalyzerPlugin to visualize the build
@@ -21,7 +23,7 @@ const ClosureCompilerPlugin = require("webpack-closure-compiler");
  *
  * At the time of writing, the plugin is used in every production build (with and without AoT),
  * except when the exemplary production server is started as well.
- * @param env Bundle environment options.
+ * @param env Bundle config options.
  */
 module.exports = function(env) {
   /*
@@ -61,17 +63,19 @@ module.exports = function(env) {
      *
      * See: http://webpack.github.io/docs/stylesheets.html#separate-css-bundle
      */
-    new ExtractTextPlugin("main.[contenthash].css"),
+    new ExtractTextPlugin(
+      `static/css/[name].[contenthash:${env.hashDigits}].css`
+    ),
 
     new ModuleConcatenationPlugin(),
 
     // Generate some information about the generated bundle size
     new BundleAnalyzerPlugin({
       analyzerMode: "static",
-      reportFilename: root("buildStats", "bundle-size-report.html"),
+      reportFilename: path.join(env.statsDir, "bundle-size-report.html"),
       openAnalyzer: false,
       generateStatsFile: true,
-      statsFilename: root("buildStats", "bundle-size-report.json"),
+      statsFilename: path.join(env.statsDir, "bundle-size-report.json"),
       logLevel: "silent"
     })
   ]);
@@ -83,16 +87,28 @@ module.exports = function(env) {
    * See: http://webpack.github.io/docs/configuration.html#output-filename
    */
   const result = {
+    bail: true,
     output: {
-      path: root("dist"),
-      filename: "[name].[chunkhash].js",
-      chunkFilename: "[id].chunk.[chunkhash].js"
+      path: env.outputDir,
+      filename: `static/js/[name].[chunkhash:${env.hashDigits}].js`,
+      chunkFilename: `static/js/[id].chunk.[chunkhash:${env.hashDigits}].js`,
+      publicPath: ensureEndingSlash(env.publicPath, true),
+      devtoolModuleFilenameTemplate: info =>
+        path.relative(paths.appSrc, info.absoluteResourcePath)
     },
-    devtool: false,
+    devtool: env.devtool,
     plugins: plugins
   };
 
-  if (env.useBo) {
+  if (env.useAot) {
+    result.plugins.push(
+      new AotPlugin({
+        tsConfigPath: paths.resolveApp("tsconfig.aot.json")
+      })
+    );
+  }
+
+  if (env.useBuildOptimizer) {
     result.module = {
       rules: [
         // Ngo optimization, see https://github.com/angular/angular-cli/pull/6520
@@ -101,7 +117,7 @@ module.exports = function(env) {
           use: [
             {
               loader: "@angular-devkit/build-optimizer/webpack-loader",
-              options: { sourceMap: false }
+              options: { sourceMap: env.devtool !== false }
             }
           ]
         }
@@ -111,38 +127,28 @@ module.exports = function(env) {
   }
 
   /**
-   * Plugin to properly minify the build output in one of two ways.
+   * Plugin to properly minify the build output.
    *
-   * See:
-   * - http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
-   * - https://github.com/roman01la/webpack-closure-compiler
+   * See: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
    */
-  if (env.useClosureCompiler) {
-    plugins.push(
-      new ClosureCompilerPlugin({
-        compiler: {
-          language_in: "ECMASCRIPT5",
-          language_out: "ECMASCRIPT5"
-          // Note: compilation_level: 'ADVANCED' does not work (yet?); it causes some weird errors regarding the usage of .prototype.
-        },
-        concurrency: 3
-      })
-    );
-  } else {
-    const uglifyOptions = {
-      beautify: false,
-      comments: false,
-      warnings: false
-    };
-    if (env.useBo) {
-      uglifyOptions.compress = {
-        pure_getters: true,
-        passes: 3,
-        warnings: false
-      };
-    }
-    plugins.push(new UglifyJsPlugin(uglifyOptions));
+  const uglifyOptions = {
+    compress: {
+      warnings: false,
+      // This feature has been reported as buggy a few times, such as:
+      // https://github.com/mishoo/UglifyJS2/issues/1964
+      // We'll wait with enabling it by default until it is more solid.
+      reduce_vars: false
+    },
+    output: {
+      comments: false
+    },
+    sourceMap: env.devtool !== false
+  };
+  if (env.useBuildOptimizer) {
+    uglifyOptions.compress.pure_getters = true;
+    uglifyOptions.compress.passes = 3;
   }
+  plugins.push(new UglifyJsPlugin(uglifyOptions));
 
-  return result;
+  return merge.smart(commonConfig(env), result);
 };

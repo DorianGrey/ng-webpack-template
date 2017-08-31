@@ -1,12 +1,10 @@
 module.exports = {
-  "extends": [
-    "stylelint-config-standard"
-  ],
-  "plugins": [
+  extends: ["stylelint-config-standard"],
+  plugins: [
     // Plugin with a specialized bunch of rules specifically for SCSS.
     "stylelint-scss"
   ],
-  "rules": {
+  rules: {
     // Disabled, since it conflicts with SCSS/SASS stuff like `@include`.
     "at-rule-no-unknown": null,
     // The corresponding rule for SCSS.
@@ -24,7 +22,7 @@ module.exports = {
     "function-name-case": [
       "lower",
       {
-        "ignoreFunctions": [
+        ignoreFunctions: [
           "Alpha",
           "progid:DXImageTransform.Microsoft.BasicImage",
           "DXImageTransform.Microsoft.BasicImage"
@@ -43,15 +41,7 @@ module.exports = {
     "selector-list-comma-newline-after": "always-multi-line",
 
     // Opinionated list of allowed units.
-    "unit-whitelist": [
-      "vh",
-      "em",
-      "rem",
-      "%",
-      "s",
-      "px",
-      "deg"
-    ],
+    "unit-whitelist": ["vh", "em", "rem", "%", "s", "px", "deg"],
 
     /*
       Ignore some non-standard properties that got added for specific browsers
@@ -60,10 +50,7 @@ module.exports = {
     "property-no-unknown": [
       true,
       {
-        "ignoreProperties": [
-          "font-smooth",
-          "local"
-        ]
+        ignoreProperties: ["font-smooth", "local"]
       }
     ],
 

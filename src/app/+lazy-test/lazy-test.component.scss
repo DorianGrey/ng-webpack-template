@@ -5,3 +5,9 @@ p:first-child {
 p:last-child {
   font-style: italic;
 }
+
+img {
+  margin: auto;
+  max-width: 100%;
+  display: block;
+}

@@ -2,11 +2,10 @@
 
 const yaml = require("js-yaml");
 const _ = require("lodash");
-const fs = require("fs");
-const path = require("path");
-const logger = require("log4js").getLogger("translations");
 
-const utils = require("./utils");
+const utils = require("./util/fileUtils");
+const formatUtil = require("./util/formatUtil");
+const writer = s => process.stdout.write(`${s}\n`);
 
 const parseYaml = file => {
   try {
@@ -87,10 +86,12 @@ const statistics = opts => partials => {
 
   if (_.size(conflictingKeys) > 0) {
     _.each(conflictingKeys, (translations, key) => {
-      logger.error(`Conflict for "${key}":`);
+      writer(formatUtil.formatError(`Conflict for "${key}":`));
       _.each(translations, t => {
-        logger.error(
-          `${_.padEnd(`${t.file} `, maxFileNameLength + 2, "-")}> ${t.value}`
+        writer(
+          formatUtil.formatError(
+            `${_.padEnd(`${t.file} `, maxFileNameLength + 2, "-")}> ${t.value}`
+          )
         );
       });
     });
@@ -100,10 +101,12 @@ const statistics = opts => partials => {
   }
   if (opts.verbose) {
     _.each(duplicatedValues, (translations, value) => {
-      logger.debug(`Duplicated value for "${value}":`);
+      writer(formatUtil.formatDebug(`Duplicated value for "${value}":`));
       _.each(translations, t => {
-        logger.debug(
-          `${_.padEnd(`${t.file} `, maxFileNameLength + 2, "-")}> ${t.key}`
+        writer(
+          formatUtil.formatDebug(
+            `${_.padEnd(`${t.file} `, maxFileNameLength + 2, "-")}> ${t.key}`
+          )
         );
       });
     });
@@ -122,10 +125,12 @@ const statistics = opts => partials => {
       );
     }
   }
-  logger.debug(
-    `Translation duplicates: ${_.size(
-      duplicatedValues
-    )} (${duplicatedValuesPercent.toFixed(1)}%)`
+  writer(
+    formatUtil.formatDebug(
+      `Translation duplicates: ${_.size(
+        duplicatedValues
+      )} (${duplicatedValuesPercent.toFixed(1)}%)`
+    )
   );
   return partials;
 };
@@ -138,6 +143,15 @@ const byLanguage = translations => {
   return result;
 };
 
+/**
+ * Function to compile a set of translations in .yml format to a typescript file.
+ *
+ * @param src The files to pick up for compilation. In most cases, this is a glob.
+ * @param dest The destination file.
+ * @param opts Specific build options. Atm., the following are supported:
+ *             "verbose": Log some additional information.
+ *             "duplicateThreshold": Limit the allowed translation duplication (in percent).
+ */
 exports.compile = (src, dest, opts) =>
   utils
     .getFiles(src)
@@ -160,3 +174,39 @@ exports.compile = (src, dest, opts) =>
       translations => `export default ${JSON.stringify(translations, null, 4)};`
     )
     .then(content => utils.writeFile(dest, content));
+
+/**
+ * Creates a watcher for compiling the translations on every change to them.
+ * Note that incremental builds are not possible, so it will simply execute the
+ * `compile` function above.
+ *
+ * @param src The files to pick up for compilation. In most cases, this is a glob.
+ * @param dest The destination file.
+ * @param opts Specific build options. Atm., the following are supported:
+ *             "verbose": Log some additional information.
+ *             "duplicateThreshold": Limit the allowed translation duplication (in percent).
+ *             "chokidarOpts": Options to be forwarded to chokidar.
+ * @return The watcher created by `chokidar`.
+ */
+exports.watch = (src, dest, opts) => {
+  const watch = require("./util/watch");
+  return watch(
+    src,
+    () => {
+      exports
+        .compile(src, dest, opts)
+        .then(
+          () =>
+            writer(formatUtil.formatDebug(`Translations written to ${dest}`)),
+          err =>
+            writer(
+              formatUtil.formatError(`Error processing translation: ${err}`)
+            )
+        );
+    },
+    {
+      events: ["change", "unlink"],
+      chokidarOpts: opts.chokidarOpts
+    }
+  );
+};

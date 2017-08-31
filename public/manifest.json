@@ -1,0 +1,25 @@
+{
+  "short_name": "Demo App",
+  "name": "Angular Demo App",
+  "icons": [
+    {
+      "src": "favicon48x48.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon64x64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "./index.html",
+  "display": "standalone",
+  "theme_color": "#F5F5F5",
+  "background_color": "#EEEEEE"
+}

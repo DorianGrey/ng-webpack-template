@@ -53,20 +53,17 @@ which will fire up a webpack-dev-server using webpack's DLL feature up-front to 
 
 ### Production
 
-There are currently four ways to create a production build:
-- With or without [AoT compilation](https://angular.io/docs/ts/latest/cookbook/aot-compiler.html) (and optionally: [build-optimizer](https://github.com/angular/devkit/tree/master/packages/angular_devkit/build_optimizer))
-- With [Closure Compiler](https://github.com/google/closure-compiler-npm) or [UglifyJS2](https://github.com/mishoo/UglifyJS2) as code minifier
+Production builds are by default created using:
+- [AoT compilation](https://angular.io/docs/ts/latest/cookbook/aot-compiler.html)
+- [UglifyJS2](https://github.com/mishoo/UglifyJS2) as code minifier
 
-Each of them might bring up different results, and might be suitable for a particular situation while being problematic in another.
+Optionally, you might:
+- Optimize further using [build-optimizer](https://github.com/angular/devkit/tree/master/packages/angular_devkit/build_optimizer). However, it is still extremely experimental, so **beware**.
+- In case AoT does not work: Disable it.
 
-We have added support for using [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification since
-- its results are slightly smaller
-- there is currently some work going on to be able to take more advantage of its available optimization techniques
-Just note that at the moment, the `Advanced` optimization mode is not yet usable.
+The latter options might be suitable for a particular situation while being problematic in another.
 
-Using [build-optimizer](https://github.com/angular/devkit/tree/master/packages/angular_devkit/build_optimizer) has an even better impact on the vendor bundle's size. However, it is still extremely experimental, so **beware**. Also note that the changes it applies clash with [Closure Compiler](https://github.com/google/closure-compiler-npm), so you cannot use both in conjunction.
-
-The AoT versions are using the [@ngtools/webpack plugin](https://github.com/angular/angular-cli/blob/master/packages/webpack/README.md).
+The AoT version is using the [@ngtools/webpack plugin](https://github.com/angular/angular-cli/blob/master/packages/webpack/README.md).
 Please keep an eye on the list of [issues marked as related to it](https://github.com/angular/angular-cli/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20aot) in case you're facing any errors.
 
 **Beware**: The whole AoT processing currently enforces rather strict rules (see a rather good explanation [here](https://medium.com/@isaacplmann/making-your-angular-2-library-statically-analyzable-for-aot-e1c6f3ebedd5)) on how not only your own code has to be written, but also the code of the libraries you are using. While **I'd strongly recommend** to head this way if it is possible in any way, esp. the latter restriction might screw up this plan.
@@ -76,24 +73,20 @@ Note that each build tasks will invoke the `test` task (includes linting, genera
 
 In addition to the regular build, every production build will also generate a bundle size analyze report in HTML and JSON format (powered by [webpack-bundle-analyzer](https://github.com/th0r/webpack-bundle-analyzer)). It can be found in the `buildStats` dir once the build task completes. Please keep in mind that it will be overwritten in every cycle.
 
-#### Build tasks not including the example server
+#### Build tasks
+
+The build can be configured in two ways:
+- Statically in the `config/build.config.js` file.
+- Dynamically by adding options through the command line. Just use `yarn build -- --[your-option]=[your-option-value]`. You might override every entry, while every not provided parameter will fall back to the default. Options are evaluated using [yargs](https://github.com/yargs/yargs).
+
+
+The preconfigured tasks are listed below.
 
 | Command            | Effect        |
 | ------------------ | ------------- |
-| `yarn build`        | Creates a producton bundle in the `dist` folder. |
-| `yarn build:cc`     | Same as above, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification.|
-| `yarn build:aot`    | Creates a producton bundle in the `dist-aot` folder. Utilizes AoT compilation. |
-| `yarn build:aot:bo`    | Creates a producton bundle in the `dist-aot` folder. Utilizes AoT compilation and [build-optimizer](https://github.com/angular/devkit/tree/master/packages/angular_devkit/build_optimizer).<br> **Warning**: This should be considered **experimental!**|
-| `yarn build:aot:cc` | Same as above `yarn build:aot`, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification. |
+| `yarn build`        | Creates a producton bundle, by default in the `build` folder. Utilizes AoT compilation. |
+| `yarn build:bo`    | Creates a producton bundle, by default in the `build` folder. Utilizes AoT compilation and [build-optimizer](https://github.com/angular/devkit/tree/master/packages/angular_devkit/build_optimizer).<br> **Warning**: This should be considered **experimental!**|
 
-#### Build tasks including the example server
+#### Exemplary production server
 
-All of these tasks will bring up the exemplary production server (see the `example-prod-server` directory for details), which is available at `http://localhost:9988` after the build completes.
-
-| Command            | Effect        |
-| ------------------ | ------------- |
-| `yarn prod-server`        | Creates a producton bundle in the `dist` folder and serves its contents afterwards. |
-| `yarn prod-server:cc`     | Same as above, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification.|
-| `yarn prod-server:aot`    | Creates a producton bundle in the `dist-aot` folder and serves its contents afterwards. Utilizes AoT compilation. |
-| `yarn prod-server:aot:bo`    | Creates a producton bundle in the `dist-aot` folder and serves its contents afterwards. Utilizes AoT compilation and [build-optimizer](https://github.com/angular/devkit/tree/master/packages/angular_devkit/build_optimizer).<br> **Warning**: This should be considered **experimental!**|
-| `yarn prod-server:aot:cc` | Same as above `yarn prod-server:aot`, but uses [Closure Compiler](https://github.com/google/closure-compiler-npm) for minification. |
+The result of the build process can be served via the `yarn serve` command. Note that if you changed the `outputDir` option, you will have to provide it here as well, since the `serve` script accesses your build configuration.
