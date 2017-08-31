@@ -23,12 +23,10 @@ export class TodoListComponent {
   }
 
   add() {
-    this.todoService.add(
-      <Todo>{
-        text: this.todoText,
-        addedTimestamp: Date.now()
-      }
-    );
+    this.todoService.add(<Todo>{
+      text: this.todoText,
+      addedTimestamp: Date.now()
+    });
     this.todoText = "";
   }
 

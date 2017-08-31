@@ -106,13 +106,10 @@ export function todosReducer(
        - The completed task is correctly marked as "done".
        */
       if (idx >= 0 && action.payload.done) {
-        return assign(
-          { ...state },
-          <State>{
-            current: state.current.remove(idx),
-            completed: state.completed.push(action.payload)
-          }
-        );
+        return assign({ ...state }, <State>{
+          current: state.current.remove(idx),
+          completed: state.completed.push(action.payload)
+        });
       } else {
         return state;
       }
