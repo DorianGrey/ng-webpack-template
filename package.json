@@ -1,7 +1,7 @@
 {
   "name": "ng-webpack-template",
-  "version": "12.0.0",
-  "description": "Evil brother of ng2-jspm-template",
+  "version": "13.0.0",
+  "description": "A template for angular development using webpack, with some useful batteries included.",
   "author": {
     "name": "Christian Linne",
     "email": "ShadowVampire@web.de"
