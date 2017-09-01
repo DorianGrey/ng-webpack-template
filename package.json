@@ -114,6 +114,7 @@
     "webpack-dev-server": "^2.7.1",
     "webpack-karma-die-hard": "^1.0.4",
     "webpack-merge": "^4.1.0",
+    "workbox-webpack-plugin": "^2.0.0",
     "yargs": "^8.0.2"
   },
   "dependencies": {

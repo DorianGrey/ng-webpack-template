@@ -79,7 +79,8 @@ module.exports = function(env) {
      * We're using this for conditionally executing development / production code.
      */
     new EnvironmentPlugin({
-      NODE_ENV: process.env.NODE_ENV || "development"
+      NODE_ENV: process.env.NODE_ENV || "development",
+      PUBLIC_PATH: env.publicPath
     }),
 
     new CaseSensitivePathsPlugin(),
