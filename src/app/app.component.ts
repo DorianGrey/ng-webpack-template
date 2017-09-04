@@ -6,6 +6,7 @@ import { Observable } from "rxjs/Observable";
 
 import { CoreAppState, getLanguage } from "./app.store";
 import { SetLanguageAction } from "./i18n/language.store";
+import { ServiceWorkerService } from "./service-worker/service-worker.service";
 
 @Component({
   selector: "app-root",
@@ -19,10 +20,17 @@ export class AppComponent {
 
   constructor(
     private translate: TranslateService,
-    private store: Store<CoreAppState>
+    private store: Store<CoreAppState>,
+    serviceWorkerService: ServiceWorkerService
   ) {
     this.currentLanguage = this.store.select(getLanguage);
     this.availableLanguages = this.translate.getLangs();
+
+    serviceWorkerService.stateInfo.subscribe(newInfo => {
+      // You should do something valuable here, depending on the particular
+      // state information.
+      console.warn("New service worker state information:", newInfo);
+    });
   }
 
   rotateLanguage() {

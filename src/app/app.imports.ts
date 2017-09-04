@@ -2,16 +2,16 @@ import { BrowserModule } from "@angular/platform-browser";
 
 import { StoreModule } from "@ngrx/store";
 import { StoreRouterConnectingModule } from "@ngrx/router-store";
-
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
-import { createTranslateLoader } from "./translate.factory";
 
+import { createTranslateLoader } from "./translate.factory";
 import { APP_ROUTES } from "./app.routes";
 import { SharedModule } from "./shared/shared.module";
 import { InputTestModule } from "./input-test/input-test.module";
 import { TodosModule } from "./todos/todos.module";
 import { reducers, metaReducers } from "./app.store";
-import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+import { ServiceWorkerModule } from "./service-worker/service-worker.module";
 
 /*
   The list of app-level imports got externalized since it's not a fixed one, but may vary in the different
@@ -30,6 +30,7 @@ const imports = [
   SharedModule.forRoot(),
   InputTestModule,
   TodosModule,
+  ServiceWorkerModule,
   StoreModule.forRoot(reducers, { metaReducers }),
   StoreRouterConnectingModule
 ];
