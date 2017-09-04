@@ -2,7 +2,6 @@ process.env.NODE_ENV = process.env.NODE_ENV || "development";
 
 const webpack = require("webpack");
 const fs = require("fs-extra");
-const yargs = require("yargs");
 
 const paths = require("../config/paths");
 const compileTranslations = require("./translations").compile;
@@ -10,7 +9,7 @@ const watchTranslations = require("./translations").watch;
 const dllConfig = require("../config/webpack/dll");
 const devConfig = require("../config/webpack/dev");
 const formatUtil = require("./util/formatUtil");
-const devOptions = require("../config/dev.config")(yargs.argv);
+const devOptions = require("../config/dev.config").parseFromCLI();
 
 const writer = process.stdout.write.bind(process.stdout);
 

@@ -14,6 +14,7 @@ module.exports = {
   devTmp: resolveApp(".tmp"),
   appSrc: resolveApp("src"),
   appPublic: resolveApp("public"),
+  serviceWorkerScriptSrc: resolveApp("public", "service-worker.js"),
   appHtml: resolveApp("public", "index.ejs"),
   configDir: resolveConfig(),
   appStyleLintOptions: resolveConfig("stylelint.config.js"),

@@ -70,15 +70,6 @@ module.exports = function(env) {
 
     new ModuleConcatenationPlugin(),
 
-    // Generate a service worker with pre-cached resources information.
-    new WorkboxPlugin({
-      globDirectory: env.outputDir,
-      globPatterns: ["**/*.{html,js,css,jpg,eot,svg,woff2,woff,ttf,json}"],
-      globIgnores: ["**/*.map", "service-worker.js"],
-      swDest: path.join(env.outputDir, "service-worker.js"),
-      swSrc: path.join(paths.appPublic, "service-worker.js")
-    }),
-
     // Generate some information about the generated bundle size
     new BundleAnalyzerPlugin({
       analyzerMode: "static",
@@ -89,6 +80,19 @@ module.exports = function(env) {
       logLevel: "silent"
     })
   ]);
+
+  if (env.withServiceWorker) {
+    plugins.push(
+      // Generate a service worker with pre-cached resources information.
+      new WorkboxPlugin({
+        globDirectory: env.outputDir,
+        globPatterns: ["**/*.{html,js,css,jpg,eot,svg,woff2,woff,ttf,json}"],
+        globIgnores: ["**/*.map", "service-worker.js"],
+        swDest: path.join(env.outputDir, "service-worker.js"),
+        swSrc: path.join(paths.appPublic, "service-worker.js")
+      })
+    );
+  }
 
   /**
    * In general, [hash] identifies the whole build, whereas [chunkhash] identifies the particular chunk.

@@ -1,11 +1,11 @@
 "use strict";
 
 const express = require("express");
-const yargs = require("yargs");
 const path = require("path");
+const yargs = require("yargs");
 
 const { selectPort } = require("../config/hostInfo");
-const buildConfig = require("../config/build.config")(yargs.argv);
+const buildConfig = require("../config/build.config").parseFromCLI();
 const formatUtil = require("./util/formatUtil");
 const writer = s => process.stdout.write(`${s}\n`);
 

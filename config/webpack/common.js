@@ -82,7 +82,8 @@ module.exports = function(env) {
     new EnvironmentPlugin({
       NODE_ENV: process.env.NODE_ENV || "development",
       PUBLIC_PATH: env.publicPath,
-      PUBLIC_URL: ensureEndingSlash(env.publicPath, false)
+      PUBLIC_URL: ensureEndingSlash(env.publicPath, false),
+      USE_SERVICE_WORKER: !!env.withServiceWorker
     }),
 
     new CaseSensitivePathsPlugin(),
