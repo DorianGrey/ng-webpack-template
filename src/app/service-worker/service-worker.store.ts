@@ -9,6 +9,10 @@ export enum ServiceWorkerStateValue {
   STATE_NOT_AVAILABLE = "STATE_NOT_AVAILABLE",
   // Service worker is not available due to development mode.
   STATE_NOT_AVAILABLE_DEV_MODE = "STATE_NOT_AVAILABLE_DEV_MODE",
+  // An active service worker was found. It is not guaranteed that a new version will occur afterwards.
+  STATE_ACTIVE_SERVICE_WORKER_FOUND = "STATE_ACTIVE_SERVICE_WORKER_FOUND",
+  // An updated service worker (version) was found and is now installing.
+  STATE_SERVICE_WORKER_UPDATE_FOUND_INSTALL_PENDING = "STATE_SERVICE_WORKER_UPDATE_FOUND_INSTALL_PENDING",
   // Service worker has been installed/upgraded, new content is available.
   STATE_INSTALLED_NEW_CONTENT_AVAILABLE = "STATE_INSTALLED_NEW_CONTENT_AVAILABLE",
   // Service worker has been installed, content is cached for offline usage.
@@ -32,6 +36,14 @@ export class SetNotAvailableDevModeStateAction implements Action {
   readonly type = ServiceWorkerStateValue.STATE_NOT_AVAILABLE_DEV_MODE;
 }
 
+export class SetActiveServiceWorkerFoundStateAction implements Action {
+  readonly type = ServiceWorkerStateValue.STATE_ACTIVE_SERVICE_WORKER_FOUND;
+}
+
+export class SetUpdatedServiceWorkerFoundStateAction implements Action {
+  readonly type = ServiceWorkerStateValue.STATE_SERVICE_WORKER_UPDATE_FOUND_INSTALL_PENDING;
+}
+
 export class SetInstalledNewContentStateAction implements Action {
   readonly type = ServiceWorkerStateValue.STATE_INSTALLED_NEW_CONTENT_AVAILABLE;
 }
@@ -53,6 +65,8 @@ export type ServiceWorkerStateActions =
   | SetPendingStateAction
   | SetNotAvailableStateAction
   | SetNotAvailableDevModeStateAction
+  | SetActiveServiceWorkerFoundStateAction
+  | SetUpdatedServiceWorkerFoundStateAction
   | SetInstalledNewContentStateAction
   | SetInstalledContentCachedStateAction
   | SetRemovedStateAction
@@ -76,6 +90,8 @@ export function serviceWorkerStateReducer(
     case ServiceWorkerStateValue.STATE_PENDING:
     case ServiceWorkerStateValue.STATE_NOT_AVAILABLE:
     case ServiceWorkerStateValue.STATE_NOT_AVAILABLE_DEV_MODE:
+    case ServiceWorkerStateValue.STATE_ACTIVE_SERVICE_WORKER_FOUND:
+    case ServiceWorkerStateValue.STATE_SERVICE_WORKER_UPDATE_FOUND_INSTALL_PENDING:
     case ServiceWorkerStateValue.STATE_INSTALLED_NEW_CONTENT_AVAILABLE:
     case ServiceWorkerStateValue.STATE_INSTALLED_CONTENT_CACHED:
     case ServiceWorkerStateValue.STATE_REMOVED:

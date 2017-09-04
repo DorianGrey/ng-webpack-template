@@ -5,7 +5,9 @@ import {
   SetInstalledNewContentStateAction,
   SetNotAvailableStateAction,
   SetNotAvailableDevModeStateAction,
-  SetRemovedStateAction
+  SetRemovedStateAction,
+  SetActiveServiceWorkerFoundStateAction,
+  SetUpdatedServiceWorkerFoundStateAction
 } from "./service-worker.store";
 import { CoreAppState } from "../app.store";
 
@@ -39,15 +41,16 @@ function registerSW(swUrl: string, store: Store<CoreAppState>) {
   navigator.serviceWorker
     .register(swUrl)
     .then(registration => {
+      if (registration.active) {
+        store.dispatch(new SetActiveServiceWorkerFoundStateAction());
+      }
+
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
+        store.dispatch(new SetUpdatedServiceWorkerFoundStateAction());
         installingWorker.onstatechange = () => {
           if (installingWorker.state === "installed") {
             if (navigator.serviceWorker.controller) {
-              //
-              // the fresh content will have been added to the cache.
-              // It's the perfect time to display a "New content is
-              // available; please refresh." message in your web app.
               /*
                 At this point, the old content will have been purged and
                 the updated content will have been added to the cache.
