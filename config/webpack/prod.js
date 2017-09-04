@@ -11,6 +11,7 @@ const WebpackChunkHash = require("webpack-chunk-hash");
 const PurifyPlugin = require("@angular-devkit/build-optimizer").PurifyPlugin;
 const path = require("path");
 const merge = require("webpack-merge");
+const WorkboxPlugin = require("workbox-webpack-plugin");
 
 const commonConfig = require("./common");
 const paths = require("../paths");
@@ -68,6 +69,15 @@ module.exports = function(env) {
     ),
 
     new ModuleConcatenationPlugin(),
+
+    // Generate a service worker with pre-cached resources information.
+    new WorkboxPlugin({
+      globDirectory: env.outputDir,
+      globPatterns: ["**/*.{html,js,css,jpg,eot,svg,woff2,woff,ttf,json}"],
+      globIgnores: ["**/*.map", "service-worker.js"],
+      swDest: path.join(env.outputDir, "service-worker.js"),
+      swSrc: path.join(paths.appPublic, "service-worker.js")
+    }),
 
     // Generate some information about the generated bundle size
     new BundleAnalyzerPlugin({

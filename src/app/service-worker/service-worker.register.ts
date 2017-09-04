@@ -4,14 +4,15 @@ import {
   SetInstalledContentCachedStateAction,
   SetInstalledNewContentStateAction,
   SetNotAvailableStateAction,
-  SetNotAvailableDevModeStateAction
+  SetNotAvailableDevModeStateAction,
+  SetRemovedStateAction
 } from "./service-worker.store";
 import { CoreAppState } from "../app.store";
 
 export default function register(store: Store<CoreAppState>) {
   if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
     const publicUrl = new URL(
-      process.env.PUBLIC_PATH,
+      process.env.PUBLIC_URL,
       window.location.toString()
     );
     // process.env.PUBLIC_PATH needs to be on the same origin as the served web page,
@@ -21,7 +22,7 @@ export default function register(store: Store<CoreAppState>) {
     }
 
     window.addEventListener("load", () => {
-      const swUrl = `${process.env.PUBLIC_PATH}/service-worker.js`;
+      const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
       // TODO: Need to figure out if it is required to check if the SW exists before actually fetching it.
       registerSW(swUrl, store);
     });
@@ -70,10 +71,10 @@ function registerSW(swUrl: string, store: Store<CoreAppState>) {
     });
 }
 
-export function unregister() {
+export function unregister(store: Store<CoreAppState>) {
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.ready.then(registration =>
-      registration.unregister()
-    );
+    navigator.serviceWorker.ready
+      .then(registration => registration.unregister())
+      .then(() => store.dispatch(new SetRemovedStateAction()));
   }
 }

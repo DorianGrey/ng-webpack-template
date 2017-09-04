@@ -6,6 +6,7 @@ const webpack = require("webpack");
 const fs = require("fs-extra");
 const yargs = require("yargs");
 const glob = require("globby");
+const shelljs = require("shelljs");
 
 const compileTranslations = require("./translations").compile;
 const paths = require("../config/paths");
@@ -99,20 +100,54 @@ function handleBuild(config, buildConfig) {
         formatUtil.formatSuccess("Build completed successfully." + "\n\n")
       );
 
-      const jsonified = formatWebpackMessages(stats.toJson({}, true));
-      const formattedStats = statsFormatter.formatStats(jsonified);
-
-      statsFormatter.printWarnings(formattedStats.warnings);
-
-      if (formattedStats.errors.length) {
-        return reject(formattedStats.errors);
-      } else {
-        const hasYarn = fs.existsSync(paths.yarnLockFile);
-        printFileSizes(buildConfig, stats, staticAssets);
-        printPreviewInformation(buildConfig, hasYarn);
-        resolve();
-      }
+      return resolve([buildConfig, stats, staticAssets]);
     });
+  });
+}
+
+function handlePostBuild(buildConfig, stats, staticAssets) {
+  const pa = require.resolve("workbox-sw"),
+    swTargetPath = path.join(buildConfig.outputDir, path.basename(pa)),
+    paMap = pa + ".map",
+    swMapPath = path.join(buildConfig.outputDir, path.basename(pa) + ".map");
+
+  fs.copySync(pa, swTargetPath, {
+    dereference: true
+  });
+  fs.copySync(paMap, swMapPath, {
+    dereference: true
+  });
+
+  // Update service-worker script to properly update its referenced Workbox.js version.
+  shelljs.sed(
+    "-i",
+    /\$serviceWorkerLibAnchor/,
+    buildConfig.publicPath + path.basename(pa),
+    path.resolve(buildConfig.outputDir, "service-worker.js")
+  );
+
+  // Add the files copied from workbox to the list of statically copied files.
+  staticAssets.push(
+    path.relative(buildConfig.outputDir, swTargetPath),
+    path.relative(buildConfig.outputDir, swMapPath)
+  );
+
+  return Promise.resolve([buildConfig, stats, staticAssets]);
+}
+
+function printStatistics(buildConfig, stats, staticAssets) {
+  return new Promise((resolve, reject) => {
+    const jsonified = formatWebpackMessages(stats.toJson({}, true));
+    const formattedStats = statsFormatter.formatStats(jsonified);
+    statsFormatter.printWarnings(formattedStats.warnings);
+    if (formattedStats.errors.length) {
+      return reject(formattedStats.errors);
+    } else {
+      const hasYarn = fs.existsSync(paths.yarnLockFile);
+      printFileSizes(buildConfig, stats, staticAssets);
+      printPreviewInformation(buildConfig, hasYarn);
+      resolve(buildConfig);
+    }
   });
 }
 
@@ -125,6 +160,12 @@ Promise.resolve()
   .then(handleBuildSetup)
   .then(([config, buildConfig]) => handleCopyStatics(config, buildConfig))
   .then(([config, buildConfig]) => handleBuild(config, buildConfig))
+  .then(([buildConfig, stats, staticAssets]) =>
+    handlePostBuild(buildConfig, stats, staticAssets)
+  )
+  .then(([buildConfig, stats, staticAssets]) =>
+    printStatistics(buildConfig, stats, staticAssets)
+  )
   .catch(e => {
     writer(formatUtil.formatError("Build failed." + "\n"));
     writer(formatUtil.formatError(e) + "\n");
