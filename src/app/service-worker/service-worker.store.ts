@@ -9,6 +9,8 @@ export enum ServiceWorkerStateValue {
   STATE_NOT_AVAILABLE = "STATE_NOT_AVAILABLE",
   // Service worker is not available due to development mode.
   STATE_NOT_AVAILABLE_DEV_MODE = "STATE_NOT_AVAILABLE_DEV_MODE",
+  // Service worker is not available since it was disabled for build.
+  STATE_NOT_AVAILABLE_DISABLED = "STATE_NOT_AVAILABLE_DISABLED",
   // An active service worker was found. It is not guaranteed that a new version will occur afterwards.
   STATE_ACTIVE_SERVICE_WORKER_FOUND = "STATE_ACTIVE_SERVICE_WORKER_FOUND",
   // An updated service worker (version) was found and is now installing.
@@ -34,6 +36,10 @@ export class SetNotAvailableStateAction implements Action {
 
 export class SetNotAvailableDevModeStateAction implements Action {
   readonly type = ServiceWorkerStateValue.STATE_NOT_AVAILABLE_DEV_MODE;
+}
+
+export class SetNotAvailableDisabledStateAction implements Action {
+  readonly type = ServiceWorkerStateValue.STATE_NOT_AVAILABLE_DISABLED;
 }
 
 export class SetActiveServiceWorkerFoundStateAction implements Action {
@@ -65,6 +71,7 @@ export type ServiceWorkerStateActions =
   | SetPendingStateAction
   | SetNotAvailableStateAction
   | SetNotAvailableDevModeStateAction
+  | SetNotAvailableDisabledStateAction
   | SetActiveServiceWorkerFoundStateAction
   | SetUpdatedServiceWorkerFoundStateAction
   | SetInstalledNewContentStateAction
@@ -90,6 +97,7 @@ export function serviceWorkerStateReducer(
     case ServiceWorkerStateValue.STATE_PENDING:
     case ServiceWorkerStateValue.STATE_NOT_AVAILABLE:
     case ServiceWorkerStateValue.STATE_NOT_AVAILABLE_DEV_MODE:
+    case ServiceWorkerStateValue.STATE_NOT_AVAILABLE_DISABLED:
     case ServiceWorkerStateValue.STATE_ACTIVE_SERVICE_WORKER_FOUND:
     case ServiceWorkerStateValue.STATE_SERVICE_WORKER_UPDATE_FOUND_INSTALL_PENDING:
     case ServiceWorkerStateValue.STATE_INSTALLED_NEW_CONTENT_AVAILABLE:

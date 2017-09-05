@@ -7,6 +7,7 @@ import { Observable } from "rxjs/Observable";
 import { CoreAppState, getLanguage } from "./app.store";
 import { SetLanguageAction } from "./i18n/language.store";
 import { ServiceWorkerService } from "./service-worker/service-worker.service";
+import { ServiceWorkerStateValue } from "./service-worker/service-worker.store";
 
 @Component({
   selector: "app-root",
@@ -30,6 +31,15 @@ export class AppComponent {
       // You should do something valuable here, depending on the particular
       // state information.
       console.warn("New service worker state information:", newInfo);
+
+      // For the moment - testing purposes - just reload the location in case
+      // the "new content" info is received.
+      if (
+        newInfo.value ===
+        ServiceWorkerStateValue.STATE_INSTALLED_NEW_CONTENT_AVAILABLE
+      ) {
+        window.location.reload();
+      }
     });
   }
 

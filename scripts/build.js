@@ -91,10 +91,9 @@ function determineStaticAssets(config, buildConfig) {
   const staticAssets = glob
     .sync(globs)
     .map(p => path.relative(paths.appPublic, p));
-  return Promise.resolve([config, buildConfig, staticAssets]);
-}
 
-function copyWorkbox(config, buildConfig, staticAssets) {
+  // Static assets regarding the service worker shall only be dealt with
+  // in case it's enabled in the config.
   if (buildConfig.withServiceWorker) {
     const workBoxPath = getWorkBoxPath();
     const workBoxMapPath = workBoxPath + ".map";
@@ -191,9 +190,6 @@ Promise.resolve()
   .then(handleBuildSetup)
   .then(([config, buildConfig]) => handleCopyStatics(config, buildConfig))
   .then(([config, buildConfig]) => determineStaticAssets(config, buildConfig))
-  .then(([config, buildConfig, staticAssets]) =>
-    copyWorkbox(config, buildConfig, staticAssets)
-  )
   .then(([config, buildConfig, staticAssets]) =>
     handleBuild(config, buildConfig, staticAssets)
   )

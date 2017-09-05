@@ -7,7 +7,8 @@ import {
   SetNotAvailableDevModeStateAction,
   SetRemovedStateAction,
   SetActiveServiceWorkerFoundStateAction,
-  SetUpdatedServiceWorkerFoundStateAction
+  SetUpdatedServiceWorkerFoundStateAction,
+  SetNotAvailableDisabledStateAction
 } from "./service-worker.store";
 import { CoreAppState } from "../app.store";
 
@@ -17,19 +18,19 @@ export default function register(store: Store<CoreAppState>) {
       process.env.PUBLIC_URL,
       window.location.toString()
     );
-    // process.env.PUBLIC_PATH needs to be on the same origin as the served web page,
+    // process.env.PUBLIC_URL needs to be on the same origin as the served web page,
     // otherwise, we cannot proceed.
     if (publicUrl.origin !== window.location.origin) {
       return;
     }
 
     window.addEventListener("load", () => {
-      const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
       // TODO: Need to figure out if it is required to check if the SW exists before actually fetching it.
       if (process.env.USE_SERVICE_WORKER) {
+        const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
         registerSW(swUrl, store);
       } else {
-        unregister(store); // Remove old version in case it is still present.
+        store.dispatch(new SetNotAvailableDisabledStateAction());
       }
     });
   } else {
