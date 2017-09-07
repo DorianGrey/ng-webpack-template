@@ -6943,6 +6943,13 @@ typescript@^2.5.2:
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.5.2.tgz#038a95f7d9bbb420b1bf35ba31d4c5c1dd3ffe34"
 
+uglify-es@^3.0.28:
+  version "3.0.28"
+  resolved "https://registry.yarnpkg.com/uglify-es/-/uglify-es-3.0.28.tgz#1cdedbbcdb7865223065281ad7b2347629851d4b"
+  dependencies:
+    commander "~2.11.0"
+    source-map "~0.5.1"
+
 uglify-js@2.8.x, uglify-js@^2.6:
   version "2.8.27"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-2.8.27.tgz#47787f912b0f242e5b984343be8e35e95f694c9c"

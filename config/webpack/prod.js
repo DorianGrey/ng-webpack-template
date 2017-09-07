@@ -15,6 +15,7 @@ const WorkboxPlugin = require("workbox-webpack-plugin");
 
 const commonConfig = require("./common");
 const paths = require("../paths");
+const getBasicUglifyOptions = require("./uglify.config");
 const { ensureEndingSlash } = require("./util");
 
 /**
@@ -158,19 +159,9 @@ module.exports = function(env) {
    *
    * See: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
    */
-  const uglifyOptions = {
-    compress: {
-      warnings: false,
-      // This feature has been reported as buggy a few times, such as:
-      // https://github.com/mishoo/UglifyJS2/issues/1964
-      // We'll wait with enabling it by default until it is more solid.
-      reduce_vars: false
-    },
-    output: {
-      comments: false
-    },
-    sourceMap: env.devtool !== false
-  };
+  const uglifyOptions = getBasicUglifyOptions();
+  uglifyOptions.sourceMap = env.devtool !== false;
+
   if (env.useBuildOptimizer) {
     uglifyOptions.compress.pure_getters = true;
     uglifyOptions.compress.passes = 3;

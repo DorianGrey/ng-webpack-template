@@ -11,6 +11,7 @@ const compileTranslations = require("./translations").compile;
 const paths = require("../config/paths");
 const prodConfig = require("../config/webpack/prod");
 const buildConfig = require("../config/build.config").parseFromCLI();
+const getBasicUglifyOptions = require("../config/webpack/uglify.config");
 
 const formatUtil = require("./util/formatUtil");
 const formatWebpackMessages = require("./util/formatWebpackMessages");
@@ -95,6 +96,8 @@ function determineStaticAssets(config, buildConfig) {
   // Static assets regarding the service worker shall only be dealt with
   // in case it's enabled in the config.
   if (buildConfig.withServiceWorker) {
+    const uglifyEs = require("uglify-es");
+
     const workBoxPath = getWorkBoxPath();
     const workBoxMapPath = workBoxPath + ".map";
     const swTargetPath = path.join(
@@ -105,12 +108,36 @@ function determineStaticAssets(config, buildConfig) {
       buildConfig.outputDir,
       path.basename(workBoxPath) + ".map"
     );
-    fs.copySync(workBoxPath, swTargetPath, {
-      dereference: true
-    });
-    fs.copySync(workBoxMapPath, swMapPath, {
-      dereference: true
-    });
+
+    const uglifyOptions = getBasicUglifyOptions();
+    uglifyOptions.sourceMap =
+      buildConfig.devtool !== false
+        ? {
+            content: fs.readFileSync(workBoxMapPath, "utf8"),
+            url: path.basename(swMapPath) // Need to manually define this: https://github.com/mishoo/UglifyJS2/issues/1905
+          }
+        : false;
+
+    const uglifyResult = uglifyEs.minify(
+      fs.readFileSync(workBoxPath, "utf8"),
+      uglifyOptions
+    );
+
+    if (uglifyResult.error) {
+      return Promise.reject(uglifyResult.error); // break up - cannot go further!
+    }
+
+    fs.writeFileSync(swTargetPath, uglifyResult.code, "utf8");
+    if (buildConfig.devtool !== false) {
+      fs.writeFileSync(swMapPath, uglifyResult.map, "utf8");
+    }
+
+    // fs.copySync(workBoxPath, swTargetPath, {
+    //   dereference: true
+    // });
+    // fs.copySync(workBoxMapPath, swMapPath, {
+    //   dereference: true
+    // });
 
     // Add the files copied from workbox to the list of statically copied files.
     staticAssets.push(
@@ -152,12 +179,36 @@ function handlePostBuild(buildConfig, stats, staticAssets) {
   if (buildConfig.withServiceWorker) {
     // Update service-worker script to properly update its referenced Workbox.js version.
     const workBoxPath = getWorkBoxPath();
+    const targetPath = path.resolve(buildConfig.outputDir, "service-worker.js");
     shelljs.sed(
       "-i",
       /\$serviceWorkerLibAnchor/,
       buildConfig.publicPath + path.basename(workBoxPath),
-      path.resolve(buildConfig.outputDir, "service-worker.js")
+      targetPath
     );
+
+    const uglifyEs = require("uglify-es");
+    const uglifyOptions = getBasicUglifyOptions();
+    uglifyOptions.sourceMap =
+      buildConfig.devtool !== false
+        ? {
+            url: path.basename(targetPath) + ".map" // Need to manually define this: https://github.com/mishoo/UglifyJS2/issues/1905
+          }
+        : false;
+
+    const uglifyResult = uglifyEs.minify(
+      fs.readFileSync(targetPath, "utf8"),
+      uglifyOptions
+    );
+
+    if (uglifyResult.error) {
+      return Promise.reject(uglifyResult.error); // break up - cannot go further!
+    }
+
+    fs.writeFileSync(targetPath, uglifyResult.code, "utf8");
+    if (buildConfig.devtool !== false) {
+      fs.writeFileSync(targetPath + ".map", uglifyResult.map, "utf8");
+    }
   }
 
   return Promise.resolve([buildConfig, stats, staticAssets]);
