@@ -30,6 +30,9 @@ function createVersionString(env) {
   if (env.useBuildOptimizer) {
     src.push("with build optimization");
   }
+  if (env.withServiceWorker) {
+    src.push("with service worker");
+  }
   return src.join(", ");
 }
 

@@ -19,7 +19,7 @@
   </app-root>
 
   <footer>
-    <span>Build version:&nbsp;</span><%= htmlWebpackPlugin.options.versionInfo %>
+    <span>Build version:&nbsp;</span><%= htmlWebpackPlugin.options.versionInfo %><% if (!htmlWebpackPlugin.options.devMode) { %>|&nbsp;<span>Hash:&nbsp;</span><%= webpack.hash %><% } %>
   </footer>
 
   <% if (htmlWebpackPlugin.options.devMode) { %>

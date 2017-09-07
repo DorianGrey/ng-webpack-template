@@ -11,9 +11,11 @@ const WebpackChunkHash = require("webpack-chunk-hash");
 const PurifyPlugin = require("@angular-devkit/build-optimizer").PurifyPlugin;
 const path = require("path");
 const merge = require("webpack-merge");
+const WorkboxPlugin = require("workbox-webpack-plugin");
 
 const commonConfig = require("./common");
 const paths = require("../paths");
+const getBasicUglifyOptions = require("./uglify.config");
 const { ensureEndingSlash } = require("./util");
 
 /**
@@ -80,6 +82,32 @@ module.exports = function(env) {
     })
   ]);
 
+  if (env.withServiceWorker) {
+    // Transformer to remove revision info in case the output file already contains
+    // a hash (i.e. webpack output).
+    const hashRegExp = new RegExp(`\\.\\w{${env.hashDigits}}\\.`);
+    const removeRevisionTransform = manifestEntries => {
+      return manifestEntries.map(entry => {
+        if (hashRegExp.test(entry.url)) {
+          delete entry.revision;
+        }
+        return entry;
+      });
+    };
+
+    plugins.push(
+      // Generate a service worker with pre-cached resources information.
+      new WorkboxPlugin({
+        globDirectory: env.outputDir,
+        globPatterns: ["**/*.{html,js,css,jpg,eot,svg,woff2,woff,ttf,json}"],
+        globIgnores: ["**/*.map", "service-worker.js"],
+        swDest: path.join(env.outputDir, "service-worker.js"),
+        swSrc: path.join(paths.appPublic, "service-worker.js"),
+        manifestTransforms: [removeRevisionTransform]
+      })
+    );
+  }
+
   /**
    * In general, [hash] identifies the whole build, whereas [chunkhash] identifies the particular chunk.
    * Using these is one way to simplify cache busting.
@@ -131,19 +159,9 @@ module.exports = function(env) {
    *
    * See: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
    */
-  const uglifyOptions = {
-    compress: {
-      warnings: false,
-      // This feature has been reported as buggy a few times, such as:
-      // https://github.com/mishoo/UglifyJS2/issues/1964
-      // We'll wait with enabling it by default until it is more solid.
-      reduce_vars: false
-    },
-    output: {
-      comments: false
-    },
-    sourceMap: env.devtool !== false
-  };
+  const uglifyOptions = getBasicUglifyOptions();
+  uglifyOptions.sourceMap = env.devtool !== false;
+
   if (env.useBuildOptimizer) {
     uglifyOptions.compress.pure_getters = true;
     uglifyOptions.compress.passes = 3;

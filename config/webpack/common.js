@@ -6,6 +6,7 @@ const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
 const ProgressBarPlugin = require("progress-bar-webpack-plugin");
 const paths = require("../paths");
 const formatUtil = require("../../scripts/util/formatUtil");
+const { ensureEndingSlash } = require("./util");
 const {
   DEFAULT_RESOLVE_EXTENSIONS,
   NODE_CONFIG,
@@ -79,7 +80,10 @@ module.exports = function(env) {
      * We're using this for conditionally executing development / production code.
      */
     new EnvironmentPlugin({
-      NODE_ENV: process.env.NODE_ENV || "development"
+      NODE_ENV: process.env.NODE_ENV || "development",
+      PUBLIC_PATH: env.publicPath,
+      PUBLIC_URL: ensureEndingSlash(env.publicPath, false),
+      USE_SERVICE_WORKER: !!env.withServiceWorker
     }),
 
     new CaseSensitivePathsPlugin(),
