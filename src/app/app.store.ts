@@ -26,10 +26,6 @@ import {
 } from "./todos/todos.store";
 
 import { languageReducer, State as LanguageState } from "./i18n/language.store";
-import {
-  serviceWorkerStateReducer,
-  State as ServiceWorkerState
-} from "./service-worker/service-worker.store";
 import { Params, RouterStateSnapshot } from "@angular/router";
 
 /**
@@ -47,7 +43,6 @@ import { Params, RouterStateSnapshot } from "@angular/router";
 export interface CoreAppState {
   todos: TodoState;
   language: LanguageState;
-  serviceWorkerInfo: ServiceWorkerState;
   // This entry is NOT part of our own state, but provided by the @ngrx/router-store module.
   router: RouterReducerState;
 }
@@ -76,8 +71,6 @@ export const getCompletedTodos = createSelector(getTodos, completedTodos);
 
 export const getLanguage = (state: CoreAppState) => state.language;
 export const getRouterState = (state: CoreAppState) => state.router;
-export const getServiceWorkerInfo = (state: CoreAppState) =>
-  state.serviceWorkerInfo;
 
 /**
  * These reducers in this object refer to the {CoreAppState} mentioned above.
@@ -89,7 +82,6 @@ export const getServiceWorkerInfo = (state: CoreAppState) =>
 export const reducers: ActionReducerMap<CoreAppState> = {
   todos: todosReducer,
   language: languageReducer,
-  serviceWorkerInfo: serviceWorkerStateReducer,
   // This entry is NOT part of our own state, but provided by the @ngrx/router-store module.
   router: routerReducer
 };

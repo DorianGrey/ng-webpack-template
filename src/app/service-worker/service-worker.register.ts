@@ -8,11 +8,11 @@ import {
   SetRemovedStateAction,
   SetActiveServiceWorkerFoundStateAction,
   SetUpdatedServiceWorkerFoundStateAction,
-  SetNotAvailableDisabledStateAction
+  SetNotAvailableDisabledStateAction,
+  ServiceWorkerStateSlice
 } from "./service-worker.store";
-import { CoreAppState } from "../app.store";
 
-export default function register(store: Store<CoreAppState>) {
+export default function register(store: Store<ServiceWorkerStateSlice>) {
   if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
     const publicUrl = new URL(
       process.env.PUBLIC_URL,
@@ -42,7 +42,7 @@ export default function register(store: Store<CoreAppState>) {
   }
 }
 
-function registerSW(swUrl: string, store: Store<CoreAppState>) {
+function registerSW(swUrl: string, store: Store<ServiceWorkerStateSlice>) {
   navigator.serviceWorker
     .register(swUrl)
     .then(registration => {
@@ -79,7 +79,7 @@ function registerSW(swUrl: string, store: Store<CoreAppState>) {
     });
 }
 
-export function unregister(store: Store<CoreAppState>) {
+export function unregister(store: Store<ServiceWorkerStateSlice>) {
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.ready
       .then(registration => registration.unregister())

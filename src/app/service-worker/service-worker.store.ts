@@ -84,10 +84,18 @@ export interface State {
   details: any | null;
 }
 
+export const SERVICE_WORKER_FEATURE_NAME = "serviceWorkerInfo";
+export interface ServiceWorkerStateSlice {
+  serviceWorkerInfo: State;
+}
+
 const initialServiceWorkerState: State = {
   value: ServiceWorkerStateValue.STATE_PENDING,
   details: null
 };
+
+export const getServiceWorkerInfo = (state: ServiceWorkerStateSlice) =>
+  state.serviceWorkerInfo;
 
 export function serviceWorkerStateReducer(
   state: State = initialServiceWorkerState,
