@@ -21,7 +21,6 @@ test_script:
 build_script:
   - node --version
   - yarn --version
-  - yarn test:ci
   - yarn build
   - yarn build:bo
   - yarn build:no-service-worker
