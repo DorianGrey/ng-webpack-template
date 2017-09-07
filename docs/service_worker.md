@@ -7,7 +7,7 @@ The service worker script can be found in `public/service-worker.js`. It utilize
 
 Please note that the file name `service-worker.js` is not configurable for the moment - we might change this in a later release.
 
-You might consider it to be somewhat empty for the moment:
+The script seems to be somewhat empty for the moment:
 
 ```javascript
 importScripts("$serviceWorkerLibAnchor");
@@ -19,15 +19,15 @@ workboxSW.router.registerNavigationRoute("index.html", {
   whitelist: [/^(?!\/__).*/]
 });
 ```
-However, this script gets modified during the build process in to steps:
-- The [workbox webpack plugin](https://workboxjs.org/reference-docs/latest/module-workbox-webpack-plugin.html) updates the content of the array in `precache` array to contain everything in the output directory of your build. This causes the service worker to pick up these contents and cache them, so it can serve them on request. Note that successive requests to these resources will be handled by the service worker once they are cached (i.e. offline first strategy).
+However, it gets modified during the build process in two steps:
+- The [workbox webpack plugin](https://workboxjs.org/reference-docs/latest/module-workbox-webpack-plugin.html) updates the content of the array in `precache` array to contain everything in the output directory of your build except the service worker script itself and source maps. This causes the service worker to pick up these contents and cache them, so it can serve them on request. Note that successive requests to these resources will be handled by the service worker once they are cached (i.e. offline first strategy).
 
- The corresponding glob and the currently selected file extensions are defined in `config/webpack/prod.js` - at the moment, we are using `["**/*.{html,js,css,jpg,eot,svg,woff2,woff,ttf,json}"]`. However, it will ignore the service worker script itself and potentially referenced source maps (using `["**/*.map", "service-worker.js"]`). Note that with its current configuration, the generated precache entries will not contain a revision hash for the webpack output files, since these already contain a hash.
-- The special string `$serviceWorkerLibAnchor` will be replaced with the resolved workbox file name, lead by the public path you defined for the build process.
+ The corresponding glob and the currently selected file extensions are defined in `config/webpack/prod.js` - at the moment, we are using `["**/*.{html,js,css,jpg,eot,svg,woff2,woff,ttf,json}"]`. The glob used for ignoring the service worker script itself and potentially referenced source maps is `["**/*.map", "service-worker.js"]`. Note that with its current configuration, the generated precache entries will not contain a revision hash for the webpack output files, since these already contain a hash.
+- The special string `$serviceWorkerLibAnchor` will be replaced with the resolved workbox file name, prefixed with the public path you defined for the build process.
 
 The `workboxSW.router.registerNavigationRoute` statement is used for a proper implementation of history fallback - it redirects every navigation call the service worker has to handle (i.e. those not handled by angular's router) to `index.html`.
 
-In the end, it looks like this:
+In the end of the build process, it looks like this:
 ```javascript
 importScripts("/workbox-sw.prod.v2.0.0.js");
 
@@ -91,7 +91,7 @@ We have tried to cut the service worker integration footprint off completely in 
 - Remove all injections and usages of the `ServiceWorkerService`.
 
 
-Even though the registration process is always initiated, that does not means it is executed completely. In dev mode, or when the service worker disabled or unavailable, the registration script (see `service-worker.register.ts` will properly detect the circumstances and set the proper state, so that neither the service worker script nor the linked workbox script will be loaded at all.
+Even though the registration process is always initiated, that does not means it is executed completely. In dev mode, or when the service worker disabled or unavailable, the registration script (see `service-worker.register.ts`) will properly detect the circumstances and set the proper state, so that neither the service worker script nor the linked workbox script will be loaded at all.
 
 # Troubleshooting
 In general, the service worker just does its job and won't fail unless something is configured in the wrong way. If you face any reasonable issues, please open an issue in the repository.
