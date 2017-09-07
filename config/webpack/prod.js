@@ -82,6 +82,18 @@ module.exports = function(env) {
   ]);
 
   if (env.withServiceWorker) {
+    // Transformer to remove revision info in case the output file already contains
+    // a hash (i.e. webpack output).
+    const hashRegExp = new RegExp(`\\.\\w{${env.hashDigits}}\\.`);
+    const removeRevisionTransform = manifestEntries => {
+      return manifestEntries.map(entry => {
+        if (hashRegExp.test(entry.url)) {
+          delete entry.revision;
+        }
+        return entry;
+      });
+    };
+
     plugins.push(
       // Generate a service worker with pre-cached resources information.
       new WorkboxPlugin({
@@ -89,7 +101,8 @@ module.exports = function(env) {
         globPatterns: ["**/*.{html,js,css,jpg,eot,svg,woff2,woff,ttf,json}"],
         globIgnores: ["**/*.map", "service-worker.js"],
         swDest: path.join(env.outputDir, "service-worker.js"),
-        swSrc: path.join(paths.appPublic, "service-worker.js")
+        swSrc: path.join(paths.appPublic, "service-worker.js"),
+        manifestTransforms: [removeRevisionTransform]
       })
     );
   }
