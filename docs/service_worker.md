@@ -20,16 +20,14 @@ workboxSW.router.registerNavigationRoute("index.html", {
 });
 ```
 However, it gets modified during the build process in two steps:
-- The [workbox webpack plugin](https://workboxjs.org/reference-docs/latest/module-workbox-webpack-plugin.html) updates the content of the array in `precache` array to contain everything in the output directory of your build except the service worker script itself and source maps. This causes the service worker to pick up these contents and cache them, so it can serve them on request. Note that successive requests to these resources will be handled by the service worker once they are cached (i.e. offline first strategy).
-
- The corresponding glob and the currently selected file extensions are defined in `config/webpack/prod.js` - at the moment, we are using `["**/*.{html,js,css,jpg,eot,svg,woff2,woff,ttf,json}"]`. The glob used for ignoring the service worker script itself and potentially referenced source maps is `["**/*.map", "service-worker.js"]`. Note that with its current configuration, the generated precache entries will not contain a revision hash for the webpack output files, since these already contain a hash.
+- The [workbox webpack plugin](https://workboxjs.org/reference-docs/latest/module-workbox-webpack-plugin.html) updates the content of the array in `precache` array to contain everything in the output directory of your build except the service worker script itself and source maps. This causes the service worker to pick up these contents and cache them, so it can serve them on request. Note that successive requests to these resources will be handled by the service worker once they are cached (i.e. offline first strategy). The corresponding glob and the currently selected file extensions are defined in `config/webpack/prod.js` - at the moment, we are using `["**/*.{html,js,css,jpg,eot,svg,woff2,woff,ttf,json}"]`. The glob used for ignoring the service worker script itself and potentially referenced source maps is `["**/*.map", "service-worker.js"]`. Note that with its current configuration, the generated precache entries will not contain a revision hash for the webpack output files, since these already contain a hash themselves.
 - The special string `$serviceWorkerLibAnchor` will be replaced with the resolved workbox file name, prefixed with the public path you defined for the build process.
 
 The `workboxSW.router.registerNavigationRoute` statement is used for a proper implementation of history fallback - it redirects every navigation call the service worker has to handle (i.e. those not handled by angular's router) to `index.html`.
 
-In the end of the build process, it looks like this:
+In the end of the build process, it roughly looks like this:
 ```javascript
-importScripts("/workbox-sw.prod.v2.0.0.js");
+importScripts("/workbox-sw.prod.v2.0.1.js");
 
 const workboxSW = new self.WorkboxSW();
 workboxSW.precache([
@@ -60,7 +58,7 @@ workboxSW.precache([
     "url": "/static/media/testbild.b9456e128144.jpg"
   },
   {
-    "url": "workbox-sw.prod.v2.0.0.js",
+    "url": "workbox-sw.prod.v2.0.1.js",
     "revision": "7b6749c71e3ba8b786ce6cb65e248ac8"
   }
 ]);
@@ -96,4 +94,4 @@ Even though the registration process is always initiated, that does not means it
 # Troubleshooting
 In general, the service worker just does its job and won't fail unless something is configured in the wrong way. If you face any reasonable issues, please open an issue in the repository.
 
-You might play a bit with your service worker in your browser's development tools before - e.g. lists it in `Application => Service Workers` and allows a bit of manual control, which is useful when attempting to figure out any problems or their source.
+You might play a bit with your service worker in your browser's development tools before - e.g. in Chrome and its siblings it is listed in `Application => Service Workers` and allows a bit of manual control, which is useful when attempting to figure out any problems or their source.
