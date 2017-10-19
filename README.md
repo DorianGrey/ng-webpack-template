@@ -15,8 +15,8 @@ To start using this template, you might either
 
    `git clone https://github.com/DorianGrey/ng-webpack-template.git`
 
-You need to install a node.js version >= 6.9, since this project uses ES2015 language features, and we only support node versions from the most recent LTS upwards.
-Things might work from 4.x upwards, but we do not provide any official support for this.
+You need to install a node.js version >= 6.9, since this project uses ES2015 language features, and we only support node versions from the current **active** LTS upwards.
+Things might work for earlier versions, but we do not provide any official support for this.
 
 For users of [nvm](https://github.com/creationix/nvm), we're providing a `.nvmrc` file, so that you only need to execute:
 ```
