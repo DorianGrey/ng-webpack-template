@@ -38,6 +38,7 @@ The intended project structure, how to work with it and possibly extend it is do
 - [The application state and how to extend it](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/app_state.md)
 - [Development configuration](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/dev_configuration.md)
 - [Build configuration](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/build_configuration.md)
+- [Integration and usage of the service worker](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/service_worker.md)
 
 ## Additional docs
 - [The impact of using long term caching strategies on your assets size](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/longterm_caching_impact.md)
