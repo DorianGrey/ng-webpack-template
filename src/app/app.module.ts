@@ -1,6 +1,6 @@
 import { NgModule, ApplicationRef } from "@angular/core";
 
-import "rxjs/add/operator/take";
+import { take } from "rxjs/operators/take";
 
 import { TranslateService } from "@ngx-translate/core";
 
@@ -76,7 +76,7 @@ export class AppModule {
     const cmpLocation = this.appRef.components.map(
       cmp => cmp.location.nativeElement
     );
-    this._store.take(1).subscribe(s => (store.rootState = s));
+    this._store.pipe(take(1)).subscribe(s => (store.rootState = s));
     store.disposeOldHosts = createNewHosts(cmpLocation);
     store.restoreInputValues = createInputTransfer();
     removeNgStyles();

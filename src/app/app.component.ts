@@ -3,6 +3,7 @@ import { Component } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { TranslateService } from "@ngx-translate/core";
 import { Observable } from "rxjs/Observable";
+import { take } from "rxjs/operators/take";
 
 import { CoreAppState, getLanguage } from "./app.store";
 import { SetLanguageAction } from "./i18n/language.store";
@@ -44,7 +45,7 @@ export class AppComponent {
   }
 
   rotateLanguage() {
-    this.currentLanguage.take(1).subscribe(lang => {
+    this.currentLanguage.pipe(take(1)).subscribe(lang => {
       const idx =
         (indexOf(this.availableLanguages, lang) + 1) %
         this.availableLanguages.length;
