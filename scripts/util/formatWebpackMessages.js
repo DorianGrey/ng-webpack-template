@@ -193,3 +193,4 @@ function formatWebpackMessages(json) {
 }
 
 module.exports = formatWebpackMessages;
+module.exports.formatMessage = formatMessage;

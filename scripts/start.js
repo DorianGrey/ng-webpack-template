@@ -9,6 +9,8 @@ const watchTranslations = require("./translations").watch;
 const dllConfig = require("../config/webpack/dll");
 const devConfig = require("../config/webpack/dev");
 const formatUtil = require("./util/formatUtil");
+const { formatMessage } = require("./util/formatWebpackMessages");
+const { printErrors } = require("./util/statsFormatter");
 const devOptions = require("../config/dev.config").parseFromCLI();
 
 const writer = process.stdout.write.bind(process.stdout);
@@ -29,9 +31,11 @@ function buildDlls() {
   info("Creating development DLLs...");
   const dllCompiler = webpack(dllConfig);
   return new Promise((resolve, reject) => {
-    dllCompiler.run(err => {
-      if (err) {
-        return reject(err);
+    dllCompiler.run((err, s) => {
+      const stats = s.toJson({}, true);
+      const hasErrors = err || (stats.errors && stats.errors.length > 0);
+      if (hasErrors) {
+        return reject(err || stats.errors);
       }
       return resolve();
     });
@@ -96,7 +100,7 @@ function startServer(translationsWatcher) {
       process.on(sig, () => {
         translationsWatcher.close();
         devServer.close();
-        process.exit();
+        process.exit(0);
       });
     });
   });
@@ -107,4 +111,16 @@ Promise.resolve()
   .then(handleTranslations)
   .then(buildDlls)
   .then(handleWatchTranslations)
-  .then(startServer);
+  .then(startServer)
+  .catch(err => {
+    // `err` might be an array in case we provided the error list from webpack.
+    if (Array.isArray(err)) {
+      const formatted = err.map(message =>
+        formatMessage(message, formatUtil.formatFirstLineMessage)
+      );
+      printErrors(formatted, writer);
+    } else {
+      console.error(err);
+    }
+    process.exit(1);
+  });
