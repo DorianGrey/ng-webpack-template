@@ -3,7 +3,7 @@ const UglifyJsPlugin = require("webpack/lib/optimize/UglifyJsPlugin");
 const CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 const HashedModuleIdsPlugin = require("webpack/lib/HashedModuleIdsPlugin");
 const ModuleConcatenationPlugin = require("webpack/lib/optimize/ModuleConcatenationPlugin");
-const { AotPlugin } = require("@ngtools/webpack");
+const ngtools = require("@ngtools/webpack");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const InlineChunkManifestHtmlWebpackPlugin = require("inline-chunk-manifest-html-webpack-plugin");
@@ -17,6 +17,14 @@ const commonConfig = require("./common");
 const paths = require("../paths");
 const getBasicUglifyOptions = require("./uglify.config");
 const { ensureEndingSlash } = require("./util");
+
+function determineAotPlugin() {
+  const ngVersion = require(paths.package).dependencies["@angular/core"];
+  if (/5\.\d+\.\d+/.test(ngVersion)) {
+    return ngtools.AngularCompilerPlugin;
+  }
+  return ngtools.AotPlugin;
+}
 
 /**
  * The production build may or may not include the BundleAnalyzerPlugin to visualize the build
@@ -129,6 +137,7 @@ module.exports = function(env) {
   };
 
   if (env.useAot) {
+    const AotPlugin = determineAotPlugin();
     result.plugins.push(
       new AotPlugin({
         tsConfigPath: paths.resolveApp("tsconfig.aot.json")

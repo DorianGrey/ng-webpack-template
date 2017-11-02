@@ -18,5 +18,6 @@ module.exports = {
   appHtml: resolveApp("public", "index.ejs"),
   configDir: resolveConfig(),
   appStyleLintOptions: resolveConfig("stylelint.config.js"),
-  yarnLockFile: resolveApp("yarn.lock")
+  yarnLockFile: resolveApp("yarn.lock"),
+  package: resolveApp("package.json")
 };

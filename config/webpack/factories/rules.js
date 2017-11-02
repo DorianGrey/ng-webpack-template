@@ -5,10 +5,12 @@ const constants = require("./constants");
 
 // We should not use plain js files in our case, however,
 // some of the libs may contain them. We're interested in their source-maps.
+// In addition, the temporary files generated during AoT compilation while not using
+// the build optimizer don't have a source map file along.
 exports.RULE_LIB_SOURCE_MAP_LOADING = {
   test: /\.js$/,
   use: require.resolve("source-map-loader"),
-  exclude: [constants.EXCLUDE_SOURCE_MAPS]
+  exclude: [constants.EXCLUDE_SOURCE_MAPS, /\.ng(factory|style).js$/]
 };
 
 /** Loader chain for typescript files in case of non-aot mode. Keep in mind that the list of loaders
