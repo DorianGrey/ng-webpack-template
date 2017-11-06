@@ -10,7 +10,7 @@ exports.PLUGIN_CONTEXT_REPLACEMENT_ANGULAR_CORE = function PLUGIN_CONTEXT_REPLAC
 ) {
   src = src || "src";
   return new ContextReplacementPlugin(
-    /angular(\\|\/)core(\\|\/)@angular/, // See https://github.com/angular/angular/issues/11580#issuecomment-282705332
+    /(.+)?angular(\\|\/)core(.+)?/, // Same as for universal rendering atm.
     paths.resolveApp(src)
   );
 };
@@ -71,11 +71,11 @@ exports.PLUGIN_INDEX_HTML = function PLUGIN_INDEX_HTML(env) {
 exports.PLUGIN_TS_CHECKER = function PLUGIN_TS_CHECKER(env) {
   // Plugin to improve build and type checking speed; Will be included by default in the next major version.
   return new ForkTsCheckerWebpackPlugin({
-    watch: "./src",
-    tsconfig: "./tsconfig.json",
+    watch: paths.appSrc,
+    tsconfig: paths.resolveApp("tsconfig.json"),
     async: env.isWatch,
     formatter: "codeframe",
-    tslint: "./tslint.json",
+    tslint: paths.resolveApp("tslint.json"),
     memoryLimit: process.env.APPVEYOR ? 1024 : 2048 // 2048 is too much for appveyor...
   });
 };
