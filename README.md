@@ -11,11 +11,12 @@ It started as a companion of [ng-jspm-template](https://github.com/flaviait/ng2-
 
 To start using this template, you might either
  - pick the [latest release](https://github.com/DorianGrey/ng-webpack-template/releases/latest)
+ - use something like [degit](https://github.com/Rich-Harris/degit) for scaffolding
  - clone the repository directly for the most recent features and updates:
 
-   `git clone https://github.com/DorianGrey/ng-webpack-template.git`
+   `git clone https://github.com/DorianGrey/ng-webpack-template.git`  
 
-You need to install a node.js version >= 6.9, since this project uses ES2015 language features, and we only support node versions from the current **active** LTS upwards.
+You need to install a node.js version >= 8.9, since this project uses ES2015 language features, and we only support node versions from the current **active** LTS upwards.
 Things might work for earlier versions, but we do not provide any official support for this.
 
 For users of [nvm](https://github.com/creationix/nvm), we're providing a `.nvmrc` file, so that you only need to execute:
@@ -65,7 +66,7 @@ Production builds are by default created using:
 - [UglifyJS2](https://github.com/mishoo/UglifyJS2) as code minifier
 
 Optionally, you might:
-- Optimize further using [build-optimizer](https://github.com/angular/devkit/tree/master/packages/angular_devkit/build_optimizer). However, it is still extremely experimental, so **beware**.
+- Optimize further using [build-optimizer](https://github.com/angular/devkit/tree/master/packages/angular_devkit/build_optimizer). This one still has some glitches, so it's not activated by default for now.
 - In case AoT does not work: Disable it.
 
 The latter options might be suitable for a particular situation while being problematic in another.
@@ -93,7 +94,7 @@ The preconfigured tasks are listed below.
 | Command            | Effect        |
 | ------------------ | ------------- |
 | `yarn build`        | Creates a producton bundle, by default in the `build` folder. Utilizes AoT compilation. |
-| `yarn build:bo`    | Creates a producton bundle, by default in the `build` folder. Utilizes AoT compilation and [build-optimizer](https://github.com/angular/devkit/tree/master/packages/angular_devkit/build_optimizer).<br> **Warning**: This should be considered **experimental!**|
+| `yarn build:bo`    | Creates a producton bundle, by default in the `build` folder. Utilizes AoT compilation and [build-optimizer](https://github.com/angular/devkit/tree/master/packages/angular_devkit/build_optimizer).|
 
 #### Exemplary production server
 
