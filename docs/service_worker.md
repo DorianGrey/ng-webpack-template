@@ -95,3 +95,6 @@ Even though the registration process is always initiated, that does not means it
 In general, the service worker just does its job and won't fail unless something is configured in the wrong way. If you face any reasonable issues, please open an issue in the repository.
 
 You might play a bit with your service worker in your browser's development tools before - e.g. in Chrome and its siblings it is listed in `Application => Service Workers` and allows a bit of manual control, which is useful when attempting to figure out any problems or their source.
+
+## Incorrect or incomplete page update when using AoT-only and AoT-with-bo build on the same URL
+Recently, I came across some issues in case an URL was used to display content from both AoT und AoT-with-bo builds. If you are switching between builds of different configurations, some curious errors may occur in the browser console which do not seem to make sense, like `C.c is undefined` or `C.c is no a function`. This might also occur in case you are trying to perform a full page reload, considering to fix this error that way. Seems to have to do with the service worker, since the error disappears after manually deregistering it and performing a full page reload once afterwards. A workaround for the moment would be to use different URLs for testing both build versions (different port is sufficient).
