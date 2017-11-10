@@ -171,27 +171,28 @@ function printFileSizes(buildConfig, webpackStats, staticAssets = []) {
     I.e. each categorization will only be performed on the remains of the previous
     iteration.
    */
-  let remainingAssets = Object.getOwnPropertyNames(
-    assetCategories
-  ).reduce((relevantAssets, c) => {
-    const [_relevantAssets, nextAssets] = partition(relevantAssets, asset =>
-      assetCategories[c].test(asset.name)
-    );
-    if (_relevantAssets.length > 0) {
-      if (c !== "#") {
-        writer(formatUtils.formatIndicator("> " + c) + "\n");
-      }
-      printFileSizesOnAssetCategory(
-        buildConfig.outputDir,
-        _relevantAssets,
-        exceptionalAssetCnt,
-        assetsSizeWarnLimit,
-        potentiallyExtractedChunkSizeLimit
+  let remainingAssets = Object.getOwnPropertyNames(assetCategories).reduce(
+    (relevantAssets, c) => {
+      const [_relevantAssets, nextAssets] = partition(relevantAssets, asset =>
+        assetCategories[c].test(asset.name)
       );
-      writer("\n");
-    }
-    return nextAssets;
-  }, assetsStats);
+      if (_relevantAssets.length > 0) {
+        if (c !== "#") {
+          writer(formatUtils.formatIndicator("> " + c) + "\n");
+        }
+        printFileSizesOnAssetCategory(
+          buildConfig.outputDir,
+          _relevantAssets,
+          exceptionalAssetCnt,
+          assetsSizeWarnLimit,
+          potentiallyExtractedChunkSizeLimit
+        );
+        writer("\n");
+      }
+      return nextAssets;
+    },
+    assetsStats
+  );
 
   // If there are any assets left, they are summarized in a special "Others" category.
   if (remainingAssets.length > 0) {
@@ -210,9 +211,9 @@ function printFileSizes(buildConfig, webpackStats, staticAssets = []) {
   if (exceptionalAssetCnt.tooLarge > 0) {
     writer(
       formatUtils.formatWarning(
-        `${exceptionalAssetCnt.tooLarge === 1
-          ? "There is"
-          : "There are"} ${exceptionalAssetCnt.tooLarge} assets which exceed the configured size limit of ${filesize(
+        `${exceptionalAssetCnt.tooLarge === 1 ? "There is" : "There are"} ${
+          exceptionalAssetCnt.tooLarge
+        } assets which exceed the configured size limit of ${filesize(
           assetsSizeWarnLimit
         )}. Affected asset(s) marked in ${chalk.yellow("yellow")}.`
       ) + "\n"
@@ -224,9 +225,9 @@ function printFileSizes(buildConfig, webpackStats, staticAssets = []) {
   if (exceptionalAssetCnt.extracted > 0) {
     writer(
       formatUtils.formatNote(
-        `${exceptionalAssetCnt.extracted === 1
-          ? "There is"
-          : "There are"} ${exceptionalAssetCnt.extracted} assets which are smaller than the configured lower size limit of ${filesize(
+        `${exceptionalAssetCnt.extracted === 1 ? "There is" : "There are"} ${
+          exceptionalAssetCnt.extracted
+        } assets which are smaller than the configured lower size limit of ${filesize(
           potentiallyExtractedChunkSizeLimit
         )}. Affected asset(s) should be considered remains of extracted chunks and are marked in ${chalk.grey(
           "grey"
