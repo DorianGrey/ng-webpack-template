@@ -45,9 +45,7 @@ function selectPublicAddress(defaultHost) {
       break;
     default:
       console.log(
-        `Selected default host=${
-          defaultHost
-        } is neither local nor wildcard, skipping host determination...`
+        `Selected default host=${defaultHost} is neither local nor wildcard, skipping host determination...`
       );
       return defaultHost;
   }
