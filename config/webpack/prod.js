@@ -53,8 +53,8 @@ module.exports = function(env) {
           name: "vendor",
           minChunks: ({ resource }) => /node_modules/.test(resource)
         }),
-        // Externalizes the application manifest.
-        new CommonsChunkPlugin("manifest"),
+        // Externalizes the application runtime.
+        new CommonsChunkPlugin("runtime"),
         // Extracts the chunk manifest and inlines it into the template
         new InlineChunkManifestHtmlWebpackPlugin({
           filename: "chunk-manifest.json",
@@ -92,18 +92,6 @@ module.exports = function(env) {
   ]);
 
   if (env.withServiceWorker) {
-    // Transformer to remove revision info in case the output file already contains
-    // a hash (i.e. webpack output).
-    const hashRegExp = new RegExp(`\\.\\w{${env.hashDigits}}\\.`);
-    const removeRevisionTransform = manifestEntries => {
-      return manifestEntries.map(entry => {
-        if (hashRegExp.test(entry.url)) {
-          delete entry.revision;
-        }
-        return entry;
-      });
-    };
-
     plugins.push(
       // Generate a service worker with pre-cached resources information.
       new WorkboxPlugin({
@@ -111,8 +99,7 @@ module.exports = function(env) {
         globPatterns: ["**/*.{html,js,css,jpg,eot,svg,woff2,woff,ttf,json}"],
         globIgnores: ["**/*.map", "service-worker.js"],
         swDest: path.join(env.outputDir, "service-worker.js"),
-        swSrc: path.join(paths.appPublic, "service-worker.js"),
-        manifestTransforms: [removeRevisionTransform]
+        swSrc: path.join(paths.appPublic, "service-worker.js")
       })
     );
   }
@@ -128,7 +115,7 @@ module.exports = function(env) {
     output: {
       path: env.outputDir,
       filename: `static/js/[name].[chunkhash:${env.hashDigits}].js`,
-      chunkFilename: `static/js/[id].chunk.[chunkhash:${env.hashDigits}].js`,
+      chunkFilename: `static/js/[name].[chunkhash:${env.hashDigits}].js`,
       publicPath: ensureEndingSlash(env.publicPath, true),
       devtoolModuleFilenameTemplate: info =>
         path.relative(paths.appSrc, info.absoluteResourcePath)

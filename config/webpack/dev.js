@@ -32,7 +32,7 @@ module.exports = function(env) {
     output: {
       path: env.outputDir,
       filename: "static/js/[name].js",
-      chunkFilename: "static/js/[id].chunk.js",
+      chunkFilename: "static/js/[name].js",
       publicPath: ensureEndingSlash(env.publicPath, true),
       pathinfo: true,
       devtoolModuleFilenameTemplate: info =>

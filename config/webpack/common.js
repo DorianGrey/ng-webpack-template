@@ -1,4 +1,4 @@
-const { EnvironmentPlugin } = require("webpack");
+const { EnvironmentPlugin, NamedChunksPlugin } = require("webpack");
 const chalk = require("chalk");
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const StyleLintPlugin = require("stylelint-webpack-plugin");
@@ -7,6 +7,7 @@ const ProgressBarPlugin = require("progress-bar-webpack-plugin");
 const paths = require("../paths");
 const formatUtil = require("../../scripts/util/formatUtil");
 const { ensureEndingSlash } = require("./util");
+const chunkNameHandler = require("./helpers/chunkNameHandler");
 const {
   DEFAULT_RESOLVE_EXTENSIONS,
   NODE_CONFIG,
@@ -60,6 +61,8 @@ module.exports = function(env) {
   }
 
   const plugins = [
+    // Name lazily loaded chunks, in case they don't have a name yet.
+    new NamedChunksPlugin(chunkNameHandler()),
     // HTML plugin to generate proper index.html files w.r.t. the output of this build.
     PLUGIN_INDEX_HTML(env),
     new ScriptExtHtmlWebpackPlugin({
