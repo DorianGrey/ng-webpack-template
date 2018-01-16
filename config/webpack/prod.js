@@ -12,6 +12,7 @@ const PurifyPlugin = require("@angular-devkit/build-optimizer").PurifyPlugin;
 const path = require("path");
 const merge = require("webpack-merge");
 const WorkboxPlugin = require("workbox-webpack-plugin");
+const rxPaths = require("rxjs/_esm5/path-mapping");
 
 const commonConfig = require("./common");
 const paths = require("../paths");
@@ -133,7 +134,10 @@ module.exports = function(env) {
         path.relative(paths.appSrc, info.absoluteResourcePath)
     },
     devtool: env.devtool,
-    plugins: plugins
+    plugins: plugins,
+    resolve: {
+      alias: rxPaths()
+    }
   };
 
   if (env.useAot) {
