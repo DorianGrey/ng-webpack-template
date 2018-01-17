@@ -111,9 +111,9 @@
     tree-kill "^1.0.0"
     webpack-sources "^1.1.0"
 
-"@ngx-translate/core@^9.1.0":
-  version "9.1.0"
-  resolved "https://registry.yarnpkg.com/@ngx-translate/core/-/core-9.1.0.tgz#95b2fe85036d11a74196cbaff0adbbcb87f40018"
+"@ngx-translate/core@^9.1.1":
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/@ngx-translate/core/-/core-9.1.1.tgz#ae103928836b8a9e069fd2e2e76fa2198cc7e628"
 
 "@types/jasmine@^2.8.4":
   version "2.8.4"
