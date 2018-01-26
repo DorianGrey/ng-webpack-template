@@ -18,6 +18,22 @@ import { ServiceWorkerModule } from "./service-worker/service-worker.module";
   ENV modes. Esp. for readability, these calculations got externalized.
  */
 
+// We need to do some tricks here to be able to load the ngrx modules - where one is only referenced
+// conditionally - in between the other modules, but always before the `SharedModule`.
+// See this issue comment for details about the import order:
+// https://github.com/ngrx/platform/issues/624#issuecomment-360147672
+const ngrxImportModules = [
+  StoreModule.forRoot(reducers, { metaReducers }),
+  StoreRouterConnectingModule
+];
+/*
+ Note: We only consider this extension to be useful in development mode.
+ If you want to use in production as well, just remove the ENV-specific condition.
+ */
+if ("production" !== process.env.NODE_ENV) {
+  ngrxImportModules.push(StoreDevtoolsModule.instrument({ maxAge: 50 }));
+}
+
 const imports = [
   BrowserModule, // Should only be imported by the root => every other module should import "CommonModule".
   APP_ROUTES,
@@ -27,20 +43,12 @@ const imports = [
       useFactory: createTranslateLoader
     }
   }),
+
+  ...ngrxImportModules,
   SharedModule.forRoot(),
   InputTestModule,
   TodosModule,
-  ServiceWorkerModule,
-  StoreModule.forRoot(reducers, { metaReducers }),
-  StoreRouterConnectingModule
+  ServiceWorkerModule
 ];
-
-/*
- Note: We only consider this extension to be useful in development mode.
- If you want to use in production as well, just remove the ENV-specific condition.
- */
-if ("production" !== process.env.NODE_ENV) {
-  imports.push(StoreDevtoolsModule.instrument({ maxAge: 50 }));
-}
 
 export const APP_IMPORTS = imports;
