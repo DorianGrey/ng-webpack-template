@@ -83,7 +83,7 @@ function determineStaticAssets(config, buildConfig) {
   // Determine copied paths, and add the generated service worker stuff as well
   // used for properly generating an output.
   const globs = [
-    paths.appPublic + "**/*",
+    paths.appPublic + "/**/*",
     `!${paths.appPublic}/index.{ejs,html}`
   ];
   if (!buildConfig.withServiceWorker) {
