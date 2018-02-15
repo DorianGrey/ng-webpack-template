@@ -26,11 +26,11 @@ nvm use
 ```
 We strongly recommend to use nvm (or any other node version manager of your choice).
 
-The version favors to use [yarn](https://github.com/yarnpkg/yarn) for faster and more robust dependency management. To install it, just run
+This version currently favors to use [yarn](https://github.com/yarnpkg/yarn) for faster dependency management. To install it, just run
 ```
 npm install -g yarn
 ```
-Alternatively, you might use good old `npm`, if you REALLY want to. If that is the case, I'd strongly recommend to use a version >= 5.x to get a proper `package-lock.json` - at least, that is the restriction mentioned in the project's `package.json`. Just replace the `yarn` part of the commands listed below with `npm`.
+Alternatively, you might use `npm`, as long as its version is 5.x or higher. There is an engine restriction in this projects `package.json` to enforce this. The primary intent is to get a proper `package-lock.json` as counterpart to `yarn.lock` to lock your dependency versions. Just replace the `yarn` part of the commands listed below with `npm` resp. `npm run` if you decide against `yarn`.
 
 ## Project structure
 The intended project structure, how to work with it and possibly extend it is documented in the [docs folder](https://github.com/DorianGrey/ng-webpack-template/tree/master/docs).
@@ -64,12 +64,14 @@ For configuring you development environment, check out the [development configur
 Production builds are by default created using:
 - [AoT compilation](https://angular.io/docs/ts/latest/cookbook/aot-compiler.html)
 - [UglifyJS2](https://github.com/mishoo/UglifyJS2) as code minifier
+- [build-optimizer](https://github.com/angular/devkit/tree/master/packages/angular_devkit/build_optimizer) for getting rid of additional dead / non-required code (esp. decorators).
+- A service worker for improved PWA capabilities.
 
 Optionally, you might:
-- Optimize further using [build-optimizer](https://github.com/angular/devkit/tree/master/packages/angular_devkit/build_optimizer). This one still has some glitches, so it's not activated by default for now.
+- Disable the build optimizer. Though it already received a lot of work and fixes and should thus be production ready, it still has some glitches, so you might want this.
 - In case AoT does not work: Disable it.
 
-The latter options might be suitable for a particular situation while being problematic in another.
+These options might be suitable for a particular situation while being problematic in another.
 
 The AoT version is using the [@ngtools/webpack plugin](https://github.com/angular/angular-cli/blob/master/packages/webpack/README.md).
 Please keep an eye on the list of [issues marked as related to it](https://github.com/angular/angular-cli/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20aot) in case you're facing any errors.
@@ -93,8 +95,9 @@ The preconfigured tasks are listed below.
 
 | Command            | Effect        |
 | ------------------ | ------------- |
-| `yarn build`        | Creates a producton bundle, by default in the `build` folder. Utilizes AoT compilation. |
-| `yarn build:bo`    | Creates a producton bundle, by default in the `build` folder. Utilizes AoT compilation and [build-optimizer](https://github.com/angular/devkit/tree/master/packages/angular_devkit/build_optimizer).|
+| `yarn build`    | Creates a producton bundle, by default in the `build` folder. Utilizes AoT compilation and [build-optimizer](https://github.com/angular/devkit/tree/master/packages/angular_devkit/build_optimizer).|
+| `yarn build:no-bo`        | Creates a producton bundle, by default in the `build` folder. Utilizes AoT compilation, but not the build optimizer. |
+| `yarn build:no-service-worker`        | Creates a producton bundle, by default in the `build` folder. Utilizes AoT compilation and build optimizer, but does not generate a service worker file. |
 
 #### Exemplary production server
 

@@ -25,7 +25,7 @@
     "test:ci": "node scripts/test.js",
     "build": "node scripts/build.js",
     "build:no-service-worker": "node scripts/build.js --with-service-worker=false",
-    "build:bo": "node scripts/build.js --use-build-optimizer",
+    "build:no-bo": "node scripts/build.js --use-build-optimizer=false",
     "serve": "node scripts/serve.js",
     "precommit": "lint-staged",
     "prepush": "npm run test",

@@ -9,7 +9,7 @@ const buildConfig = {
   disableLongTermCaching: false,
   devtool: "source-map",
   useAot: true,
-  useBuildOptimizer: false,
+  useBuildOptimizer: true,
   isDev: false,
   isWatch: false,
   publicPath: "/",
