@@ -22,7 +22,7 @@ build_script:
   - node --version
   - yarn --version
   - yarn build
-  - yarn build:bo
+  - yarn build:no-bo
   - yarn build:no-service-worker
 
 cache:
