@@ -1,6 +1,7 @@
 // Put your global styles here
 // "Normalizing" browser styles is required in almost every reasonable project we know of, thus ...
 @import "../../node_modules/normalize.css/normalize";
+@import "./variables.scss";
 
 // Native font stack, see: http://v4-alpha.getbootstrap.com/content/reboot/#native-font-stack
 // Should be suitable as default for most browsers.
@@ -31,21 +32,26 @@ html {
 }
 
 body {
-  background: #EEEEEE;
+  background: $color-white-smoke;
   font-family: $font-family-sans-serif;
   margin: 0;
-  min-height: calc(100% - 1.35rem);
-  padding-bottom: 4rem;
+  padding: 0;
+  min-width: $page-min-width;
+  min-height: 100%;
   position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  /* stylelint-disable */
+  grid-template-areas: "header"
+                       "content"
+                       "footer";
+  /* stylelint-enable */
 
   > footer {
-    background-color: rgba(0, 0, 0, 0.35);
-    color: #FFFFFF;
+    background-color: $color-black-smoke;
+    color: $color-white;
     padding: 0.5rem 1rem;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    grid-area: footer;
     text-align: center;
     font-size: 12px;
 
@@ -61,6 +67,6 @@ body {
 
 input, select {
   &.ng-invalid {
-    box-shadow: 0 0 6px #E84D3C;
+    box-shadow: 0 0 6px $color-warning-red;
   }
 }

@@ -1,16 +1,32 @@
+@import "../styles/variables";
+
 :host {
   position: relative;
   display: block;
+  grid-area: content;
 }
 
 h1, h2 {
   margin-left: 1rem;
 }
 
+header {
+  background-color: $color-black-smoke;
+  color: $color-white;
+  position: fixed;
+  grid-area: header;
+  height: $header-height;
+  width: 100%;
+}
+
+main {
+  padding: $header-height 1rem 1rem;
+}
+
 .language-select {
   position: absolute;
   right: 1rem;
-  top: 0;
+  top: 1rem;
   padding: 7px;
   border-radius: 50%;
   background: lightgrey;
@@ -43,8 +59,4 @@ nav {
       color: white;
     }
   }
-}
-
-.page-body {
-  padding: 0 1rem;
 }

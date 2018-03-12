@@ -1,10 +1,12 @@
-<h1>{{'app.title' | translate}}</h1>
-<span class="language-select" (click)="rotateLanguage()">{{currentLanguage | async}}</span>
-<nav>
-  <a routerLink="/input-test" routerLinkActive="active">{{'app.links.inputTest' | translate}}</a>
-  <a routerLink="/todo-list" routerLinkActive="active">{{'app.links.todo' | translate}}</a>
-  <a routerLink="/lazy-test" routerLinkActive="active">{{'app.links.lazyTest' | translate}}</a>
-</nav>
-<div class="page-body">
+<header>
+  <h1>{{'app.title' | translate}}</h1>
+  <span class="language-select" (click)="rotateLanguage()">{{currentLanguage | async}}</span>
+  <nav>
+    <a routerLink="/input-test" routerLinkActive="active">{{'app.links.inputTest' | translate}}</a>
+    <a routerLink="/todo-list" routerLinkActive="active">{{'app.links.todo' | translate}}</a>
+    <a routerLink="/lazy-test" routerLinkActive="active">{{'app.links.lazyTest' | translate}}</a>
+  </nav>
+</header>
+<main class="page-body">
   <router-outlet></router-outlet>
-</div>
+</main>

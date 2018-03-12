@@ -41,7 +41,7 @@ module.exports = {
     "selector-list-comma-newline-after": "always-multi-line",
 
     // Opinionated list of allowed units.
-    "unit-whitelist": ["vh", "em", "rem", "%", "s", "px", "deg"],
+    "unit-whitelist": ["vh", "em", "rem", "%", "s", "px", "deg", "fr"],
 
     /*
       Ignore some non-standard properties that got added for specific browsers
