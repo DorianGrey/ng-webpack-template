@@ -16,6 +16,7 @@ import { ServiceWorkerStateValue } from "./service-worker/service-worker.store";
   templateUrl: "./app.component.html"
 })
 export class AppComponent {
+  showMenu = false;
   currentLanguage: Observable<string>;
 
   private availableLanguages: string[];
@@ -42,6 +43,10 @@ export class AppComponent {
         window.location.reload();
       }
     });
+  }
+
+  toggleMenu() {
+    this.showMenu = !this.showMenu;
   }
 
   rotateLanguage() {

@@ -1,10 +1,14 @@
 <header>
-  <h1>{{'app.title' | translate}}</h1>
-  <span class="language-select" (click)="rotateLanguage()">{{currentLanguage | async}}</span>
-  <nav>
-    <a routerLink="/input-test" routerLinkActive="active">{{'app.links.inputTest' | translate}}</a>
-    <a routerLink="/todo-list" routerLinkActive="active">{{'app.links.todo' | translate}}</a>
-    <a routerLink="/lazy-test" routerLinkActive="active">{{'app.links.lazyTest' | translate}}</a>
+  <button type=button class="gradient-menu" (click)="toggleMenu()"></button>
+
+  <h2>{{'app.title' | translate}}</h2>
+  <div class="language-select" (click)="rotateLanguage()">{{currentLanguage | async}}</div>
+  <nav *ngIf="showMenu">
+    <ul (click)="toggleMenu()">
+      <li><a routerLink="/input-test" routerLinkActive="active">{{'app.links.inputTest' | translate}}</a></li>
+      <li><a routerLink="/todo-list" routerLinkActive="active">{{'app.links.todo' | translate}}</a></li>
+      <li><a routerLink="/lazy-test" routerLinkActive="active">{{'app.links.lazyTest' | translate}}</a></li>
+    </ul>
   </nav>
 </header>
 <main class="page-body">

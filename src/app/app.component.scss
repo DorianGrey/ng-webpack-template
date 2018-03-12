@@ -6,8 +6,43 @@
   grid-area: content;
 }
 
-h1, h2 {
+h2 {
   margin-left: 1rem;
+}
+
+.gradient-menu {
+  $menu-button-light-color: $color-white-smoke;
+
+  background-color: $color-white-smoke;
+  border-radius: 50%;
+  border: none;
+  position: relative;
+  height: $header-height;
+  width: $header-height;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    top: 10px;
+    bottom: 10px;
+    width: calc(100% - 20px);
+    background:
+      linear-gradient(
+        to bottom,
+        black,
+        black 20%,
+        $menu-button-light-color 20%,
+        $menu-button-light-color 40%,
+        black 40%,
+        black 60%,
+        $menu-button-light-color 60%,
+        $menu-button-light-color 80%,
+        black 80%,
+        black 100%
+      );
+  }
 }
 
 header {
@@ -17,6 +52,9 @@ header {
   grid-area: header;
   height: $header-height;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 main {
@@ -24,9 +62,6 @@ main {
 }
 
 .language-select {
-  position: absolute;
-  right: 1rem;
-  top: 1rem;
   padding: 7px;
   border-radius: 50%;
   background: lightgrey;
@@ -35,20 +70,33 @@ main {
 }
 
 nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  position: fixed;
+  min-height: calc(100vh - #{$header-height});
+  background-color: $color-black-smoke;
+  width: $page-min-width;
+  top: $header-height;
 
-  & > a {
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+
+    li {
+      line-height: 3rem;
+      padding: 0 1rem;
+    }
+  }
+
+  a {
     text-decoration: none;
     background: lightgrey;
     border-radius: 5px;
     padding: 5px;
     color: red;
-    flex-grow: 1;
     font-size: 1.4em;
     text-align: center;
-    margin: 0.25rem;
+    margin: 0.25rem 0;
+    width: 100%;
+    display: inline-block;
 
     &:not(:first-child) {
       margin-left: 10px;
