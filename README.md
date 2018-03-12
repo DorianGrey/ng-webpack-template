@@ -44,7 +44,7 @@ The intended project structure, how to work with it and possibly extend it is do
 ## Additional docs
 - [The impact of using long term caching strategies on your assets size](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/longterm_caching_impact.md)
 - [Troubleshooting / known issues](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/troubleshooting.md)
-- In case you updated to a commit or version after the [12.0.0 release](https://github.com/DorianGrey/ng-webpack-template/releases/tag/12.0.0), you might want to take a look at the [migration guide](https://github.com/DorianGrey/ng-webpack-template/blob/master/MIGRATION.md).
+- In case you updated to a commit or version after the [12.0.0 release](https://github.com/DorianGrey/ng-webpack-template/releases/tag/12.0.0), you might want to take a look at the [migration guide](https://github.com/DorianGrey/ng-webpack-template/blob/master/migration/MIGRATION__12_0_0.md).
 
 ## Workflow
 
