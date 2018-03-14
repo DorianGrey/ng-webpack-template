@@ -72,6 +72,7 @@ This project uses [jest](https://facebook.github.io/jest/) for unit testing. It 
 The setup is based on [jest-preset-angular](https://github.com/thymikee/jest-preset-angular). In case you have to modify it for your particular purpose, you can change the global mocks in `config/jest/jestGlobalMocks.ts`, the test setup `config/jest/testSetup.ts` and `jest` itself via `jest.config.js`. If you are facing any problems, take a look at the [troubleshooting guide](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/troubleshooting.md).
 
 The tasks below are pre-defined for testing.
+
 | Command    | Effect    |
 | ---------- | --------- | 
 | test       | Starts the test runner in watch mode. Suitable for quick TDD, but not for explicit debugging or coverage reports. |

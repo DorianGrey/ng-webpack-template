@@ -1,6 +1,6 @@
 {
   "name": "ng-webpack-template",
-  "version": "17.1.0",
+  "version": "18.0.0",
   "description": "A template for angular development using webpack, with some useful batteries included.",
   "author": {
     "name": "Christian Linne",
@@ -15,7 +15,8 @@
     "webpack",
     "angular",
     "hot module reload",
-    "ngrx"
+    "ngrx",
+    "jest"
   ],
   "main": "index.js",
   "scripts": {
