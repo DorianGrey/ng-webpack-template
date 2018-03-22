@@ -1,4 +1,4 @@
-const { DllReferencePlugin, NamedModulesPlugin } = require("webpack");
+const { DllReferencePlugin } = require("webpack");
 const HotModuleReplacementPlugin = require("webpack/lib/HotModuleReplacementPlugin");
 const path = require("path");
 const merge = require("webpack-merge");
@@ -20,7 +20,6 @@ module.exports = function(env) {
       context: ".",
       manifest: require(paths.resolveApp(".tmp/vendor-manifest.json"))
     }),
-    new NamedModulesPlugin(),
     new ErrorFormatterPlugin()
   ];
 
@@ -29,6 +28,7 @@ module.exports = function(env) {
   }
 
   return merge.smart(commonConfig(env), {
+    mode: "development",
     output: {
       path: env.outputDir,
       filename: "static/js/[name].js",
@@ -37,6 +37,9 @@ module.exports = function(env) {
       pathinfo: true,
       devtoolModuleFilenameTemplate: info =>
         path.relative(paths.appSrc, info.absoluteResourcePath)
+    },
+    optimization: {
+      namedModules: true
     },
     /**
      * This is a rather expensive source map w.r.t. rebuild performance, but also a really

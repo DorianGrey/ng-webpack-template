@@ -63,6 +63,7 @@ module.exports = function(env) {
   const plugins = [
     // Name lazily loaded chunks, in case they don't have a name yet.
     new NamedChunksPlugin(chunkNameHandler()),
+
     // HTML plugin to generate proper index.html files w.r.t. the output of this build.
     PLUGIN_INDEX_HTML(env),
     new ScriptExtHtmlWebpackPlugin({
@@ -175,6 +176,10 @@ module.exports = function(env) {
      * See: http://webpack.github.io/docs/configuration.html#plugins
      */
     plugins: plugins,
-    performance: PERFORMANCE_OPTIONS
+    performance: PERFORMANCE_OPTIONS,
+    optimization: {
+      noEmitOnErrors: true,
+      namedChunks: true // TODO: See if we can register a handler ...
+    }
   };
 };

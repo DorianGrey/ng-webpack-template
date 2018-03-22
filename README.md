@@ -42,7 +42,6 @@ The intended project structure, how to work with it and possibly extend it is do
 - [Integration and usage of the service worker](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/service_worker.md)
 
 ## Additional docs
-- [The impact of using long term caching strategies on your assets size](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/longterm_caching_impact.md)
 - [Troubleshooting / known issues](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/troubleshooting.md)
 
 ## Migration guides
