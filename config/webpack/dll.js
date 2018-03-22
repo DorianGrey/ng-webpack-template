@@ -72,6 +72,7 @@ module.exports = {
       "rxjs"
     ]
   },
+  mode: "development",
   output: {
     path: paths.resolveApp(".tmp"),
     filename: "[name].dll.js",

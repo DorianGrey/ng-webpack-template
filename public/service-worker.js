@@ -1,8 +1,5 @@
-importScripts("$serviceWorkerLibAnchor");
+workbox.precaching.precacheAndRoute(self.__precacheManifest);
 
-const workboxSW = new self.WorkboxSW();
-workboxSW.precache([]);
-
-workboxSW.router.registerNavigationRoute("index.html", {
+workbox.routing.registerNavigationRoute("index.html", {
   whitelist: [/^(?!\/__).*/]
 });

@@ -6,7 +6,6 @@ const nonOverridableKeys = ["isDev", "isWatch"];
 const buildConfig = {
   outputDir: paths.resolveApp("build"),
   statsDir: paths.resolveApp("buildStats"),
-  disableLongTermCaching: false,
   devtool: "source-map",
   useAot: true,
   useBuildOptimizer: true,
@@ -16,11 +15,12 @@ const buildConfig = {
   baseHref: "/",
   hashDigits: 12,
   withServiceWorker: true,
+  withExperimentalCssOptimization: false,
   // The asset categorization map.
   // Just set to "false" to not categorize the build output.
   // categorizeAssets: false,
   categorizeAssets: {
-    "Service worker": /(workbox|service-worker).*\.js$/,
+    "Service worker": /(workbox|service-worker|precache-manifest).*\.js$/,
     Scripts: /\.js$/,
     Styles: /\.css$/,
     "Source maps": /\.map$/,
@@ -98,10 +98,6 @@ module.exports.getNonDefaultFields = function(compare) {
 // Note that any other config entry will be parsed in the default way.
 module.exports.getSpecialYargsOptions = function() {
   return {
-    disableLongTermCaching: {
-      default: buildConfig.disableLongTermCaching,
-      type: "boolean"
-    },
     useAot: {
       default: buildConfig.useAot,
       type: "boolean"

@@ -29,16 +29,19 @@ function chunkNameHandler() {
     // yet provided via the special webpack comment `webpackChunkName`.
     // Note that the check below also skips concatenated modules, since
     // those do not require a name.
+    // TODO: This seems extremely hairy ... see if we can do better.
+    const blocks = Array.from(chunk.groupsIterable.values())[0].getBlocks(); // chunk.blocks;
+
     if (
-      chunk.blocks &&
-      chunk.blocks.length > 0 &&
-      chunk.blocks[0] instanceof AsyncDependenciesBlock &&
-      chunk.blocks[0].dependencies.length === 1 &&
-      (chunk.blocks[0].dependencies[0] instanceof ContextElementDependency ||
-        chunk.blocks[0].dependencies[0] instanceof ImportDependency)
+      blocks &&
+      blocks.length > 0 &&
+      blocks[0] instanceof AsyncDependenciesBlock &&
+      blocks[0].dependencies.length === 1 &&
+      (blocks[0].dependencies[0] instanceof ContextElementDependency ||
+        blocks[0].dependencies[0] instanceof ImportDependency)
     ) {
       // Create chunkname from file request, stripping ngfactory and extension.
-      const request = chunk.blocks[0].dependencies[0].request;
+      const request = blocks[0].dependencies[0].request;
       const chunkName = path
         .basename(request)
         .replace(/(\.ngfactory)?\.(js|ts)$/, "");

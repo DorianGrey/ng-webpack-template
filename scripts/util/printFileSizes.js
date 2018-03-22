@@ -98,7 +98,8 @@ function printFileSizesOnAssetCategory(
     const assetTooLarge = asset.originalFileSize > assetsSizeWarnLimit;
     const assetMayBeExtractedChunk =
       asset.originalFileSize < potentiallyExtractedChunkSizeLimit &&
-      /\.js$/.test(asset.name);
+      /\.js$/.test(asset.name) &&
+      !/service-worker/.test(asset.name);
     if (assetTooLarge) {
       exceptionalAssetCnt.tooLarge++;
     }

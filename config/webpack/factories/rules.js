@@ -1,4 +1,4 @@
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const paths = require("../../paths");
 
 const constants = require("./constants");
@@ -157,10 +157,7 @@ exports.RULE_MAIN_SASS_LOADING = function RULE_MAIN_SASS_LOADING(isDev) {
   if (isDev) {
     result.use = [require.resolve("style-loader")].concat(scssChain);
   } else {
-    result.use = ExtractTextPlugin.extract({
-      fallback: require.resolve("style-loader"),
-      use: scssChain
-    });
+    result.use = [MiniCssExtractPlugin.loader].concat(scssChain);
   }
   return result;
 };
