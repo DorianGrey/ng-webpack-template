@@ -1,7 +1,12 @@
 "use strict";
 
-const express = require("express");
-const path = require("path");
+const Koa = require("koa");
+const compress = require("koa-compress");
+const serveStatic = require("@shellscape/koa-static/legacy"); // Already used by webpack-serve, thus...
+const proxy = require("koa-proxies");
+const history = require("connect-history-api-fallback");
+const convert = require("koa-connect");
+
 const yargs = require("yargs");
 
 const { selectPort } = require("../config/hostInfo");
@@ -12,19 +17,18 @@ const writer = s => process.stdout.write(`${s}\n`);
 const intendedPort = yargs.argv.port || 9988;
 
 selectPort(intendedPort).then(serverPort => {
-  const app = express();
-
+  const app = new Koa();
   const serveDir = buildConfig.outputDir;
 
-  app.use(require("./util/proxy"));
-  app.use(
-    buildConfig.publicPath,
-    express.static(path.resolve(process.cwd(), serveDir))
-  );
+  app
+    .use(convert(history({}))) // HTML5 fallback
+    .use(serveStatic(serveDir)) // Serve static dir
+    .use(compress()); // Use compression.
+  const proxyRules = require("./util/proxy");
 
-  app.get("*", (req, res) =>
-    res.sendFile(path.resolve(serveDir + "/index.html"))
-  );
+  Object.getOwnPropertyNames(proxyRules).forEach(proxyPath => {
+    app.use(proxy(proxyPath, proxyRules[proxyPath]));
+  });
 
   app.listen(serverPort, () => {
     writer(formatUtil.formatInfo(`Serving files from ${serveDir} ...`));

@@ -1,28 +1,40 @@
 const paths = require("../paths");
-const { PUBLIC_ADDRESS } = require("../hostInfo");
+const history = require("connect-history-api-fallback");
+const convert = require("koa-connect");
+const compress = require("koa-compress");
 
 // For further config see here: https://github.com/webpack/docs/wiki/webpack-dev-server#api
 module.exports = function(publicPath, port, isHot) {
+  const host = "localhost";
   return {
-    publicPath,
-    port,
-    historyApiFallback: true,
-    contentBase: [
+    content: [
       paths.resolveApp("public"),
       paths.resolveApp("src"),
       paths.resolveApp(".tmp"),
       paths.resolveApp("")
     ],
-    host: "::",
-    public: `${PUBLIC_ADDRESS}:${port}`,
-    stats: "minimal",
-    watchOptions: {
-      ignored: /node_modules|\.tmp/
+    dev: {
+      publicPath,
+      logLevel: "silent",
+      stats: "errors-only"
     },
-    compress: true,
-    inline: true,
-    hot: isHot,
-    // clientLogLevel: "none",
-    quiet: true
+    hot: isHot
+      ? {
+          logLevel: "silent",
+          host
+        }
+      : false,
+    port,
+    logLevel: "error",
+    logTime: false,
+    host,
+    add: (app, middleware, options) => {
+      const historyOptions = {
+        // ... see: https://github.com/bripkens/connect-history-api-fallback#options
+      };
+
+      app.use(convert(history(historyOptions)));
+      app.use(compress());
+    }
   };
 };

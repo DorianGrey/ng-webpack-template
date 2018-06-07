@@ -65,45 +65,47 @@ function handleWatchTranslations() {
   });
 }
 
-function startServer(translationsWatcher) {
+async function startServer(translationsWatcher) {
   info("Starting development server...");
 
   const { HOST, selectPort } = require("../config/hostInfo");
+  const selectedPort = await selectPort(devOptions.port);
+  devOptions.port = selectedPort;
+  info("Build config in use: " + JSON.stringify(devOptions, null, 4));
 
-  return selectPort(devOptions.port).then(selectedPort => {
-    devOptions.port = selectedPort;
-    info("Build config in use: " + JSON.stringify(devOptions, null, 4));
+  const serve = require("webpack-serve");
+  const devServerConfig = require("../config/webpack/dev-server");
 
-    const WebpackDevServer = require("webpack-dev-server");
-    const addDevServerEntryPoints = require("webpack-dev-server/lib/util/addDevServerEntrypoints");
-    const devServerConfig = require("../config/webpack/dev-server");
+  const config = devConfig(devOptions);
+  const devServerConfigBuilt = devServerConfig(
+    config.output.publicPath,
+    selectedPort,
+    devOptions.isHot
+  );
 
-    const config = devConfig(devOptions);
-    const devServerConfigBuilt = devServerConfig(
-      config.output.publicPath,
-      selectedPort,
-      devOptions.isHot
-    );
+  let devServer;
+  try {
+    devServer = serve({ config, ...devServerConfigBuilt });
+  } catch (e) {
+    console.error(e);
+    process.exit(1);
+  }
 
-    addDevServerEntryPoints(config, devServerConfigBuilt);
-
-    const compiler = webpack(config);
-    const devServer = new WebpackDevServer(compiler, devServerConfigBuilt);
-
-    devServer.listen(selectedPort, HOST, err => {
-      if (err) {
-        return console.error(err);
-      }
-    });
-
+  const serverInstance = devServer.then(server => {
     ["SIGINT", "SIGTERM"].forEach(sig => {
       process.on(sig, () => {
         translationsWatcher.close();
-        devServer.close();
+        server.close();
         process.exit(0);
       });
     });
+
+    server.on("listening", () => {
+      info("Dev server listening...");
+    });
   });
+
+  return serverInstance;
 }
 
 Promise.resolve()
