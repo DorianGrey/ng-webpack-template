@@ -1,5 +1,4 @@
 const { DllReferencePlugin } = require("webpack");
-const HotModuleReplacementPlugin = require("webpack/lib/HotModuleReplacementPlugin");
 const path = require("path");
 const merge = require("webpack-merge");
 
@@ -22,10 +21,6 @@ module.exports = function(env) {
     }),
     new ErrorFormatterPlugin()
   ];
-
-  if (env.isHot) {
-    plugins.push(new HotModuleReplacementPlugin());
-  }
 
   return merge.smart(commonConfig(env), {
     mode: "development",

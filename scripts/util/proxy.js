@@ -1,10 +1,9 @@
 "use strict";
 
-const router = require("express").Router();
-const httpProxy = require("http-proxy");
+// Configure proxy rules as described here:
+// https://github.com/vagusX/koa-proxies#usage
+// Each path to be added as a proxy rules should be an entry
+// in this object.
+const proxyRules = {};
 
-module.exports = router;
-
-const proxy = httpProxy.createProxyServer();
-
-// Enter your proxy rules here.
+module.exports = proxyRules;

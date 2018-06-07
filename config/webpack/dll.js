@@ -32,7 +32,6 @@ module.exports = {
   entry: {
     polyfills: [
       // Webpack polyfills and utilities
-      "sockjs-client",
       "querystring-es3",
       "strip-ansi",
       "url",
