@@ -30,11 +30,11 @@ module.exports = {
     "node_modules",
     "src"
   ],
+  "reporters": ["default", "jest-junit"],
   "setupTestFrameworkScriptFile": "<rootDir>/config/jest/testSetup.ts",
   "testMatch": [
     "<rootDir>/src/**/?(*.)spec.ts"
   ],
-  "testResultsProcessor": "<rootDir>/node_modules/jest-junit",
   "transform": {
     "^.+\\.(ts|html)$": "<rootDir>/node_modules/jest-preset-angular/preprocessor.js",
     "^.+\\.js$": "babel-jest"
