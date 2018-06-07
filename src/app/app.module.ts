@@ -1,6 +1,6 @@
 import { NgModule, ApplicationRef } from "@angular/core";
 
-import { take } from "rxjs/operators/take";
+import { take } from "rxjs/operators";
 
 import { TranslateService } from "@ngx-translate/core";
 

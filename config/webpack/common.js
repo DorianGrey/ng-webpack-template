@@ -22,7 +22,8 @@ const {
   RULE_TS_LOADING,
   RULE_TS_AOT_LOADING,
   RULE_MAIN_SASS_LOADING,
-  RULE_COMPONENT_SASS_LOADING
+  RULE_COMPONENT_SASS_LOADING,
+  RULE_IGNORE_SYSTEM_IMPORT
 } = require("./factories/rules");
 
 const {
@@ -161,7 +162,8 @@ module.exports = function(env) {
         RULE_HTML_RAW_LOADING,
         RULE_MAIN_SASS_LOADING(isDev),
         RULE_COMPONENT_SASS_LOADING(isDev),
-        RULE_IMG_LOADING(env)
+        RULE_IMG_LOADING(env),
+        RULE_IGNORE_SYSTEM_IMPORT
       ]
     },
     /**

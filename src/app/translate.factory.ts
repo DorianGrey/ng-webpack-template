@@ -1,6 +1,5 @@
 import { TranslateLoader } from "@ngx-translate/core";
-import { Observable } from "rxjs/Observable";
-import { of as observableOf } from "rxjs/observable/of";
+import { Observable, of as observableOf } from "rxjs";
 import translations from "../generated/translations";
 
 class ClientLocalTranslateLoader implements TranslateLoader {

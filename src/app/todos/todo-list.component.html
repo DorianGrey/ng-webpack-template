@@ -4,11 +4,11 @@
     <ul>
       <li *ngFor="let todo of todos | async">
         <div>
-          <span class="label">{{'todos.entry.description' | translate}}:</span>
+          <span class="label">{{'todos.entry.description' | translate}}:&nbsp;</span>
           <span>{{todo.text}}</span>
         </div>
         <div>
-          <span class="label">{{'todos.entry.added' | translate}}:</span>
+          <span class="label">{{'todos.entry.added' | translate}}:&nbsp;</span>
           <span>{{todo.addedTimestamp | date:'medium'}}</span>
         </div>
         <button (click)="complete(todo)">{{ 'todos.complete.entry' | translate }}</button>
@@ -24,15 +24,15 @@
     <ul>
       <li *ngFor="let todo of completedTodos | async">
         <div>
-          <span class="label">{{'todos.entry.description' | translate}}:</span>
+          <span class="label">{{'todos.entry.description' | translate}}:&nbsp;</span>
           <span>{{todo.text}}</span>
         </div>
         <div>
-          <span class="label">{{'todos.entry.added' | translate}}:</span>
+          <span class="label">{{'todos.entry.added' | translate}}:&nbsp;</span>
           <span>{{todo.addedTimestamp | date:'medium'}}</span>
         </div>
         <div>
-          <span class="label">{{'todos.entry.completed' | translate}}:</span>
+          <span class="label">{{'todos.entry.completed' | translate}}:&nbsp;</span>
           <span>{{todo.completedTimestamp | date:'medium'}}</span>
         </div>
       </li>
