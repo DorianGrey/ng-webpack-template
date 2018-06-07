@@ -5,6 +5,7 @@ language: node_js
 node_js:
   - "8"
   - "9"
+  - "10"
 addons:
   apt:
     sources:
@@ -18,14 +19,6 @@ cache:
     - $HOME/.yarn-cache
 
 install: npm install yarn -g && yarn install
-
-before_script:
-  # Generate a virtual framebuffer X server to collect Electron windows
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-
-  # Wait for Xvfb to start
-  - sleep 3
 
 # We need to test all potentially used production build version to ensure that none of them fails,
 # and to get a proper output if any of them does.

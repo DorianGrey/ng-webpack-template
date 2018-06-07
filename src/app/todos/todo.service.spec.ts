@@ -2,7 +2,7 @@ import { TestBed, inject } from "@angular/core/testing";
 import { TodoService } from "./todo.service";
 import { StoreModule, Store } from "@ngrx/store";
 import { todosReducer, AddTodoAction, CompleteTodoAction } from "./todos.store";
-import { Observable } from "rxjs/Observable";
+import { Observable } from "rxjs";
 import { List } from "immutable";
 
 describe("TodoService", () => {

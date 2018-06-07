@@ -167,3 +167,12 @@ exports.RULE_COMPONENT_SASS_LOADING = function(isDev) {
     use: [require.resolve("to-string-loader")].concat(scssLoaderChain(isDev))
   };
 };
+
+// TODO: We'll have to remove this rule ASAP - but atm., not using this rule
+// causes a deprecation warning.
+exports.RULE_IGNORE_SYSTEM_IMPORT = {
+  // Mark files inside `@angular/core` as using SystemJS style dynamic imports.
+  // Removing this will cause deprecation warnings to appear.
+  test: /[\/\\]@angular[\/\\]core[\/\\].+\.js$/,
+  parser: { system: true },
+};

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from "@angular/core";
-import { Observable } from "rxjs/Observable";
+import { Observable } from "rxjs";
 import { LazyTestService } from "./lazy-test.service";
 
 @Component({

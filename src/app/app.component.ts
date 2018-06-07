@@ -2,8 +2,8 @@ import indexOf from "lodash-es/indexOf";
 import { Component } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { TranslateService } from "@ngx-translate/core";
-import { Observable } from "rxjs/Observable";
-import { take } from "rxjs/operators/take";
+import { Observable } from "rxjs";
+import { take } from "rxjs/operators";
 
 import { CoreAppState, getLanguage } from "./app.store";
 import { SetLanguageAction } from "./i18n/language.store";
