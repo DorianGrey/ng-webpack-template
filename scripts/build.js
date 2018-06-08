@@ -10,7 +10,6 @@ const compileTranslations = require("./translations").compile;
 const paths = require("../config/paths");
 const prodConfig = require("../config/webpack/prod");
 const buildConfig = require("../config/build.config").parseFromCLI();
-const getBasicUglifyOptions = require("../config/webpack/uglify.config");
 
 const formatUtil = require("./util/formatUtil");
 const formatWebpackMessages = require("./util/formatWebpackMessages");
@@ -24,10 +23,6 @@ process.on("unhandledRejection", err => {
   writer(formatUtil.formatError(err) + "\n");
   throw err;
 });
-
-function getWorkBoxPath() {
-  return require.resolve("workbox-sw");
-}
 
 function info(str) {
   writer(`${formatUtil.formatInfo(str)}\n`);
@@ -74,10 +69,9 @@ function handleCopyStatics(config, buildConfig) {
     dereference: true,
     filter
   });
-  return [config, buildConfig];
 }
 
-function determineStaticAssets(config, buildConfig) {
+function determineStaticAssets() {
   // Determine copied paths, and add the generated service worker stuff as well
   // used for properly generating an output.
   const globs = [
@@ -90,10 +84,10 @@ function determineStaticAssets(config, buildConfig) {
     .sync(globs)
     .map(p => path.relative(paths.appPublic, p));
 
-  return Promise.resolve([config, buildConfig, staticAssets]);
+  return staticAssets;
 }
 
-function handleBuild(config, buildConfig, staticAssets) {
+function handleBuild(config, buildConfig) {
   return new Promise((resolve, reject) => {
     info("Building app...");
     info("Build config in use: " + JSON.stringify(buildConfig, null, 4));
@@ -114,7 +108,7 @@ function handleBuild(config, buildConfig, staticAssets) {
         formatUtil.formatSuccess("Build completed successfully." + "\n\n")
       );
 
-      return resolve([buildConfig, stats, staticAssets]);
+      return resolve(stats);
     });
   });
 }
@@ -139,21 +133,18 @@ function printStatistics(buildConfig, stats, staticAssets) {
 
 // Build process via promise chaining. Steps are implemented in the separate
 // functions above.
-formatUtil.cls();
+async function build() {
+  formatUtil.cls();
+  await handleTranslations();
+  const [config, buildConfig] = await handleBuildSetup();
+  handleCopyStatics(config, buildConfig);
+  const staticAssets = determineStaticAssets();
+  const stats = await handleBuild(config, buildConfig);
+  return printStatistics(buildConfig, stats, staticAssets);
+}
 
-Promise.resolve()
-  .then(handleTranslations)
-  .then(handleBuildSetup)
-  .then(([config, buildConfig]) => handleCopyStatics(config, buildConfig))
-  .then(([config, buildConfig]) => determineStaticAssets(config, buildConfig))
-  .then(([config, buildConfig, staticAssets]) =>
-    handleBuild(config, buildConfig, staticAssets)
-  )
-  .then(([buildConfig, stats, staticAssets]) =>
-    printStatistics(buildConfig, stats, staticAssets)
-  )
-  .catch(e => {
-    writer(formatUtil.formatError("Build failed." + "\n"));
-    writer(formatUtil.formatError(e) + "\n");
-    process.exit(1);
-  });
+build().catch(e => {
+  writer(formatUtil.formatError("Build failed." + "\n"));
+  writer(formatUtil.formatError(e) + "\n");
+  process.exit(1);
+});
