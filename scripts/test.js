@@ -30,10 +30,16 @@ const started = withCoverage
   ? fs.emptyDir(paths.resolveApp("test-results"))
   : Promise.resolve();
 
-started
-  .then(() =>
-    compileTranslations("src/**/*.i18n.yml", "src/generated/translations.ts")
-  )
-  .then(() => {
-    jest.run(argv);
-  });
+async function test() {
+  const started = withCoverage
+    ? fs.emptyDir(paths.resolveApp("test-results"))
+    : Promise.resolve();
+  await started;
+  await compileTranslations(
+    "src/**/*.i18n.yml",
+    "src/generated/translations.ts"
+  );
+  return jest.run(argv);
+}
+
+test();

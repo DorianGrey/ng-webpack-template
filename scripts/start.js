@@ -68,7 +68,7 @@ function handleWatchTranslations() {
 async function startServer(translationsWatcher) {
   info("Starting development server...");
 
-  const { HOST, selectPort } = require("../config/hostInfo");
+  const { selectPort } = require("../config/hostInfo");
   const selectedPort = await selectPort(devOptions.port);
   devOptions.port = selectedPort;
   info("Build config in use: " + JSON.stringify(devOptions, null, 4));
@@ -108,21 +108,23 @@ async function startServer(translationsWatcher) {
   return serverInstance;
 }
 
-Promise.resolve()
-  .then(cleanTmp)
-  .then(handleTranslations)
-  .then(buildDlls)
-  .then(handleWatchTranslations)
-  .then(startServer)
-  .catch(err => {
-    // `err` might be an array in case we provided the error list from webpack.
-    if (Array.isArray(err)) {
-      const formatted = err.map(message =>
-        formatMessage(message, formatUtil.formatFirstLineMessage)
-      );
-      printErrors(formatted, writer);
-    } else {
-      console.error(err);
-    }
-    process.exit(1);
-  });
+async function start() {
+  await cleanTmp();
+  await handleTranslations();
+  await buildDlls();
+  const translationsWatcher = await handleWatchTranslations();
+  return startServer(translationsWatcher);
+}
+
+start().catch(err => {
+  // `err` might be an array in case we provided the error list from webpack.
+  if (Array.isArray(err)) {
+    const formatted = err.map(message =>
+      formatMessage(message, formatUtil.formatFirstLineMessage)
+    );
+    printErrors(formatted, writer);
+  } else {
+    console.error(err);
+  }
+  process.exit(1);
+});
