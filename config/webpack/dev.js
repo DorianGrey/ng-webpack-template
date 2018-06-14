@@ -1,6 +1,7 @@
 const { DllReferencePlugin } = require("webpack");
 const path = require("path");
 const merge = require("webpack-merge");
+const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 
 const ErrorFormatterPlugin = require("./plugins/ErrorFormatterPlugin");
 const paths = require("../paths");
@@ -19,7 +20,8 @@ module.exports = function(env) {
       context: ".",
       manifest: require(paths.resolveApp(".tmp/vendor-manifest.json"))
     }),
-    new ErrorFormatterPlugin()
+    new ErrorFormatterPlugin(),
+    new HardSourceWebpackPlugin()
   ];
 
   return merge.smart(commonConfig(env), {
