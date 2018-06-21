@@ -8,6 +8,7 @@ const glob = require("globby");
 
 const compileTranslations = require("./translations").compile;
 const paths = require("../config/paths");
+const { buildLog, log } = require("../config/logger");
 const prodConfig = require("../config/webpack/prod");
 const buildConfig = require("../config/build.config").parseFromCLI();
 
@@ -17,19 +18,13 @@ const statsFormatter = require("./util/statsFormatter");
 const printFileSizes = require("./util/printFileSizes");
 const printPreviewInformation = require("./util/printPreviewInformation");
 
-const writer = process.stdout.write.bind(process.stdout);
-
 process.on("unhandledRejection", err => {
-  writer(formatUtil.formatError(err) + "\n");
+  log.error(err);
   throw err;
 });
 
-function info(str) {
-  writer(`${formatUtil.formatInfo(str)}\n`);
-}
-
 function handleTranslations() {
-  info("Compiling translations...");
+  buildLog.await("Compiling translations...");
   return compileTranslations(
     "src/**/*.i18n.yml",
     "src/generated/translations.ts"
@@ -46,11 +41,11 @@ function handleBuildSetup() {
       return reject(e);
     }
 
-    writer(formatUtil.formatInfo("Clearing output targets:"));
-    writer("  " + chalk.bgBlue.white(buildConfig.outputDir));
-    writer(", " + chalk.bgBlue.white(buildConfig.statsDir));
-    writer("\n");
-
+    buildLog.await(
+      `Clearing output targets: ${chalk.bgBlue.white(
+        buildConfig.outputDir
+      )}, ${chalk.bgBlue.white(buildConfig.statsDir)}`
+    );
     Promise.all([
       fs.emptyDir(buildConfig.outputDir),
       fs.emptyDir(buildConfig.statsDir)
@@ -59,9 +54,7 @@ function handleBuildSetup() {
 }
 
 function handleCopyStatics(config, buildConfig) {
-  writer(
-    formatUtil.formatInfo("Copying non-referenced static files...") + "\n"
-  );
+  buildLog.await("Copying non-referenced static files...");
   const filter = file =>
     file !== paths.appHtml && file !== paths.serviceWorkerScriptSrc;
 
@@ -89,8 +82,10 @@ function determineStaticAssets() {
 
 function handleBuild(config, buildConfig) {
   return new Promise((resolve, reject) => {
-    info("Building app...");
-    info("Build config in use: " + JSON.stringify(buildConfig, null, 4));
+    buildLog.info(
+      "Build config in use: " + JSON.stringify(buildConfig, null, 4)
+    );
+    buildLog.await("Building app...");
 
     let compiler;
     try {
@@ -103,10 +98,7 @@ function handleBuild(config, buildConfig) {
       if (err) {
         return reject(err);
       }
-      writer("\n");
-      writer(
-        formatUtil.formatSuccess("Build completed successfully." + "\n\n")
-      );
+      buildLog.success("Build completed successfully.");
 
       return resolve(stats);
     });
@@ -116,14 +108,13 @@ function handleBuild(config, buildConfig) {
 function printStatistics(buildConfig, stats, staticAssets) {
   return new Promise((resolve, reject) => {
     const jsonStats = stats.toJson({}, true);
-    const jsonified = formatWebpackMessages(jsonStats);
-    const formattedStats = statsFormatter.formatStats(jsonified);
+    const formattedStats = formatWebpackMessages(jsonStats);
     statsFormatter.printWarnings(formattedStats.warnings);
     if (formattedStats.errors.length) {
       return reject(formattedStats.errors);
     } else {
       const hasYarn = fs.existsSync(paths.yarnLockFile);
-      writer(formatUtil.formatNote(`Build hash: ${jsonStats.hash}\n`));
+      log.note(`Build hash: ${jsonStats.hash}`);
       printFileSizes(buildConfig, stats, staticAssets);
       printPreviewInformation(buildConfig, hasYarn);
       resolve(buildConfig);
@@ -144,7 +135,7 @@ async function build() {
 }
 
 build().catch(e => {
-  writer(formatUtil.formatError("Build failed." + "\n"));
-  writer(formatUtil.formatError(e) + "\n");
+  log.error("Build failed.");
+  log.error(e);
   process.exit(1);
 });

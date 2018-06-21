@@ -42,7 +42,6 @@ function selectPublicAddress(defaultHost) {
     case "127.0.0.1":
     case "localhost":
       return determinePublicAddress();
-      break;
     default:
       console.log(
         `Selected default host=${defaultHost} is neither local nor wildcard, skipping host determination...`

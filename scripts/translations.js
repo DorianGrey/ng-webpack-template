@@ -4,8 +4,7 @@ const yaml = require("js-yaml");
 const _ = require("lodash");
 
 const utils = require("./util/fileUtils");
-const formatUtil = require("./util/formatUtil");
-const writer = s => process.stdout.write(`${s}\n`);
+const { log } = require("../config/logger");
 
 const parseYaml = file => {
   try {
@@ -87,14 +86,12 @@ const statistics = opts => partials => {
 
   if (_.size(conflictingKeys) > 0) {
     _.each(conflictingKeys, (translations, key) => {
-      writer(formatUtil.formatError(`Conflict for "${key}":`));
-      _.each(translations, t => {
-        writer(
-          formatUtil.formatError(
-            `${_.padEnd(`${t.file} `, maxFileNameLength + 2, "-")}> ${t.value}`
-          )
-        );
-      });
+      log.error(`Conflict for "${key}":`);
+      translations.forEach(t =>
+        log.error(
+          `${_.padEnd(`${t.file} `, maxFileNameLength + 2, "-")}> ${t.value}`
+        )
+      );
     });
     return Promise.reject(
       new Error(`Translation failed: Conflicting translations.`)
@@ -102,19 +99,15 @@ const statistics = opts => partials => {
   }
   if (opts.verbose) {
     _.each(duplicatedValues, (translations, value) => {
-      writer(formatUtil.formatDebug(`Duplicated value for "${value}":`));
-      _.each(translations, t => {
-        writer(
-          formatUtil.formatDebug(
-            `${_.padEnd(`${t.file} `, maxFileNameLength + 2, "-")}> ${t.key}`
-          )
-        );
-      });
+      log.debug(`Duplicated value for "${value}":`);
+      translations.forEach(
+        t => `${_.padEnd(`${t.file} `, maxFileNameLength + 2, "-")}> ${t.key}`
+      );
     });
   }
 
   const duplicatedValuesPercent =
-    _.size(duplicatedValues) / translations.length * 100;
+    (_.size(duplicatedValues) / translations.length) * 100;
   if (!_.isUndefined(opts.duplicateThreshold)) {
     if (duplicatedValuesPercent > opts.duplicateThreshold) {
       return Promise.reject(
@@ -126,12 +119,10 @@ const statistics = opts => partials => {
       );
     }
   }
-  writer(
-    formatUtil.formatDebug(
-      `Translation duplicates: ${_.size(
-        duplicatedValues
-      )} (${duplicatedValuesPercent.toFixed(1)}%)`
-    )
+  log.debug(
+    `Translation duplicates: ${_.size(
+      duplicatedValues
+    )} (${duplicatedValuesPercent.toFixed(1)}%)`
   );
   return partials;
 };
@@ -197,12 +188,8 @@ exports.watch = (src, dest, opts) => {
       exports
         .compile(src, dest, opts)
         .then(
-          () =>
-            writer(formatUtil.formatDebug(`Translations written to ${dest}`)),
-          err =>
-            writer(
-              formatUtil.formatError(`Error processing translation: ${err}`)
-            )
+          () => log.debug(`Translations written to ${dest}`),
+          err => log.error(`Error processing translation: ${err}`)
         );
     },
     {

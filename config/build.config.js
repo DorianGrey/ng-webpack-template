@@ -42,7 +42,6 @@ function isValidOptionOverride(key, value) {
       return type === "string" || type === "boolean";
     case "categorizeAssets":
       return typeof value === "object" || value === false;
-      break;
     default:
       return typeof buildConfig[key] === typeof value;
   }

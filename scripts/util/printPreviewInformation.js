@@ -4,7 +4,7 @@ const chalk = require("chalk");
 const path = require("path");
 const { kebabCase } = require("lodash");
 
-const formatUtil = require("./formatUtil");
+const { log } = require("../../config/logger");
 const { getNonDefaultFields } = require("../../config/build.config");
 
 function printPreviewInformation(buildConfig, hasYarn) {
@@ -18,17 +18,11 @@ function printPreviewInformation(buildConfig, hasYarn) {
     serveMessage = `${serveMessage} -- ${additionalInfoString}`;
   }
 
-  process.stdout.write(
-    formatUtil.formatNote(
-      `Use ${chalk.cyan(serveMessage)} to preview your production build.\n\n`
-    )
-  );
-  process.stdout.write(
-    formatUtil.formatNote(
-      `Both a HTML and a JSON report about the generated bundles were generated to ${chalk.cyan(
-        buildConfig.outputDir + path.sep
-      )}. These are useful to analyze your bundles' sizes.\n\n`
-    )
+  log.note(`Use ${chalk.cyan(serveMessage)} to preview your production build.`);
+  log.note(
+    `Both a HTML and a JSON report about the generated bundles were generated to ${chalk.cyan(
+      buildConfig.outputDir + path.sep
+    )}. These are useful to analyze your bundles' sizes.`
   );
 }
 

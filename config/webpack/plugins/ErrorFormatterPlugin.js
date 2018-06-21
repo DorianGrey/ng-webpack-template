@@ -1,8 +1,7 @@
 const statsFormatter = require("../../../scripts/util/statsFormatter");
 const formatWebpackMessages = require("../../../scripts/util/formatWebpackMessages");
 const formatUtil = require("../../../scripts/util/formatUtil");
-
-const writer = process.stdout.write.bind(process.stdout);
+const { buildLog, log } = require("../../logger");
 
 function hookToCompiler(compiler, event, callback) {
   if (compiler.hooks[event]) {
@@ -39,19 +38,12 @@ class ErrorFormatterPlugin {
 
       if (!hasErrors && !hasWarnings) {
         const time = getCompileTime(stats);
-        writer("\n");
-        writer(
-          `${formatUtil.formatSuccess(
-            `Compiled successfully in ${time} ms.`
-          )}\n`
-        );
+        buildLog.success(`Compiled successfully in ${time} ms.`);
 
         if (this.options.successMessages.length > 0) {
-          writer("\n");
           this.options.successMessages.forEach(msg => {
-            writer(`${formatUtil.formatNote(msg)}\n`);
+            log.note(msg);
           });
-          writer("\n");
         }
 
         return;
@@ -61,7 +53,7 @@ class ErrorFormatterPlugin {
 
     const onInvalid = () => {
       this.options.clear.onInvalid && this.cls();
-      writer(`${formatUtil.formatInfo("Compiling...")}\n`);
+      buildLog.info("Compiling...");
     };
 
     hookToCompiler(compiler, "done", onDone);
@@ -69,17 +61,14 @@ class ErrorFormatterPlugin {
   }
 
   displayMalfunctions(hasErrors, hasWarnings, stats) {
-    const jsonified = formatWebpackMessages(stats.toJson({}, true));
-    const formattedStats = statsFormatter.formatStats(jsonified);
+    const formattedStats = formatWebpackMessages(stats.toJson({}, true));
 
     if (hasWarnings) {
-      writer("\n");
-      statsFormatter.printWarnings(formattedStats.warnings, writer);
+      statsFormatter.printWarnings(formattedStats.warnings);
     }
 
     if (hasErrors) {
-      writer("\n");
-      statsFormatter.printErrors(formattedStats.errors, writer);
+      statsFormatter.printErrors(formattedStats.errors);
     }
   }
 }

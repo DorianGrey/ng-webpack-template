@@ -16,9 +16,7 @@ const stripAnsi = require("strip-ansi");
 const alignPad = require("./alignPad");
 const partition = require("./partition");
 const gzipSizeOf = require("./gzipsize");
-const formatUtils = require("./formatUtil");
-
-const writer = process.stdout.write.bind(process.stdout);
+const { log } = require("../../config/logger");
 
 /**
  * Prints file stats about a particular set of assets, depending on the
@@ -36,7 +34,7 @@ const writer = process.stdout.write.bind(process.stdout);
  *                                           categorized as "remain" of a style extraction.
  *                                           Note that this only affects .js files.
  */
-function printFileSizesOnAssetCategory(
+function formatFileSizesOnAssetCategory(
   buildFolder,
   assetsStats,
   exceptionalAssetCnt,
@@ -86,7 +84,7 @@ function printFileSizesOnAssetCategory(
     assets.map(a => stripAnsi(a.folder + path.sep + a.name).length)
   );
 
-  assets.forEach(asset => {
+  const formattedAssetsLabels = assets.map(asset => {
     const sizeLabelSrc = alignPad(
       asset.sizeLabel.src,
       longestSrcSizeLabelLength
@@ -108,22 +106,25 @@ function printFileSizesOnAssetCategory(
     }
     const colorer = assetTooLarge
       ? chalk.yellow
-      : assetMayBeExtractedChunk ? chalk.grey : chalk.cyan;
+      : assetMayBeExtractedChunk
+        ? chalk.grey
+        : chalk.cyan;
 
     const assetName = colorer(
       alignPad(asset.name, longestFileNameSize - (asset.folder.length + 1))
     );
 
-    writer(
+    return (
       chalk.dim(asset.folder + path.sep) +
-        assetName +
-        " @ " +
-        sizeLabelSrc +
-        " => " +
-        sizeLabelGzip +
-        "\n"
+      assetName +
+      " @ " +
+      sizeLabelSrc +
+      " => " +
+      sizeLabelGzip
     );
   });
+
+  return formattedAssetsLabels;
 }
 
 /**
@@ -155,17 +156,15 @@ function printFileSizes(buildConfig, webpackStats, staticAssets = []) {
     extracted: 0
   };
 
-  writer(
-    "\n" +
-      formatUtils.formatNote(
-        `Emitted assets in ${chalk.cyan(
-          path.resolve(buildConfig.outputDir)
-        )} (displayed gzip sizes refer to compression ${chalk.cyan(
-          "level=" + gzipOpts.level
-        )}):`
-      ) +
-      "\n"
+  log._stream.write("\n");
+  log.note(
+    `Emitted assets in ${chalk.cyan(
+      path.resolve(buildConfig.outputDir)
+    )} (displayed gzip sizes refer to compression ${chalk.cyan(
+      "level=" + gzipOpts.level
+    )}):`
   );
+  log._stream.write("\n");
 
   /*
     The assets will be consumed step by step w.r.t. the configured categorization.
@@ -178,17 +177,17 @@ function printFileSizes(buildConfig, webpackStats, staticAssets = []) {
         assetCategories[c].test(asset.name)
       );
       if (_relevantAssets.length > 0) {
-        if (c !== "#") {
-          writer(formatUtils.formatIndicator("> " + c) + "\n");
-        }
-        printFileSizesOnAssetCategory(
+        const formattedAssetsLabels = formatFileSizesOnAssetCategory(
           buildConfig.outputDir,
           _relevantAssets,
           exceptionalAssetCnt,
           assetsSizeWarnLimit,
           potentiallyExtractedChunkSizeLimit
         );
-        writer("\n");
+        log.category(
+          [chalk.bgCyan.white.bold(c)].concat(formattedAssetsLabels).join("\n")
+        );
+        log._stream.write("\n");
       }
       return nextAssets;
     },
@@ -197,45 +196,43 @@ function printFileSizes(buildConfig, webpackStats, staticAssets = []) {
 
   // If there are any assets left, they are summarized in a special "Others" category.
   if (remainingAssets.length > 0) {
-    writer(formatUtils.formatIndicator("> Others") + "\n");
-    printFileSizesOnAssetCategory(
+    const formattedAssetsLabels = formatFileSizesOnAssetCategory(
       buildConfig.outputDir,
       remainingAssets,
       exceptionalAssetCnt,
       assetsSizeWarnLimit,
       potentiallyExtractedChunkSizeLimit
     );
-    writer("\n");
+    log.category(
+      [chalk.bgCyan.white.bold("Others")]
+        .concat(formattedAssetsLabels)
+        .join("\n")
+    );
+    log._stream.write("\n");
   }
 
   // Print an information about the amount of too large assets, and how they are marked.
   if (exceptionalAssetCnt.tooLarge > 0) {
-    writer(
-      formatUtils.formatWarning(
-        `${exceptionalAssetCnt.tooLarge === 1 ? "There is" : "There are"} ${
-          exceptionalAssetCnt.tooLarge
-        } assets which exceed the configured size limit of ${filesize(
-          assetsSizeWarnLimit
-        )}. Affected asset(s) marked in ${chalk.yellow("yellow")}.`
-      ) + "\n"
+    log.warn(
+      `${exceptionalAssetCnt.tooLarge === 1 ? "There is" : "There are"} ${
+        exceptionalAssetCnt.tooLarge
+      } assets which exceed the configured size limit of ${filesize(
+        assetsSizeWarnLimit
+      )}. Affected asset(s) marked in ${chalk.yellow("yellow")}.`
     );
-    writer("\n");
   }
 
   // Print an information about potential extraction remainings, and how they are marked.
   if (exceptionalAssetCnt.extracted > 0) {
-    writer(
-      formatUtils.formatNote(
-        `${exceptionalAssetCnt.extracted === 1 ? "There is" : "There are"} ${
-          exceptionalAssetCnt.extracted
-        } assets which are smaller than the configured lower size limit of ${filesize(
-          potentiallyExtractedChunkSizeLimit
-        )}. Affected asset(s) should be considered remains of extracted chunks and are marked in ${chalk.grey(
-          "grey"
-        )}.`
-      ) + "\n"
+    log.note(
+      `${exceptionalAssetCnt.extracted === 1 ? "There is" : "There are"} ${
+        exceptionalAssetCnt.extracted
+      } assets which are smaller than the configured lower size limit of ${filesize(
+        potentiallyExtractedChunkSizeLimit
+      )}. Affected asset(s) should be considered remains of extracted chunks and are marked in ${chalk.grey(
+        "grey"
+      )}.`
     );
-    writer("\n");
   }
 }
 
