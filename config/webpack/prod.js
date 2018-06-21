@@ -58,7 +58,6 @@ module.exports = function(env) {
         // due to a blocked google-analytics module (which we do not even link ?!)
         importWorkboxFrom: "cdn",
         globDirectory: env.outputDir,
-        globPatterns: ["**/*.{html,js,css,jpg,eot,svg,woff2,woff,ttf,json}"],
         globIgnores: ["**/*.map", "service-worker.js"],
         swDest: "service-worker.js",
         swSrc: path.join(paths.appPublic, "service-worker.js")
