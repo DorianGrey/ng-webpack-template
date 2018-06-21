@@ -10,9 +10,8 @@ const convert = require("koa-connect");
 const yargs = require("yargs");
 
 const { selectPort } = require("../config/hostInfo");
+const { log } = require("../config/logger");
 const buildConfig = require("../config/build.config").parseFromCLI();
-const formatUtil = require("./util/formatUtil");
-const writer = s => process.stdout.write(`${s}\n`);
 
 const intendedPort = yargs.argv.port || 9988;
 
@@ -31,9 +30,7 @@ selectPort(intendedPort).then(serverPort => {
   });
 
   app.listen(serverPort, () => {
-    writer(formatUtil.formatInfo(`Serving files from ${serveDir} ...`));
-    writer(
-      formatUtil.formatInfo(`Listening on http://localhost:${serverPort} ...`)
-    );
+    log.info(`Serving files from ${serveDir} ...`);
+    log.info(`Listening on http://localhost:${serverPort} ...`);
   });
 });

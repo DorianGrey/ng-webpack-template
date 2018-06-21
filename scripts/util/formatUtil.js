@@ -3,34 +3,6 @@
 const chalk = require("chalk");
 const readline = require("readline");
 
-exports.formatIndicator = function(indicator) {
-  return `${chalk.bgCyan.white.bold("", indicator, "")}  `;
-};
-
-exports.formatDebug = function(text) {
-  return `${chalk.bgBlack.white("", "D", "")} ${text}`;
-};
-
-exports.formatNote = function(text) {
-  return `${chalk.bgWhite.black("", "N", "")} ${text}`;
-};
-
-exports.formatInfo = function(text) {
-  return `${chalk.bgBlue.black("", "I", "")} ${text}`;
-};
-
-exports.formatWarning = function(text) {
-  return `${chalk.bgYellow.black("", "WARNING", "")} ${text}`;
-};
-
-exports.formatError = function(text) {
-  return `${chalk.bgRed.black("", "ERROR", "")} ${text}`;
-};
-
-exports.formatSuccess = function(text) {
-  return `${chalk.bgGreen.black("", "SUCCESS", "")} ${text}`;
-};
-
 /**
  * Fill screen with blank lines, move to "0" afterwards and clear screen afterwards.
  * Note that it is still possible to "scroll back" afterwards.

@@ -68,14 +68,27 @@ exports.PLUGIN_INDEX_HTML = function PLUGIN_INDEX_HTML(env) {
   });
 };
 
-exports.PLUGIN_TS_CHECKER = function PLUGIN_TS_CHECKER(env) {
+exports.PLUGIN_TS_CHECKER = function PLUGIN_TS_CHECKER(env, log) {
   // Plugin to improve build and type checking speed; Will be included by default in the next major version.
   return new ForkTsCheckerWebpackPlugin({
     watch: paths.appSrc,
-    tsconfig: paths.resolveApp("tsconfig.json"),
     async: env.isWatch,
-    formatter: "codeframe",
+    tsconfig: paths.resolveApp("tsconfig.json"),
     tslint: paths.resolveApp("tslint.json"),
-    memoryLimit: process.env.APPVEYOR ? 1024 : 2048 // 2048 is too much for appveyor...
+    memoryLimit: process.env.APPVEYOR ? 1024 : 2048, // 2048 is too much for appveyor...,
+    formatter: "codeframe",
+    logger: {
+      info: (...args) => {
+        // Filter messages that are not that interesting in our case.
+        if (
+          args.length > 0 &&
+          !/^(Starting|Version|Using|Watching)/.test(args[0])
+        ) {
+          log.info(...args);
+        }
+      },
+      warn: (...args) => log.warn(...args),
+      error: (...args) => log.error(...args)
+    }
   });
 };

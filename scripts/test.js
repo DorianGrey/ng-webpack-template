@@ -26,10 +26,6 @@ if (!isCi && !withCoverage && !suppressWatchMode) {
   argv.push("--watch");
 }
 
-const started = withCoverage
-  ? fs.emptyDir(paths.resolveApp("test-results"))
-  : Promise.resolve();
-
 async function test() {
   const started = withCoverage
     ? fs.emptyDir(paths.resolveApp("test-results"))

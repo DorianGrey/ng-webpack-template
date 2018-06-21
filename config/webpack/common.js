@@ -1,11 +1,13 @@
-const { EnvironmentPlugin, NamedChunksPlugin } = require("webpack");
-const chalk = require("chalk");
+const {
+  EnvironmentPlugin,
+  NamedChunksPlugin,
+  ProgressPlugin
+} = require("webpack");
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const StyleLintPlugin = require("stylelint-webpack-plugin");
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
-const ProgressBarPlugin = require("progress-bar-webpack-plugin");
 const paths = require("../paths");
-const formatUtil = require("../../scripts/util/formatUtil");
+const { asyncLog, buildLog, log } = require("../logger");
 const { ensureEndingSlash } = require("./util");
 const chunkNameHandler = require("./helpers/chunkNameHandler");
 const {
@@ -93,24 +95,22 @@ module.exports = function(env) {
 
     new CaseSensitivePathsPlugin(),
 
-    PLUGIN_TS_CHECKER(env),
+    PLUGIN_TS_CHECKER(env, isDev ? asyncLog : log),
     new StyleLintPlugin(styleLintConfig)
   ];
 
   // process.env.CI is available on Travis & Appveyor.
-  // On Travis, proces.stdout.isTTY is `true`, but we don't want the progress
+  // On Travis, process.stdout.isTTY is `true`, but we don't want the progress
   // displayed there - it's irritating and does not work well.
   if (process.stdout.isTTY && !process.env.CI) {
     plugins.push(
       // Plugin for displaying bundle process stage.
-      new ProgressBarPlugin({
-        clear: true,
-        complete: ".",
-        format: `${formatUtil.formatIndicator(">")}${chalk.cyan(
-          ":bar"
-        )} ${chalk.cyan(":percent")} (:elapsed seconds)`,
-        summary: false,
-        width: 50
+      new ProgressPlugin(percent => {
+        if (percent < 1) {
+          buildLog.await(`[${Math.round(percent * 100)}%] Compiling...`);
+        } else {
+          buildLog.complete("Compilation completed.");
+        }
       })
     );
   }

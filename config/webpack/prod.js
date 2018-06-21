@@ -162,7 +162,6 @@ module.exports = function(env) {
   if (env.useBuildOptimizer) {
     result.module = {
       rules: [
-        // Ngo optimization, see https://github.com/angular/angular-cli/pull/6520
         {
           test: /\.js$/,
           use: [

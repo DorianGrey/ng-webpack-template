@@ -21,7 +21,11 @@ module.exports = function(env) {
       manifest: require(paths.resolveApp(".tmp/vendor-manifest.json"))
     }),
     new ErrorFormatterPlugin(),
-    new HardSourceWebpackPlugin()
+    new HardSourceWebpackPlugin({
+      info: {
+        level: "warn"
+      }
+    })
   ];
 
   return merge.smart(commonConfig(env), {

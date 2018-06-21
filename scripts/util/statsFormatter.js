@@ -1,61 +1,36 @@
 "use strict";
 
-const formatUtil = require("./formatUtil");
+const { log } = require("../../config/logger");
 
-const defaultWriter = process.stdout.write.bind(process.stdout);
-
-function printErrors(errors, writer) {
-  writer = writer || defaultWriter;
+function printErrors(errors) {
   if (errors.length) {
     const eCnt = errors.length;
-    writer("\n");
-    writer(
-      formatUtil.formatError(
-        `There ${eCnt === 1 ? "is" : "are"} ${eCnt} build error${
-          eCnt === 1 ? "" : "s"
-        }:\n`
-      )
+    log.error(
+      `There ${eCnt === 1 ? "is" : "are"} ${eCnt} build error${
+        eCnt === 1 ? "" : "s"
+      }:`
     );
     errors.forEach(err => {
-      writer(err + "\n\n");
+      log.error(err);
     });
   }
 }
 
-function printWarnings(warnings, writer) {
-  writer = writer || defaultWriter;
+function printWarnings(warnings) {
   if (warnings.length) {
     const eCnt = warnings.length;
-    writer("\n");
-    writer(
-      formatUtil.formatWarning(
-        `There ${eCnt === 1 ? "is" : "are"} ${eCnt} build warning${
-          eCnt === 1 ? "" : "s"
-        }:\n`
-      )
+    log.warn(
+      `There ${eCnt === 1 ? "is" : "are"} ${eCnt} build warning${
+        eCnt === 1 ? "" : "s"
+      }:`
     );
     warnings.forEach(warn => {
-      writer(warn + "\n\n");
+      log.warn(warn);
     });
   }
-}
-
-function formatWarnings(jsonified) {
-  return jsonified.map(warn => formatUtil.formatWarning(warn));
-}
-
-function formatErrors(jsonified) {
-  return jsonified.map(e => formatUtil.formatError(e));
-}
-
-function formatStats(jsonified) {
-  jsonified.warnings = formatWarnings(jsonified.warnings);
-  jsonified.errors = formatErrors(jsonified.errors);
-  return jsonified;
 }
 
 module.exports = {
-  formatStats,
   printWarnings,
   printErrors
 };
