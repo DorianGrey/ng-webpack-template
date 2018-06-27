@@ -38,6 +38,11 @@
       "git add"
     ]
   },
+  "browserslist": [
+    ">0.25%", 
+    "not ie 11", 
+    "not op_mini all"
+  ],
   "devDependencies": {
     "@angular-devkit/build-optimizer": "^0.6.8",
     "@angular/compiler-cli": "^6.0.6",

@@ -129,12 +129,6 @@ const scssLoaderChain = function(isDev) {
     {
       loader: require.resolve("postcss-loader"),
       options: {
-        plugins: loader => [
-          require("autoprefixer")({
-            browsers: ["last 2 versions"]
-          }),
-          require("postcss-flexbugs-fixes")
-        ],
         sourceMap: isDev
       }
     },
@@ -174,5 +168,5 @@ exports.RULE_IGNORE_SYSTEM_IMPORT = {
   // Mark files inside `@angular/core` as using SystemJS style dynamic imports.
   // Removing this will cause deprecation warnings to appear.
   test: /[\/\\]@angular[\/\\]core[\/\\].+\.js$/,
-  parser: { system: true },
+  parser: { system: true }
 };
