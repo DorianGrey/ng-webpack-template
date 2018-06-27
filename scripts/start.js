@@ -63,7 +63,12 @@ function handleWatchTranslations() {
 async function startServer(translationsWatcher) {
   buildLog.await("Starting development server...");
 
-  const { selectPort } = require("../config/hostInfo");
+  const {
+    useLocalIp,
+    selectPort,
+    LOCAL_HOST_ADDRESS,
+    PUBLIC_ADDRESS
+  } = require("../config/hostInfo");
   const selectedPort = await selectPort(devOptions.port);
   devOptions.port = selectedPort;
   buildLog.info("Build config in use: " + JSON.stringify(devOptions, null, 4));
@@ -72,9 +77,11 @@ async function startServer(translationsWatcher) {
   const devServerConfig = require("../config/webpack/dev-server");
 
   const config = devConfig(devOptions);
+  const host = useLocalIp ? PUBLIC_ADDRESS : LOCAL_HOST_ADDRESS;
   const devServerConfigBuilt = devServerConfig(
-    config.output.publicPath,
+    host,
     selectedPort,
+    config.output.publicPath,
     devOptions.isHot
   );
 
@@ -96,7 +103,9 @@ async function startServer(translationsWatcher) {
     });
 
     server.on("listening", () => {
-      buildLog.success("Dev server listening...");
+      buildLog.success(
+        `Dev server available at: http://${host}:${selectedPort}...`
+      );
     });
   });
 

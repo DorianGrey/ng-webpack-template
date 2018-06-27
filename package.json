@@ -21,6 +21,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node scripts/start.js",
+    "start:local": "node scripts/start.js --local-network",
     "test": "node scripts/test.js",
     "test:debug": "node --inspect --inspect-brk scripts/test.js",
     "test:ci": "node scripts/test.js --no-cache --coverage",
@@ -75,6 +76,7 @@
     "husky": "^0.14.3",
     "image-webpack-loader": "^3.4.2",
     "inline-chunk-manifest-html-webpack-plugin": "^2.0.0",
+    "internal-ip": "^3.0.1",
     "jest": "^23.2.0",
     "jest-junit": "^5.1.0",
     "jest-preset-angular": "^5.2.3",

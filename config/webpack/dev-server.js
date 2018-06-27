@@ -4,8 +4,7 @@ const convert = require("koa-connect");
 const compress = require("koa-compress");
 
 // For further config see here: https://github.com/webpack/docs/wiki/webpack-dev-server#api
-module.exports = function(publicPath, port, isHot) {
-  const host = "localhost";
+module.exports = function(host, port, publicPath, isHot) {
   return {
     content: [
       paths.resolveApp("public"),
