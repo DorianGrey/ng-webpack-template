@@ -47,7 +47,8 @@ export class SetActiveServiceWorkerFoundStateAction implements Action {
 }
 
 export class SetUpdatedServiceWorkerFoundStateAction implements Action {
-  readonly type = ServiceWorkerStateValue.STATE_SERVICE_WORKER_UPDATE_FOUND_INSTALL_PENDING;
+  readonly type =
+    ServiceWorkerStateValue.STATE_SERVICE_WORKER_UPDATE_FOUND_INSTALL_PENDING;
 }
 
 export class SetInstalledNewContentStateAction implements Action {

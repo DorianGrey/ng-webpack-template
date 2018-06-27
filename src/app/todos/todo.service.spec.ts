@@ -27,11 +27,9 @@ describe("TodoService", () => {
     });
   });
 
-  beforeEach(
-    inject([TodoService], (_todoService: TodoService) => {
-      todoService = _todoService;
-    })
-  );
+  beforeEach(inject([TodoService], (_todoService: TodoService) => {
+    todoService = _todoService;
+  }));
 
   describe("todos", () => {
     it("should be an Observable", () => {
@@ -48,9 +46,9 @@ describe("TodoService", () => {
   });
 
   describe("add()", () => {
-    it(
-      "should add a todo to the store",
-      inject([Store], (store: Store<any>) => {
+    it("should add a todo to the store", inject(
+      [Store],
+      (store: Store<any>) => {
         spyOn(store, "dispatch");
 
         todoService.add({ text: "Some Task" });
@@ -58,14 +56,14 @@ describe("TodoService", () => {
         expect(store.dispatch).toHaveBeenCalledWith(
           new AddTodoAction({ text: "Some Task" })
         );
-      })
-    );
+      }
+    ));
   });
 
   describe("complete()", () => {
-    it(
-      "should call to move a todo to the 'completed' stage",
-      inject([Store], (store: Store<any>) => {
+    it("should call to move a todo to the 'completed' stage", inject(
+      [Store],
+      (store: Store<any>) => {
         spyOn(store, "dispatch");
 
         todoService.complete({ text: "Some Task" });
@@ -73,7 +71,7 @@ describe("TodoService", () => {
         expect(store.dispatch).toHaveBeenCalledWith(
           new CompleteTodoAction({ text: "Some Task" })
         );
-      })
-    );
+      }
+    ));
   });
 });
