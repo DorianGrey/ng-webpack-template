@@ -12,12 +12,12 @@ module.exports = function(host, port, publicPath, isHot) {
       paths.resolveApp(".tmp"),
       paths.resolveApp("")
     ],
-    dev: {
+    devMiddleware: {
       publicPath,
       logLevel: "silent",
       stats: "errors-only"
     },
-    hot: isHot
+    hotClient: isHot
       ? {
           logLevel: "silent",
           host

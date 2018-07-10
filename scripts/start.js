@@ -87,22 +87,20 @@ async function startServer(translationsWatcher) {
 
   let devServer;
   try {
-    devServer = serve({ config, ...devServerConfigBuilt });
+    devServer = serve({}, { config, ...devServerConfigBuilt });
   } catch (e) {
     log.error(e);
     process.exit(1);
   }
 
-  const serverInstance = devServer.then(server => {
+  const serverInstance = devServer.then(result => {
     ["SIGINT", "SIGTERM"].forEach(sig => {
       process.on(sig, () => {
         translationsWatcher.close();
-        server.close();
+        result.app.stop();
         process.exit(0);
       });
-    });
 
-    server.on("listening", () => {
       buildLog.success(
         `Dev server available at: http://${host}:${selectedPort}...`
       );
