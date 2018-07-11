@@ -33,7 +33,7 @@ module.exports = {
   "reporters": ["default", "jest-junit"],
   "setupTestFrameworkScriptFile": "<rootDir>/config/jest/testSetup.ts",
   "testMatch": [
-    "**/*.spec.ts"
+    "<rootDir>/src/**/?(*.)spec.ts"
   ],
   "transform": {
     "^.+\\.(ts|html)$": "<rootDir>/node_modules/jest-preset-angular/preprocessor.js",
