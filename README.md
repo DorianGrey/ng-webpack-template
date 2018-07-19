@@ -48,6 +48,7 @@ The intended project structure, how to work with it and possibly extend it is do
 Even if we always attempt to avoid breaking changes, there are a couple of situations where this is not possible. For these cases, corresponding migration guides will be provided. The already existing ones are listed below.
 - Update from < 12.0.0 to >= 12.0.0 ([12.0.0 release](https://github.com/DorianGrey/ng-webpack-template/releases/tag/12.0.0)): [Guide](https://github.com/DorianGrey/ng-webpack-template/blob/master/migration/MIGRATION__12_0_0.md)
 - Update from < 18.0.0 to >= 18.0.0 ([18.0.0 release](https://github.com/DorianGrey/ng-webpack-template/releases/tag/18.0.0)): [Guide](https://github.com/DorianGrey/ng-webpack-template/blob/master/migration/MIGRATION__18_0_0.md)
+- Update from < 19.0.0 to >= 19.0.0 ([19.0.0 release](https://github.com/DorianGrey/ng-webpack-template/releases/tag/19.0.0)): [Guide](https://github.com/DorianGrey/ng-webpack-template/blob/master/migration/MIGRATION__19_0_0.md)
 
 ## Workflow
 
@@ -57,14 +58,14 @@ Just run
 ```
 yarn start
 ```
-which will fire up a webpack-dev-server using webpack's DLL feature up-front to speed up everything, and provide HMR functionality. The latter is based on [ngrx/store](https://github.com/ngrx/store).
+which will fire up a development server ([webpack-serve](https://github.com/webpack-contrib/webpack-serve)) using webpack's DLL feature up-front to speed up everything, and provide HMR functionality. The latter is based on [ngrx/store](https://github.com/ngrx/store). The server will be available on `localhost:9987` by default (the URL will be copied to your clipboard as well. If you need to access the server via its public ip, just use `yarn start:local` instead. 
 
 For configuring you development environment, check out the [development configuration](https://github.com/DorianGrey/ng-webpack-template/blob/master/docs/dev_configuration.md) docs.
 
 ### Testing
 
 #### E2E
-E2E-testing is currently not included in the default setup. This might change in the future, but for the moment you will have to setup tools like [protractor](https://github.com/angular/protractor) or [cypress](https://github.com/cypress-io/cypress) on your own
+E2E-testing is currently not included in the default setup. This might change in the future, but for the moment you will have to setup tools like [protractor](https://github.com/angular/protractor) or [cypress](https://github.com/cypress-io/cypress) on your own.
 
 #### Unit
 This project uses [jest](https://facebook.github.io/jest/) for unit testing. It includes both the test runner and framework. If you are not familiar with it yet, just have a look at its [docs](https://facebook.github.io/jest/docs/en/getting-started.html) - should be simple enough. Just note that we're using the `BDD` structure variant with `describe`, `beforeAll`, `beforeEach`, `it` etc. which should be quite familiar in case you have used `jasmine` or `mocha` before.
