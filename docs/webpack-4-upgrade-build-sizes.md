@@ -41,39 +41,40 @@ static/media/testbild.2535197bb4cf.jpg @ 24.2 KB (src) => 22.91 KB (gzip)
 # Stats with webpack 4
 ```
  N  Emitted assets in /home/linne/Projects/ng-webpack-template/build (displayed gzip sizes refer to compression level=6):
- > Service worker
-./precache-manifest.d0a6e04f9920385170cf3c74b47c894f.js @ 810 B (src) => 337 B (gzip)
-./service-worker.js                                     @ 301 B (src) => 241 B (gzip)
+>  category  Service worker
+./precache-manifest.6a7bd2c5023f163d40eab60580b646ed.js @ 722 B (src) => 307 B (gzip)
+./service-worker.js     
 
- > Scripts
-static/js/vendor.71735c5de5f4.js           @ 511.83 KB (src) => 132.97 KB (gzip)
-static/js/bundle.252734f81b89.js           @ 30.4 KB (src)   => 7.67 KB (gzip)
-static/js/lazy-test.module.e3fe784469db.js @ 2.67 KB (src)   => 1.15 KB (gzip)
-static/js/runtime.d41d8cd98f00.js          @ 1.87 KB (src)   => 1.02 KB (gzip)
+>  category  Scripts
+static/js/vendor.737ffa5e3da4.js           @ 473.46 KB (src) => 124.86 KB (gzip)
+static/js/bundle.a83999ec02bc.js           @ 27.85 KB (src)  => 7.43 KB (gzip)
+static/js/lazy-test.module.0826f2f4af70.js @ 2.68 KB (src)   => 1.16 KB (gzip)
+static/js/runtime.d41d8cd98f00.js          @ 2.25 KB (src)   => 1.16 KB (gzip)
 
- > Styles
-static/css/bundle.4fe7f0e39fc5.css @ 2.59 KB (src) => 1.07 KB (gzip)
+>  category  Styles
+static/css/bundle.f98361c9d10c.css @ 2.49 KB (src) => 1.08 KB (gzip)
 
- > Source maps
-static/js/vendor.71735c5de5f4.js.map           @ 3.11 MB (src)   => 673.11 KB (gzip)
-static/js/bundle.252734f81b89.js.map           @ 120.26 KB (src) => 26.48 KB (gzip)
-static/js/lazy-test.module.e3fe784469db.js.map @ 15.19 KB (src)  => 4.83 KB (gzip)
-static/js/runtime.d41d8cd98f00.js.map          @ 10.34 KB (src)  => 3.41 KB (gzip)
-static/css/bundle.4fe7f0e39fc5.css.map         @ 3.41 KB (src)   => 1.43 KB (gzip)
+>  category  Source maps
+static/js/vendor.737ffa5e3da4.js.map           @ 2.62 MB (src)   => 625.24 KB (gzip)
+static/js/bundle.a83999ec02bc.js.map           @ 115.94 KB (src) => 26.37 KB (gzip)
+static/js/lazy-test.module.0826f2f4af70.js.map @ 15.42 KB (src)  => 4.9 KB (gzip)
+static/js/runtime.d41d8cd98f00.js.map          @ 11.69 KB (src)  => 3.85 KB (gzip)
+static/css/bundle.f98361c9d10c.css.map         @ 3.32 KB (src)   => 1.43 KB (gzip)
 
- > Favicons
+>  category  Favicons
 ./favicon.png      @ 135.07 KB (src) => 132.24 KB (gzip)
 ./favicon96x96.png @ 8.56 KB (src)   => 8.58 KB (gzip)
 ./favicon64x64.png @ 4.83 KB (src)   => 4.85 KB (gzip)
 ./favicon48x48.png @ 3.19 KB (src)   => 3.21 KB (gzip)
 
- > Images
+>  category  Images
 static/media/testbild.2535197bb4cf.jpg @ 24.2 KB (src) => 22.91 KB (gzip)
 
- > Others
-./index.html    @ 992 B (src) => 528 B (gzip)
-./manifest.json @ 670 B (src) => 246 B (gzip)
+>  category  Others
+./index.html           @ 999 B (src) => 526 B (gzip)
+./manifest.webmanifest @ 670 B (src) => 246 B (gzip)
 
- WARNING  There are 2 assets which exceed the configured size limit of 250 KB. Affected asset(s) marked in yellow.
+⚠  warning   There are 2 assets which exceed the configured size limit of 250 KB. Affected asset(s) marked in yellow.
+
 
 ```
