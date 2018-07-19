@@ -43,7 +43,7 @@ static/media/testbild.2535197bb4cf.jpg @ 24.2 KB (src) => 22.91 KB (gzip)
  N  Emitted assets in /home/linne/Projects/ng-webpack-template/build (displayed gzip sizes refer to compression level=6):
 >  category  Service worker
 ./precache-manifest.6a7bd2c5023f163d40eab60580b646ed.js @ 722 B (src) => 307 B (gzip)
-./service-worker.js     
+./service-worker.js
 
 >  category  Scripts
 static/js/vendor.737ffa5e3da4.js           @ 473.46 KB (src) => 124.86 KB (gzip)
