@@ -4,7 +4,6 @@ const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const WebpackChunkHash = require("webpack-chunk-hash");
-const PurifyPlugin = require("@angular-devkit/build-optimizer").PurifyPlugin;
 const path = require("path");
 const merge = require("webpack-merge");
 const { InjectManifest } = require("workbox-webpack-plugin");
@@ -173,7 +172,6 @@ module.exports = function(env) {
         }
       ]
     };
-    result.plugins.push(new PurifyPlugin());
   }
 
   return merge.smart(commonConfig(env), result);
