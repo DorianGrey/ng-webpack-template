@@ -16,13 +16,68 @@ const stripAnsi = require("strip-ansi");
 const alignPad = require("./alignPad");
 const partition = require("./partition");
 const gzipSizeOf = require("./gzipsize");
+const getRelativeChunkName = require("./getRelativeChunkName");
+const {
+  relevantSizeComparisonRegex
+} = require("./determineFileSizesBeforeBuild");
 const { log } = require("../../config/logger");
+
+function colorizeDiffLabel(difference, currentLabel, alertLimit) {
+  let label = currentLabel;
+  if (difference > 0) {
+    label = `+${label}`;
+  } else if (difference == 0) {
+    label = "=";
+  }
+
+  let coloring;
+  switch (true) {
+    case difference >= alertLimit:
+      coloring = chalk.red;
+      break;
+    case difference > 0 && difference < alertLimit:
+      coloring = chalk.yellow;
+      break;
+    case difference < 0:
+      coloring = chalk.green;
+      break;
+    default:
+      coloring = chalk.grey;
+      break;
+  }
+
+  return coloring(`(${label})`);
+}
+
+function determineSizeDiff(
+  previousFileSizes,
+  buildFolder,
+  assetName,
+  currentSize,
+  type,
+  alertLimit
+) {
+  const relativeName = getRelativeChunkName(buildFolder, assetName);
+  const previousInfo = previousFileSizes.sizes[relativeName];
+  if (previousInfo) {
+    const difference = currentSize - previousInfo[type];
+    const label = colorizeDiffLabel(
+      difference,
+      filesize(difference),
+      alertLimit
+    );
+    return !Number.isNaN(difference) && label ? ` ${label}` : "";
+  } else {
+    return "";
+  }
+}
 
 /**
  * Prints file stats about a particular set of assets, depending on the
  * categorization config.
  *
  * @param buildFolder The output folder. Required for determining stats.
+ * @param previousFileSizes File sizes from a previous build.
  * @param assetsStats The stats to evaluate.
  * @param exceptionalAssetCnt An object to modify in case "exceptional" assets are found,
  *                            i.e. those that are too large (w.r.t. the build config) or
@@ -36,6 +91,7 @@ const { log } = require("../../config/logger");
  */
 function formatFileSizesOnAssetCategory(
   buildFolder,
+  previousFileSizes,
   assetsStats,
   exceptionalAssetCnt,
   assetsSizeWarnLimit,
@@ -49,19 +105,43 @@ function formatFileSizesOnAssetCategory(
     - The size in gzipped form.
     - The generated size information labels.
    */
+  const missingPreviousVersion = [];
+
   const assets = assetsStats.map(asset => {
     const filePath = path.join(buildFolder, asset.name);
     const fileContents = fs.readFileSync(filePath);
     const originalFileSize = fs.statSync(filePath).size;
     const gzipSize = gzipSizeOf(fileContents);
+
+    const originalSizeDiff = determineSizeDiff(
+      previousFileSizes,
+      buildFolder,
+      asset.name,
+      originalFileSize,
+      "original",
+      1024 * 50 * 3
+    );
+    const gzipSizeDiff = determineSizeDiff(
+      previousFileSizes,
+      buildFolder,
+      asset.name,
+      gzipSize,
+      "gzip",
+      1024 * 50
+    );
+
+    if (!originalSizeDiff || !gzipSizeDiff) {
+      missingPreviousVersion.push(asset.name);
+    }
+
     return {
       folder: path.join(path.dirname(asset.name)),
       name: path.basename(asset.name),
       originalFileSize,
       size: gzipSize,
       sizeLabel: {
-        src: `${filesize(originalFileSize)} (src)`,
-        gzip: `${filesize(gzipSize)} (gzip)`
+        src: `${filesize(originalFileSize)}${originalSizeDiff} (src)`,
+        gzip: `${filesize(gzipSize)}${gzipSizeDiff} (gzip)`
       }
     };
   });
@@ -124,22 +204,30 @@ function formatFileSizesOnAssetCategory(
     );
   });
 
-  return formattedAssetsLabels;
+  return [formattedAssetsLabels, missingPreviousVersion];
 }
 
 /**
  * Utility function to print output file stats for a build.
  *
+ * @param previousFileSizes File sizes from a previous build step.
  * @param buildConfig The build config. See config/build.config for details.
  * @param webpackStats The stats received from webpack.
  * @param staticAssets Additional static assets, got copied from `public`
  */
-function printFileSizes(buildConfig, webpackStats, staticAssets = []) {
+function printFileSizes(
+  previousFileSizes,
+  buildConfig,
+  webpackStats,
+  staticAssets = []
+) {
   // Prints a detailed summary of build files.
   const jsonStats = webpackStats.toJson();
   const assetsStats = jsonStats.assets;
   staticAssets = staticAssets.map(s => ({ name: s }));
   assetsStats.push(...staticAssets);
+
+  const missingPreviousVersion = [];
 
   const assetCategories =
     buildConfig.categorizeAssets === false
@@ -177,8 +265,12 @@ function printFileSizes(buildConfig, webpackStats, staticAssets = []) {
         assetCategories[c].test(asset.name)
       );
       if (_relevantAssets.length > 0) {
-        const formattedAssetsLabels = formatFileSizesOnAssetCategory(
+        const [
+          formattedAssetsLabels,
+          missingPrevious
+        ] = formatFileSizesOnAssetCategory(
           buildConfig.outputDir,
+          previousFileSizes,
           _relevantAssets,
           exceptionalAssetCnt,
           assetsSizeWarnLimit,
@@ -187,6 +279,7 @@ function printFileSizes(buildConfig, webpackStats, staticAssets = []) {
         log.category(
           [chalk.bgCyan.white.bold(c)].concat(formattedAssetsLabels).join("\n")
         );
+        missingPreviousVersion.push(...missingPrevious);
         log._stream.write("\n");
       }
       return nextAssets;
@@ -196,8 +289,12 @@ function printFileSizes(buildConfig, webpackStats, staticAssets = []) {
 
   // If there are any assets left, they are summarized in a special "Others" category.
   if (remainingAssets.length > 0) {
-    const formattedAssetsLabels = formatFileSizesOnAssetCategory(
+    const [
+      formattedAssetsLabels,
+      missingPrevious
+    ] = formatFileSizesOnAssetCategory(
       buildConfig.outputDir,
+      previousFileSizes,
       remainingAssets,
       exceptionalAssetCnt,
       assetsSizeWarnLimit,
@@ -208,6 +305,7 @@ function printFileSizes(buildConfig, webpackStats, staticAssets = []) {
         .concat(formattedAssetsLabels)
         .join("\n")
     );
+    missingPreviousVersion.push(...missingPrevious);
     log._stream.write("\n");
   }
 
@@ -232,6 +330,24 @@ function printFileSizes(buildConfig, webpackStats, staticAssets = []) {
       )}. Affected asset(s) should be considered remains of extracted chunks and are marked in ${chalk.grey(
         "grey"
       )}.`
+    );
+  }
+
+  const relevantMissingPreviousVersion = missingPreviousVersion.filter(a =>
+    relevantSizeComparisonRegex.test(a)
+  );
+
+  if (relevantMissingPreviousVersion.length > 0) {
+    log.debug(
+      `Some assets did not have a previous version: ${JSON.stringify(
+        missingPreviousVersion,
+        null,
+        4
+      )} in ${JSON.stringify(
+        Object.getOwnPropertyNames(previousFileSizes.sizes),
+        null,
+        4
+      )}`
     );
   }
 }

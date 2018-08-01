@@ -12,6 +12,8 @@ const { buildLog, log } = require("../config/logger");
 const prodConfig = require("../config/webpack/prod");
 const buildConfig = require("../config/build.config").parseFromCLI();
 
+const determineFileSizesBeforeBuild = require("./util/determineFileSizesBeforeBuild")
+  .determineFileSizes;
 const formatUtil = require("./util/formatUtil");
 const formatWebpackMessages = require("./util/formatWebpackMessages");
 const statsFormatter = require("./util/statsFormatter");
@@ -41,6 +43,19 @@ function handleBuildSetup() {
       return reject(e);
     }
 
+    let previousFileSizes;
+    try {
+      previousFileSizes = determineFileSizesBeforeBuild(buildConfig.outputDir);
+    } catch (e) {
+      log.error(
+        `Determining file sizes before build failed, due to ${e}, going ahead with empty object.`
+      );
+      previousFileSizes = {
+        root: buildConfig.outputDir,
+        sizes: {}
+      };
+    }
+
     buildLog.await(
       `Clearing output targets: ${chalk.bgBlue.white(
         buildConfig.outputDir
@@ -49,7 +64,7 @@ function handleBuildSetup() {
     Promise.all([
       fs.emptyDir(buildConfig.outputDir),
       fs.emptyDir(buildConfig.statsDir)
-    ]).then(() => resolve([config, buildConfig]));
+    ]).then(() => resolve([config, buildConfig, previousFileSizes]));
   });
 }
 
@@ -105,7 +120,7 @@ function handleBuild(config, buildConfig) {
   });
 }
 
-function printStatistics(buildConfig, stats, staticAssets) {
+function printStatistics(previousFileSizes, buildConfig, stats, staticAssets) {
   return new Promise((resolve, reject) => {
     const jsonStats = stats.toJson({}, true);
     const formattedStats = formatWebpackMessages(jsonStats);
@@ -115,7 +130,7 @@ function printStatistics(buildConfig, stats, staticAssets) {
     } else {
       const hasYarn = fs.existsSync(paths.yarnLockFile);
       log.note(`Build hash: ${jsonStats.hash}`);
-      printFileSizes(buildConfig, stats, staticAssets);
+      printFileSizes(previousFileSizes, buildConfig, stats, staticAssets);
       printPreviewInformation(buildConfig, hasYarn);
       resolve(buildConfig);
     }
@@ -127,11 +142,11 @@ function printStatistics(buildConfig, stats, staticAssets) {
 async function build() {
   formatUtil.cls();
   await handleTranslations();
-  const [config, buildConfig] = await handleBuildSetup();
+  const [config, buildConfig, previousFileSizes] = await handleBuildSetup();
   handleCopyStatics(config, buildConfig);
   const staticAssets = determineStaticAssets();
   const stats = await handleBuild(config, buildConfig);
-  return printStatistics(buildConfig, stats, staticAssets);
+  return printStatistics(previousFileSizes, buildConfig, stats, staticAssets);
 }
 
 build().catch(e => {
