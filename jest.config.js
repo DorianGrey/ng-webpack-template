@@ -35,6 +35,7 @@ module.exports = {
   "testMatch": [
     "<rootDir>/src/**/?(*.)spec.ts"
   ],
+  "testURL": "http://localhost/",
   "transform": {
     "^.+\\.(ts|html)$": "<rootDir>/node_modules/jest-preset-angular/preprocessor.js",
     "^.+\\.js$": "babel-jest"
