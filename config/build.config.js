@@ -15,7 +15,6 @@ const buildConfig = {
   baseHref: "/",
   hashDigits: 12,
   withServiceWorker: true,
-  withExperimentalCssOptimization: false,
   // The asset categorization map.
   // Just set to "false" to not categorize the build output.
   // categorizeAssets: false,

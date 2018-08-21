@@ -2,8 +2,8 @@ const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const { AngularCompilerPlugin } = require("@ngtools/webpack");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const WebpackChunkHash = require("webpack-chunk-hash");
+const OptimizeCssnanoPlugin = require("@intervolga/optimize-cssnano-plugin");
 const path = require("path");
 const merge = require("webpack-merge");
 const { InjectManifest } = require("workbox-webpack-plugin");
@@ -46,7 +46,22 @@ module.exports = function(env) {
       logLevel: "silent"
     }),
     // More consistent chunk hashes
-    new WebpackChunkHash()
+    new WebpackChunkHash(),
+    // Plugin to optimize CSS output - works even across multiple files,
+    // since it is NOT an optimizer, which are (somewhat) limited to single files.
+    new OptimizeCssnanoPlugin({
+      sourceMap: env.devtool,
+      cssnanoOptions: {
+        preset: [
+          "default",
+          {
+            discardComments: {
+              removeAll: true
+            }
+          }
+        ]
+      }
+    })
   ];
 
   if (env.withServiceWorker) {
@@ -114,33 +129,6 @@ module.exports = function(env) {
       sourceMap: env.devtool !== false
     })
   );
-
-  if (env.withExperimentalCssOptimization) {
-    result.optimization.minimizer.push(
-      /**
-       * Separate plugin for more advanced minification/simple optimization.
-       * "Basic" optimizations are already performed via the style rules.
-       *
-       *  // TODO 1: The source map does not seem to be that accurate, and does not seem to properly re-map to the original file.
-       *  // TODO 2: This seems to remove vendor-prefixed stuff, which it should not do.
-       *
-       * Note that the `cssProcessorOptions` is provided as the second
-       * parameter to `cssnano.process`, and there is no way to provide `cssnanoOpts`
-       * manually.
-       *
-       * See https://github.com/webpack-contrib/mini-css-extract-plugin#minimizing-for-production
-       */
-      new OptimizeCssAssetsPlugin({
-        cssProcessor: require("cssnano"),
-        cssProcessorOptions: {
-          // This breaks names in case they are used in different files, e.g. via `grid-area`
-          reduceIdents: false,
-          map: { inline: false }
-        },
-        canPrint: true
-      })
-    );
-  }
 
   // Creates a vendor chunk.
   result.optimization.splitChunks = {
