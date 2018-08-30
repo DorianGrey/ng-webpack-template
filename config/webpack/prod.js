@@ -1,4 +1,4 @@
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 const { AngularCompilerPlugin } = require("@ngtools/webpack");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -11,7 +11,7 @@ const rxPaths = require("rxjs/_esm5/path-mapping");
 
 const commonConfig = require("./common");
 const paths = require("../paths");
-const getBasicUglifyOptions = require("./uglify.config");
+const getBasicTerserOptions = require("./terser.config");
 const { ensureEndingSlash } = require("./util");
 
 /**
@@ -110,23 +110,20 @@ module.exports = function(env) {
     }
   };
 
-  /**
-   * Plugin to properly minify the build output.
-   *
-   * See: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
-   */
-  const uglifyOptions = getBasicUglifyOptions();
+  const terserOptions = getBasicTerserOptions();
 
   if (env.useBuildOptimizer) {
-    uglifyOptions.compress.pure_getters = true;
-    uglifyOptions.compress.passes = 3;
+    terserOptions.compress.pure_getters = true;
+    terserOptions.compress.passes = 3;
   }
 
   result.optimization.minimizer = result.optimization.minimizer || [];
   result.optimization.minimizer.push(
-    new UglifyJsPlugin({
-      uglifyOptions,
-      sourceMap: env.devtool !== false
+    new TerserPlugin({
+      terserOptions,
+      sourceMap: env.devtool !== false,
+      cache: true,
+      parallel: true
     })
   );
 
