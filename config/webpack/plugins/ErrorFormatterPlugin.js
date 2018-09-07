@@ -1,4 +1,4 @@
-const statsFormatter = require("../../../scripts/util/statsFormatter");
+const messagePrinter = require("../../../scripts/util/messagePrinter");
 const formatWebpackMessages = require("../../../scripts/util/formatWebpackMessages");
 const formatUtil = require("../../../scripts/util/formatUtil");
 const { buildLog, log } = require("../../logger");
@@ -64,11 +64,11 @@ class ErrorFormatterPlugin {
     const formattedStats = formatWebpackMessages(stats.toJson({}, true));
 
     if (hasWarnings) {
-      statsFormatter.printWarnings(formattedStats.warnings);
+      messagePrinter.printWarnings(formattedStats.warnings);
     }
 
     if (hasErrors) {
-      statsFormatter.printErrors(formattedStats.errors);
+      messagePrinter.printErrors(formattedStats.errors);
     }
   }
 }
