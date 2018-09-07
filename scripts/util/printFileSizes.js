@@ -340,7 +340,7 @@ function printFileSizes(
   if (relevantMissingPreviousVersion.length > 0) {
     log.debug(
       `Some assets did not have a previous version: ${JSON.stringify(
-        missingPreviousVersion,
+        relevantMissingPreviousVersion,
         null,
         4
       )} in ${JSON.stringify(
