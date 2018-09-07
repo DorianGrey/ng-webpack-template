@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { Observable } from "rxjs";
 import { List } from "immutable";
-import assign from "lodash-es/assign";
 
 import { TodoService } from "./todo.service";
 import { Todo } from "./todo.model";
@@ -31,14 +30,10 @@ export class TodoListComponent {
   }
 
   complete(todo: Todo) {
-    this.todoService.complete(
-      assign(
-        { ...todo },
-        {
-          done: true,
-          completedTimestamp: Date.now()
-        }
-      )
-    );
+    this.todoService.complete({
+      ...todo,
+      done: true,
+      completedTimestamp: Date.now()
+    });
   }
 }

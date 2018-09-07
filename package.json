@@ -60,8 +60,10 @@
     "autoprefixer": "9.1.5",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "case-sensitive-paths-webpack-plugin": "^2.1.2",
+    "clean-webpack-plugin": "^0.1.19",
     "codelyzer": "^4.4.4",
     "connect-history-api-fallback": "^1.5.0",
+    "copy-webpack-plugin": "^4.5.2",
     "cross-env": "^5.2.0",
     "css-loader": "^1.0.0",
     "cssnano": "^4.1.0",
@@ -137,7 +139,6 @@
     "angular-router-loader": "^0.8.5",
     "core-js": "2.5.7",
     "immutable": "3.8.2",
-    "lodash-es": "^4.17.10",
     "normalize.css": "^8.0.0",
     "rxjs": "6.3.2",
     "zone.js": "^0.8.26"

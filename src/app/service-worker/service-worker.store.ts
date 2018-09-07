@@ -1,6 +1,5 @@
 // tslint:disable max-classes-per-file
 import { Action } from "@ngrx/store";
-import assign from "lodash-es/assign";
 
 export enum ServiceWorkerStateValue {
   // No particular state information available yet.
@@ -112,15 +111,17 @@ export function serviceWorkerStateReducer(
     case ServiceWorkerStateValue.STATE_INSTALLED_NEW_CONTENT_AVAILABLE:
     case ServiceWorkerStateValue.STATE_INSTALLED_CONTENT_CACHED:
     case ServiceWorkerStateValue.STATE_REMOVED:
-      return assign({ ...state }, <State>{
+      return {
+        ...state,
         value: action.type,
         details: null
-      });
+      };
     case ServiceWorkerStateValue.STATE_INSTALLATION_FAILED:
-      return assign({ ...state }, <State>{
+      return {
+        ...state,
         value: action.type,
         details: action.payload
-      });
+      };
     default:
       return state;
   }
