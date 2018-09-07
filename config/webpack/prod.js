@@ -7,12 +7,16 @@ const OptimizeCssnanoPlugin = require("@intervolga/optimize-cssnano-plugin");
 const path = require("path");
 const merge = require("webpack-merge");
 const { InjectManifest } = require("workbox-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const CleanWebpackPlugin = require("clean-webpack-plugin");
 const rxPaths = require("rxjs/_esm5/path-mapping");
 
 const commonConfig = require("./common");
 const paths = require("../paths");
+const { log } = require("../logger");
 const getBasicTerserOptions = require("./terser.config");
 const { ensureEndingSlash } = require("./util");
+const BuildStatsFormatterPlugin = require("./plugins/BuildStatsFormatterPlugin");
 
 /**
  * The production build may or may not include the BundleAnalyzerPlugin to visualize the build
@@ -25,6 +29,26 @@ const { ensureEndingSlash } = require("./util");
  */
 module.exports = function(env) {
   const plugins = [
+    new BuildStatsFormatterPlugin({ ...env, log }),
+    // Cleanup output and build stats dir before build. Executes on the `compile` hook.
+    new CleanWebpackPlugin([env.outputDir, env.statsDir], {
+      root: paths.resolveApp(),
+      verbose: false,
+      // Required to get the `BuildStatsFormatterPlugin` working correctly - otherwise,
+      // it could not pick up the previous output file paths.
+      beforeEmit: true
+    }),
+
+    // Copies static assets to destination folder, ignoring the index template file
+    // and the service worker origin.
+    new CopyWebpackPlugin([
+      {
+        from: paths.appPublic + "/**/*",
+        context: paths.appPublic,
+        ignore: ["*.{ejs,html}", path.basename(paths.serviceWorkerScriptSrc)]
+      }
+    ]),
+
     /**
      * Plugin to extract styles as css files; We're using this for the main.scss only atm.
      * This may optimize loading time in production mode since it may be cached by the browser separately.
@@ -71,10 +95,9 @@ module.exports = function(env) {
         // TODO: See if we can get "local" back to working - it currently fails
         // due to a blocked google-analytics module (which we do not even link ?!)
         importWorkboxFrom: "cdn",
-        globDirectory: env.outputDir,
-        globIgnores: ["**/*.map", "service-worker.js"],
+        // globIgnores: ["**/*.map", "service-worker.js"],
         swDest: "service-worker.js",
-        swSrc: path.join(paths.appPublic, "service-worker.js")
+        swSrc: paths.serviceWorkerScriptSrc
       })
     );
   }

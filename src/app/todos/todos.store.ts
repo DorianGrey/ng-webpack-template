@@ -1,7 +1,6 @@
 // tslint:disable max-classes-per-file
 import { Action } from "@ngrx/store";
 import { List } from "immutable";
-import assign from "lodash-es/assign";
 import { Todo } from "./todo.model";
 
 /**
@@ -90,10 +89,10 @@ export function todosReducer(
 ): State {
   switch (action.type) {
     case ACTION_TYPES.ADD_TODO:
-      return assign(
-        { ...state },
-        { current: state.current.push(action.payload) }
-      );
+      return {
+        ...state,
+        current: state.current.push(action.payload)
+      };
     case ACTION_TYPES.COMPLETE_TODO:
       const idx = state.current.findIndex(
         e =>
@@ -106,10 +105,11 @@ export function todosReducer(
        - The completed task is correctly marked as "done".
        */
       if (idx >= 0 && action.payload.done) {
-        return assign({ ...state }, <State>{
+        return {
+          ...state,
           current: state.current.remove(idx),
           completed: state.completed.push(action.payload)
-        });
+        };
       } else {
         return state;
       }

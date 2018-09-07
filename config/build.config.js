@@ -123,8 +123,13 @@ module.exports.getSpecialYargsOptions = function() {
   };
 };
 
+let cachedParsedFromCLI = null;
+
 module.exports.parseFromCLI = function() {
-  return module.exports(
-    yargs.options(module.exports.getSpecialYargsOptions()).argv
-  );
+  if (!cachedParsedFromCLI) {
+    cachedParsedFromCLI = module.exports(
+      yargs.options(module.exports.getSpecialYargsOptions()).argv
+    );
+  }
+  return cachedParsedFromCLI;
 };

@@ -21,7 +21,7 @@ function printPreviewInformation(buildConfig, hasYarn) {
   log.note(`Use ${chalk.cyan(serveMessage)} to preview your production build.`);
   log.note(
     `Both a HTML and a JSON report about the generated bundles were generated to ${chalk.cyan(
-      buildConfig.outputDir + path.sep
+      buildConfig.statsDir + path.sep
     )}. These are useful to analyze your bundles' sizes.`
   );
 }

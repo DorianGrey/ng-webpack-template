@@ -6,6 +6,7 @@ const {
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const StyleLintPlugin = require("stylelint-webpack-plugin");
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
+const ErrorFormatterPlugin = require("./plugins/ErrorFormatterPlugin");
 const paths = require("../paths");
 const { asyncLog, buildLog, log } = require("../logger");
 const { ensureEndingSlash } = require("./util");
@@ -64,6 +65,7 @@ module.exports = function(env) {
   }
 
   const plugins = [
+    new ErrorFormatterPlugin(),
     // Name lazily loaded chunks, in case they don't have a name yet.
     new NamedChunksPlugin(chunkNameHandler()),
 
@@ -108,9 +110,9 @@ module.exports = function(env) {
       new ProgressPlugin(percent => {
         if (percent < 1) {
           buildLog.await(`[${Math.round(percent * 100)}%] Compiling...`);
-        } else {
-          buildLog.complete("Compilation completed.");
         }
+        // Note: 1.0 resp. 100% is not handled here, since that step is completed by
+        // the `ErrorFormatterPlugin`.
       })
     );
   }
