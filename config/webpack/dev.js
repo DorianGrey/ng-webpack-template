@@ -3,7 +3,6 @@ const path = require("path");
 const merge = require("webpack-merge");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 
-const ErrorFormatterPlugin = require("./plugins/ErrorFormatterPlugin");
 const paths = require("../paths");
 const commonConfig = require("./common");
 const { ensureEndingSlash } = require("./util");
@@ -20,7 +19,6 @@ module.exports = function(env) {
       context: ".",
       manifest: require(paths.resolveApp(".tmp/vendor-manifest.json"))
     }),
-    new ErrorFormatterPlugin(),
     new HardSourceWebpackPlugin({
       info: {
         level: "warn"

@@ -1,4 +1,3 @@
-import indexOf from "lodash-es/indexOf";
 import { Component } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { TranslateService } from "@ngx-translate/core";
@@ -52,7 +51,7 @@ export class AppComponent {
   rotateLanguage() {
     this.currentLanguage.pipe(take(1)).subscribe(lang => {
       const idx =
-        (indexOf(this.availableLanguages, lang) + 1) %
+        (this.availableLanguages.indexOf(lang) + 1) %
         this.availableLanguages.length;
       const nextLang = this.availableLanguages[idx];
       this.translate.use(nextLang);
