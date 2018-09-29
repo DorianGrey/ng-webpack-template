@@ -7,9 +7,8 @@ const chalk = require("chalk");
 
 const { log } = require("./logger");
 
-const LOCAL_HOST_ADDRESS = process.env.HOST || "localhost";
+const HOST = process.env.HOST || "0.0.0.0";
 const PUBLIC_ADDRESS = internalIp.v4.sync();
-const useLocalIp = process.argv.indexOf("--local-network") !== -1;
 
 function selectPort(requested) {
   return new Promise((resolve, reject) => {
@@ -32,7 +31,6 @@ function selectPort(requested) {
 
 module.exports = {
   selectPort,
-  useLocalIp,
-  LOCAL_HOST_ADDRESS,
+  HOST,
   PUBLIC_ADDRESS
 };

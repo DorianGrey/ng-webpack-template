@@ -1,33 +1,33 @@
 "use strict";
 
-const Koa = require("koa");
-const compress = require("koa-compress");
-const serveStatic = require("@shellscape/koa-static/legacy"); // Already used by webpack-serve, thus...
-const proxy = require("koa-proxies");
-const history = require("connect-history-api-fallback");
-const convert = require("koa-connect");
-
+const express = require("express");
+const path = require("path");
 const yargs = require("yargs");
+const proxy = require("http-proxy-middleware");
 
 const { selectPort } = require("../config/hostInfo");
 const { log } = require("../config/logger");
 const buildConfig = require("../config/build.config").parseFromCLI();
+const proxyCfg = require("./util/proxy");
 
 const intendedPort = yargs.argv.port || 9988;
 
 selectPort(intendedPort).then(serverPort => {
-  const app = new Koa();
+  const app = express();
   const serveDir = buildConfig.outputDir;
 
-  app
-    .use(convert(history({}))) // HTML5 fallback
-    .use(serveStatic(serveDir)) // Serve static dir
-    .use(compress()); // Use compression.
-  const proxyRules = require("./util/proxy");
-
-  Object.getOwnPropertyNames(proxyRules).forEach(proxyPath => {
-    app.use(proxy(proxyPath, proxyRules[proxyPath]));
+  // Configure proxy configuration, if any provided.
+  Object.getOwnPropertyNames(proxyCfg).forEach(path => {
+    app.use(path, proxy({ target: proxyCfg[path] }));
   });
+  app.use(
+    buildConfig.publicPath,
+    express.static(path.resolve(process.cwd(), serveDir))
+  );
+
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(serveDir + "/index.html"))
+  );
 
   app.listen(serverPort, () => {
     log.info(`Serving files from ${serveDir} ...`);
