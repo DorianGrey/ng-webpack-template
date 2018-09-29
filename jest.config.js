@@ -41,6 +41,6 @@ module.exports = {
     "^.+\\.js$": "babel-jest"
   },
   "transformIgnorePatterns": [
-    "node_modules/(?!(@ngrx|lodash-es))"
+    "node_modules/(?!@ngrx)"
   ]
 };

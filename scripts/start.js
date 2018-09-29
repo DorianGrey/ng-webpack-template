@@ -11,7 +11,7 @@ const devConfig = require("../config/webpack/dev");
 const formatUtil = require("./util/formatUtil");
 const { log, buildLog } = require("../config/logger");
 const { formatMessage } = require("./util/formatWebpackMessages");
-const { printErrors } = require("./util/statsFormatter");
+const { printErrors } = require("./util/messagePrinter");
 const devOptions = require("../config/dev.config").parseFromCLI();
 
 formatUtil.cls();
@@ -63,51 +63,45 @@ function handleWatchTranslations() {
 async function startServer(translationsWatcher) {
   buildLog.await("Starting development server...");
 
-  const {
-    useLocalIp,
-    selectPort,
-    LOCAL_HOST_ADDRESS,
-    PUBLIC_ADDRESS
-  } = require("../config/hostInfo");
+  const { selectPort, HOST } = require("../config/hostInfo");
   const selectedPort = await selectPort(devOptions.port);
   devOptions.port = selectedPort;
   buildLog.info("Build config in use: " + JSON.stringify(devOptions, null, 4));
 
-  const serve = require("webpack-serve");
+  const WebpackDevServer = require("webpack-dev-server");
+  const addDevServerEntryPoints = require("webpack-dev-server/lib/utils/addEntries");
   const devServerConfig = require("../config/webpack/dev-server");
 
   const config = devConfig(devOptions);
-  const host = useLocalIp ? PUBLIC_ADDRESS : LOCAL_HOST_ADDRESS;
   const devServerConfigBuilt = devServerConfig(
-    host,
-    selectedPort,
     config.output.publicPath,
+    selectedPort,
     devOptions.isHot
   );
+  addDevServerEntryPoints(config, devServerConfigBuilt);
 
-  let devServer;
-  try {
-    devServer = serve({}, { config, ...devServerConfigBuilt });
-  } catch (e) {
-    log.error(e);
-    process.exit(1);
-  }
+  const compiler = webpack(config);
+  const devServer = new WebpackDevServer(compiler, devServerConfigBuilt);
 
-  const serverInstance = devServer.then(result => {
-    ["SIGINT", "SIGTERM"].forEach(sig => {
-      process.on(sig, () => {
-        translationsWatcher.close();
-        result.app.stop();
-        process.exit(0);
-      });
-
-      buildLog.success(
-        `Dev server available at: http://${host}:${selectedPort}...`
-      );
-    });
+  devServer.listen(selectedPort, HOST, err => {
+    if (err) {
+      return console.error(err);
+    }
   });
 
-  return serverInstance;
+  ["SIGINT", "SIGTERM"].forEach(sig => {
+    process.on(sig, () => {
+      translationsWatcher.close();
+      devServer.close();
+      process.exit(0);
+    });
+
+    buildLog.success(
+      `Dev server available at: http://${HOST}:${selectedPort}...`
+    );
+  });
+
+  return devServer;
 }
 
 async function start() {
@@ -124,7 +118,7 @@ start().catch(err => {
     const formatted = err.map(message =>
       formatMessage(message, formatUtil.formatFirstLineMessage)
     );
-    printErrors(formatted, writer);
+    printErrors(formatted);
   } else {
     log.error(err);
   }
