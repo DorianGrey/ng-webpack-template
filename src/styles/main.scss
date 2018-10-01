@@ -43,8 +43,8 @@ body {
   grid-template-rows: auto 1fr auto;
   /* stylelint-disable */
   grid-template-areas: "header"
-                       "content"
-                       "footer";
+    "content"
+    "footer";
   /* stylelint-enable */
 
   > footer {
