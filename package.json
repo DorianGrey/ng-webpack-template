@@ -19,30 +19,6 @@
     "jest"
   ],
   "main": "index.js",
-  "scripts": {
-    "start": "node scripts/start.js",
-    "test": "node scripts/test.js",
-    "test:debug": "node --inspect --inspect-brk scripts/test.js",
-    "test:ci": "node scripts/test.js --no-cache --coverage",
-    "build": "node scripts/build.js",
-    "build:no-service-worker": "node scripts/build.js --with-service-worker=false",
-    "build:no-bo": "node scripts/build.js --use-build-optimizer=false",
-    "serve": "node scripts/serve.js",
-    "precommit": "lint-staged",
-    "prepush": "npm run test:ci",
-    "format": "prettier --write \"{src,config,scripts}/**/*.{js,ts}\""
-  },
-  "lint-staged": {
-    "{src,config,scripts}/**/*.{js,ts}": [
-      "prettier --write",
-      "git add"
-    ]
-  },
-  "browserslist": [
-    ">0.25%",
-    "not ie 11",
-    "not op_mini all"
-  ],
   "devDependencies": {
     "@angular-devkit/build-optimizer": "0.8.1",
     "@angular/compiler-cli": "6.1.7",
@@ -75,7 +51,7 @@
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
     "http-proxy": "^1.17.0",
-    "husky": "^0.14.3",
+    "husky": "^1.0.1",
     "image-webpack-loader": "^3.4.2",
     "inline-chunk-manifest-html-webpack-plugin": "^2.0.0",
     "internal-ip": "^3.0.1",
@@ -83,7 +59,7 @@
     "jest-junit": "^5.1.0",
     "jest-preset-angular": "^6.0.0",
     "js-yaml": "^3.12.0",
-    "lint-staged": "^7.2.2",
+    "lint-staged": "^7.3.0",
     "lodash": "^4.17.10",
     "mini-css-extract-plugin": "^0.4.2",
     "ngrx-store-freeze": "^0.2.4",
@@ -102,7 +78,6 @@
     "stylelint": "^9.5.0",
     "stylelint-config-standard": "^18.2.0",
     "stylelint-scss": "^3.3.0",
-    "stylelint-webpack-plugin": "^0.10.5",
     "terser-webpack-plugin": "^1.0.2",
     "to-string-loader": "1.1.5",
     "ts-loader": "5.0.0",
@@ -144,5 +119,42 @@
   },
   "jest-junit": {
     "output": "./test-results/junit/junit.xml"
+  },
+  "browserslist": [
+    ">0.25%",
+    "not ie 11",
+    "not op_mini all"
+  ],
+  "scripts": {
+    "start": "node scripts/start.js",
+    "test": "node scripts/test.js",
+    "test:debug": "node --inspect --inspect-brk scripts/test.js",
+    "test:ci": "node scripts/test.js --no-cache --coverage",
+    "build": "node scripts/build.js",
+    "build:no-service-worker": "node scripts/build.js --with-service-worker=false",
+    "build:no-bo": "node scripts/build.js --use-build-optimizer=false",
+    "serve": "node scripts/serve.js",
+    "format": "prettier --write \"{src,config,scripts}/**/*.{js,ts}\"",
+    "lint": "tslint -c tslint.json -p tsconfig.json --fix -t codeFrame && stylelint \"src/**/*.scss\" --fix"
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "tslint -c tslint.json -p tsconfig.json --fix -t codeFrame",
+      "prettier --write",
+      "git add"
+    ],
+    "{src,config,scripts}/**/*.js": [
+      "prettier --write",
+      "git add"
+    ],
+    "src/**/*.scss": [
+      "stylelint --fix"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run test:ci"
+    }
   }
 }

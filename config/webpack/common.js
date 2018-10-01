@@ -4,7 +4,6 @@ const {
   ProgressPlugin
 } = require("webpack");
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
-const StyleLintPlugin = require("stylelint-webpack-plugin");
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
 const ErrorFormatterPlugin = require("./plugins/ErrorFormatterPlugin");
 const paths = require("../paths");
@@ -47,23 +46,6 @@ module.exports = function(env) {
   const isDev = env.isDev,
     useAot = env.useAot;
 
-  /*
-  There is a curious glitch in the stylelint plugin:
-  - In dev (watch) mode, if quiet is set to `false`, every output is generated twice.
-  - In build mode, if it is not set to `false`, no error detail output is generated. However,
-    it gets generated properly once this field is set to `false`.
- */
-  const styleLintConfig = {
-    failOnError: !isDev,
-    configFile: paths.resolveConfig("stylelint.config.js"),
-    files: "src/**/*.scss",
-    syntax: "scss"
-  };
-
-  if (!isDev) {
-    styleLintConfig.quiet = false;
-  }
-
   const plugins = [
     new ErrorFormatterPlugin(),
     // Name lazily loaded chunks, in case they don't have a name yet.
@@ -97,8 +79,7 @@ module.exports = function(env) {
 
     new CaseSensitivePathsPlugin(),
 
-    PLUGIN_TS_CHECKER(env, isDev ? asyncLog : log),
-    new StyleLintPlugin(styleLintConfig)
+    PLUGIN_TS_CHECKER(env, isDev ? asyncLog : log)
   ];
 
   // process.env.CI is available on Travis & Appveyor.
