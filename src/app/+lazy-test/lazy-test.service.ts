@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Store } from "@ngrx/store";
+import { select, Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 
 import {
@@ -13,7 +13,7 @@ export class LazyTestService {
   watchTime: Observable<number>;
 
   constructor(private store: Store<LazyTestStateSlice>) {
-    this.watchTime = this.store.select(getWatchTime);
+    this.watchTime = this.store.pipe(select(getWatchTime));
   }
 
   updateSeconds() {

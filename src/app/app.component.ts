@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { Store } from "@ngrx/store";
+import { select, Store } from "@ngrx/store";
 import { TranslateService } from "@ngx-translate/core";
 import { Observable } from "rxjs";
 import { take } from "rxjs/operators";
@@ -25,7 +25,7 @@ export class AppComponent {
     private store: Store<CoreAppState>,
     serviceWorkerService: ServiceWorkerService
   ) {
-    this.currentLanguage = this.store.select(getLanguage);
+    this.currentLanguage = this.store.pipe(select(getLanguage));
     this.availableLanguages = this.translate.getLangs();
 
     serviceWorkerService.stateInfo.subscribe(newInfo => {
