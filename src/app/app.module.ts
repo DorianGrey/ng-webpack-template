@@ -4,7 +4,7 @@ import { take } from "rxjs/operators";
 
 import { TranslateService } from "@ngx-translate/core";
 
-import { Store } from "@ngrx/store";
+import { select, Store } from "@ngrx/store";
 import { RouterStateSerializer } from "@ngrx/router-store";
 
 import {
@@ -47,7 +47,7 @@ export class AppModule {
       you will only have to dispatch the corresponding to the store, and every part of
       the app relying on it - including the translate service - will be notified properly.
      */
-    _store.select(getLanguage).subscribe(lang => {
+    _store.pipe(select(getLanguage)).subscribe(lang => {
       translate.use(lang);
     });
   }

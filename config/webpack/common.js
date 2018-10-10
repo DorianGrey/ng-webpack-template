@@ -25,6 +25,7 @@ const {
   RULE_TS_AOT_LOADING,
   RULE_MAIN_SASS_LOADING,
   RULE_COMPONENT_SASS_LOADING,
+  RULE_CSS_LOADING,
   RULE_IGNORE_SYSTEM_IMPORT
 } = require("./factories/rules");
 
@@ -145,6 +146,7 @@ module.exports = function(env) {
         RULE_HTML_RAW_LOADING,
         RULE_MAIN_SASS_LOADING(isDev),
         RULE_COMPONENT_SASS_LOADING(isDev),
+        RULE_CSS_LOADING(isDev),
         RULE_IMG_LOADING(env),
         RULE_IGNORE_SYSTEM_IMPORT
       ]

@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Store } from "@ngrx/store";
+import { select, Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 
 import {
@@ -14,7 +14,7 @@ export class ServiceWorkerService {
   stateInfo: Observable<ServiceWorkerStateInfo>;
 
   constructor(private store: Store<ServiceWorkerStateSlice>) {
-    this.stateInfo = this.store.select(getServiceWorkerInfo);
+    this.stateInfo = this.store.pipe(select(getServiceWorkerInfo));
 
     registerServiceWorker(store);
   }
