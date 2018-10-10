@@ -108,15 +108,7 @@ exports.RULE_IMG_LOADING = function(env) {
   };
 };
 
-/** Stylesheets in .scss format may be loaded in two different ways:
- * (1) As CSS by inserting it into a <style> or a <link> tag. That's what happens to the "main.scss" file,
- * since it does not refer to a particular component only.
- * The <style> tag is used in development, to get proper HMR.
- * The <link> tag is used as optimization for the production modes.
- * (2) As an inline string - that what happens to all .component.scss files, since they refer
- * to a particular component, and inlining simplifies dealing with them.
- */
-const scssLoaderChain = function(isDev) {
+const defaultStyleLoaders = function(isDev) {
   return [
     {
       loader: require.resolve("css-loader"),
@@ -131,7 +123,21 @@ const scssLoaderChain = function(isDev) {
       options: {
         sourceMap: isDev
       }
-    },
+    }
+  ];
+};
+
+/** Stylesheets in .scss format may be loaded in two different ways:
+ * (1) As CSS by inserting it into a <style> or a <link> tag. That's what happens to the "main.scss" file,
+ * since it does not refer to a particular component only.
+ * The <style> tag is used in development, to get proper HMR.
+ * The <link> tag is used as optimization for the production modes.
+ * (2) As an inline string - that what happens to all .component.scss files, since they refer
+ * to a particular component, and inlining simplifies dealing with them.
+ */
+const scssLoaderChain = function(isDev) {
+  return [
+    ...defaultStyleLoaders(isDev),
     {
       loader: require.resolve("sass-loader"),
       options: {
@@ -160,6 +166,22 @@ exports.RULE_COMPONENT_SASS_LOADING = function(isDev) {
     test: /\.component\.scss$/,
     use: [require.resolve("to-string-loader")].concat(scssLoaderChain(isDev))
   };
+};
+
+exports.RULE_CSS_LOADING = function RULE_CSS(isDev) {
+  const result = {
+    test: /\.css$/
+  };
+
+  const styleChain = defaultStyleLoaders(isDev);
+
+  if (isDev) {
+    result.use = [require.resolve("style-loader")].concat(styleChain);
+  } else {
+    result.use = [MiniCssExtractPlugin.loader].concat(styleChain);
+  }
+
+  return result;
 };
 
 // TODO: We'll have to remove this rule ASAP - but atm., not using this rule

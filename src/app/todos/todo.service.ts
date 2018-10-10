@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Store } from "@ngrx/store";
+import { select, Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 import { List } from "immutable";
 
@@ -13,8 +13,8 @@ export class TodoService {
   completedTodos: Observable<List<Todo>>;
 
   constructor(private store: Store<CoreAppState>) {
-    this.todos = this.store.select(getCurrentTodos);
-    this.completedTodos = this.store.select(getCompletedTodos);
+    this.todos = this.store.pipe(select(getCurrentTodos));
+    this.completedTodos = this.store.pipe(select(getCompletedTodos));
   }
 
   add(todo: Todo) {

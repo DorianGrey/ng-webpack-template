@@ -36,7 +36,7 @@ import { Params, RouterStateSnapshot } from "@angular/router";
  * The store might contain more entries, depending on the feature modules you have
  * loaded already.
  * To access a particular part of your state, you might then just call
- * `.select(state => state.{whatever})`. This will return an {Observable<T>},
+ * `.pipe(select(state => state.{whatever}))`. This will return an {Observable<T>},
  * where {T} is the type of the partial state you selected. You might combine these
  * as well.
  */
@@ -57,9 +57,9 @@ export interface CoreAppState {
  *
  * A simple example:
  *    Before:
- *      `store.select(state => state.todos.current)`
+ *      `store.pipe(select(state => state.todos.current))`
  *    After:
- *      `store.select(getCurrentTodos)`
+ *      `store.pipe(select(getCurrentTodos))`
  *
  * This works because the "todos" state provides a selector `currentTodos` to select the `.current`
  * field from itself, and the global level provides a selector to pick up `todos` from the application's

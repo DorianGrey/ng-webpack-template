@@ -1,3 +1,4 @@
+import "../node_modules/normalize.css/normalize.css"; // Import this here to avoid a feature warning from libsass.
 import "./styles/main.scss";
 import "./polyfills";
 

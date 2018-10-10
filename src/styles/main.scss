@@ -1,6 +1,5 @@
 // Put your global styles here
-// "Normalizing" browser styles is required in almost every reasonable project we know of, thus ...
-@import "../../node_modules/normalize.css/normalize";
+// Normalize.css is loaded via the entry point before the definitions below.
 @import "./variables.scss";
 
 // Native font stack, see: http://v4-alpha.getbootstrap.com/content/reboot/#native-font-stack
