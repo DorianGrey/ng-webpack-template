@@ -52,7 +52,7 @@
     "html-webpack-plugin": "^3.2.0",
     "http-proxy": "^1.17.0",
     "husky": "^1.0.1",
-    "image-webpack-loader": "^3.4.2",
+    "image-webpack-loader": "^4.3.1",
     "inline-chunk-manifest-html-webpack-plugin": "^2.0.0",
     "internal-ip": "^3.0.1",
     "jest": "^23.5.0",
