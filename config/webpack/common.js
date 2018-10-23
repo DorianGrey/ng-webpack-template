@@ -7,7 +7,7 @@ const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
 const ErrorFormatterPlugin = require("./plugins/ErrorFormatterPlugin");
 const paths = require("../paths");
-const { asyncLog, buildLog, log } = require("../logger");
+const { buildLog } = require("../logger");
 const { ensureEndingSlash } = require("./util");
 const chunkNameHandler = require("./helpers/chunkNameHandler");
 const {
@@ -31,8 +31,7 @@ const {
 
 const {
   PLUGIN_CONTEXT_REPLACEMENT_ANGULAR_CORE,
-  PLUGIN_INDEX_HTML,
-  PLUGIN_TS_CHECKER
+  PLUGIN_INDEX_HTML
 } = require("./factories/plugins");
 
 /**
@@ -78,9 +77,7 @@ module.exports = function(env) {
       USE_SERVICE_WORKER: !!env.withServiceWorker
     }),
 
-    new CaseSensitivePathsPlugin(),
-
-    PLUGIN_TS_CHECKER(env, isDev ? asyncLog : log)
+    new CaseSensitivePathsPlugin()
   ];
 
   // process.env.CI is available on Travis & Appveyor.
