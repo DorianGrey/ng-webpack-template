@@ -30,7 +30,7 @@ exports.RULE_TS_LOADING = function(isDev) {
       loader: require.resolve("ts-loader"),
       options: {
         silent: true,
-        transpileOnly: true // Everything else is processed by the corresponding plugin.
+        transpileOnly: isDev // Everything else is processed by the corresponding plugin.
       }
     },
     require.resolve("angular2-template-loader"),

@@ -7,6 +7,8 @@ const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 const paths = require("../paths");
 const commonConfig = require("./common");
 const { ensureEndingSlash } = require("./util");
+const { PLUGIN_TS_CHECKER } = require("./factories/plugins");
+const { asyncLog } = require("../logger");
 
 module.exports = function(env) {
   const plugins = [
@@ -24,7 +26,9 @@ module.exports = function(env) {
       info: {
         level: "warn"
       }
-    })
+    }),
+
+    PLUGIN_TS_CHECKER(env, asyncLog)
   ];
 
   if (env.isHot) {
