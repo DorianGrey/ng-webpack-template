@@ -96,12 +96,6 @@ exports.RULE_IMG_LOADING = function(env) {
             ? "static/media/[name].[ext]"
             : `static/media/[name].[hash:${env.hashDigits}].[ext]`
         }
-      },
-      {
-        loader: require.resolve("image-webpack-loader"),
-        query: {
-          bypassOnDebug: env.isDev
-        }
       }
     ],
     include: [paths.resolveApp("src", "assets")]
