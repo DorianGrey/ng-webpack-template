@@ -87,7 +87,7 @@ Generated reports are stored in the `test-results` directory like, containing:
 
 Production builds are by default created using:
 - [AoT compilation](https://angular.io/docs/ts/latest/cookbook/aot-compiler.html)
-- [UglifyJS2](https://github.com/mishoo/UglifyJS2) as code minifier
+- [Terser](https://github.com/terser-js/terser) as code minifier
 - [build-optimizer](https://github.com/angular/devkit/tree/master/packages/angular_devkit/build_optimizer) for getting rid of additional dead / non-required code (esp. decorators).
 - A service worker for improved PWA capabilities.
 
