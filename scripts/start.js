@@ -7,7 +7,7 @@ const paths = require("../config/paths");
 const compileTranslations = require("./translations").compile;
 const watchTranslations = require("./translations").watch;
 const dllConfig = require("../config/webpack/dll");
-const devConfig = require("../config/webpack/dev");
+const wpConfig = require("../config/webpack/config");
 const formatUtil = require("./util/formatUtil");
 const { log, buildLog } = require("../config/logger");
 const { formatMessage } = require("./util/formatWebpackMessages");
@@ -24,7 +24,7 @@ function cleanTmp() {
 
 function buildDlls() {
   buildLog.await("Creating development DLLs...");
-  const dllCompiler = webpack(dllConfig);
+  const dllCompiler = webpack(dllConfig().toConfig());
   return new Promise((resolve, reject) => {
     dllCompiler.run((err, s) => {
       const stats = s.toJson({}, true);
@@ -72,7 +72,7 @@ async function startServer(translationsWatcher) {
   const addDevServerEntryPoints = require("webpack-dev-server/lib/utils/addEntries");
   const devServerConfig = require("../config/webpack/dev-server");
 
-  const config = devConfig(devOptions);
+  const config = wpConfig(devOptions).toConfig();
   const devServerConfigBuilt = devServerConfig(
     config.output.publicPath,
     selectedPort,

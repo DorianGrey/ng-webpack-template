@@ -4,7 +4,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/rmlgxb0kwrbj0e6u/branch/master?svg=true)](https://ci.appveyor.com/project/DorianGrey/ng-webpack-template/branch/master)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
-This project provides a template for an [angular](https://angular.io/) project setup with [webpack](http://webpack.github.io).
+This project provides a template for an [angular](https://angular.io/) project setup with [webpack](https://webpack.js.org/).
 It started as a companion of [ng-jspm-template](https://github.com/flaviait/ng2-jspm-template), with the primary purpose to provide an almost identical codebase and feature set compared to its brother to make it easier to figure out which template fits better to the daily requirements of development with [angular](https://angular.io/).
 
 ## Setup
@@ -126,3 +126,10 @@ The preconfigured tasks are listed below.
 #### Exemplary production server
 
 The result of the build process can be served via the `yarn serve` command. Note that if you changed the `outputDir` option, you will have to provide it here as well, since the `serve` script accesses your build configuration.
+
+#### Other tasks
+| Command | Effect | 
+|---------|--------|
+| `yarn format`| Formats the code manually using `prettier`. While formatting is already applied automatically on commit creation or update, it might be useful to run this manually in some cases. |
+| `yarn lint`| Runs both script and style linter manually on the code. This task is executed in a similar way when trying to create a commit. |
+| `yarn inspect [mode] [other options]` | Provides an inspection of the `webpack` config constructed via `webpack-chain`. The first parameter is expected to be the target mode: `dll` for the development DLLs, `dev` or `development`) for dev mode, `prod` or `production` for build mode. All other parameters can be provided as usual for the `start` and `build` tasks. | 

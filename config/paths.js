@@ -13,6 +13,7 @@ module.exports = {
   resolveConfig,
   devTmp: resolveApp(".tmp"),
   appSrc: resolveApp("src"),
+  appGlobalStyles: resolveApp("src", "styles"),
   appPublic: resolveApp("public"),
   serviceWorkerScriptSrc: resolveApp("public", "service-worker.js"),
   appHtml: resolveApp("public", "index.ejs"),

@@ -2,14 +2,18 @@
 We'll only go through the most important files and folders here, so that you can get an idea of how the template is structured and how you might adopt it to your particular requirements.
  
 ## Files (top directory)
-- **karma.conf.js** contains the configuration used unit tests via [karma](https://github.com/karma-runner/karma). Note that the particular configuration differs between with and without coverage. The required trigger is evaluated in `scripts/test.js`.
+- **stylelint.config.js** contains the configuration used for [stylelint](https://github.com/stylelint/stylelint). We've picked up a useful set of defaults for `.scss` files.
+- **jest.config.js** contains the configuration used for [jest](https://jestjs.io/), the unit test runner in this project.
+- **postcss.config.js** contains the configuration used for [postcss](https://postcss.org/).
 - **tsconfig.json** and **tsconfig.aot.json** contain the TypeScript configurations for JiT and AoT mode. While reading it, you might recognize that we've enabled a rather strict set of compiler options, like `noImplicitAny`, `noImplicitReturns` and `noImplicitThis`. This might appear extremely restrictive at first, but we've had good experience with this setup. It assists in keeping track and working around several issues, inconsistencies and curious behaviors that especially developers with just a few or even no experience with TypeScript are rather often facing early.
+- **tsconfig.spec.json** contains the test mode configuration for TypeScript.
 - **tslint.json** contains the configuration for [tslint](https://github.com/palantir/tslint). Once again, a rather strict one, but for the same reasons as we had for the TypeScript configs.
+- **.babel.rc** is only used in test mode atm. to properly transpile some of the dependencies involved - or at least the `import`/`export` statements. For dev and build, this is handled by `webpack`. 
 
 ## Folders
 - **config** contains general configuration files for the build different build modes.
-  - **webpack** contains the configuration files for webpack.
-  - **stylelint.config.js** contains the configuration used for [stylelint](https://github.com/stylelint/stylelint). We've picked up a useful set of defaults for `.scss` files.
+  - **webpack** contains the files involved in the `webpack` configuration.
+  - **jest** contains the files invovled in setting up `jest` in test mode.
 - **docs** is obviously the folder containing this documentation.
 - **public** contains files that are dynamically referenced, i.e. the references are not created or updated via webpack. Apart from the `index.ejs`, the contents of this folder are copied recursively to your build directory.
   - **manifest.json** contains your app's manifest definition, including a name and favicons in different resolutions. Mostly used by mobile browsers, but can be used by desktop ones as well.
@@ -22,6 +26,8 @@ We'll only go through the most important files and folders here, so that you can
   - **build.js** is used for building your app.
   - **start.js** is used for starting the development environment.
   - **serve.js** starts the production mode preview server, using the latest build directory.
+  - **translations.js** is the script used for generating translations from the provided `.yml` files, both one-time and in watch mode.
+  - **inspect.js** is used for inspecting the built `webpack` config for the various modes and config options.
   - **util/** contains various utility scripts
 
 

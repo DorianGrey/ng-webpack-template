@@ -75,8 +75,8 @@ class ErrorFormatterPlugin {
 
 function getCompileTime(stats) {
   if (stats.stats) {
-    // Webpack multi compilations run in parallel so using the longest duration.
-    // https://webpack.github.io/docs/configuration.html#multiple-configurations
+    // Webpack multi compilations run in parallel so we're using the longest duration on the list.
+    // https://webpack.js.org/configuration/configuration-types/#exporting-multiple-configurations
     return stats.stats.reduce(
       (time, stats) => Math.max(time, getCompileTime(stats)),
       0

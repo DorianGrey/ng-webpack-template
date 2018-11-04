@@ -6,7 +6,7 @@ const fs = require("fs-extra");
 const compileTranslations = require("./translations").compile;
 const paths = require("../config/paths");
 const { buildLog, log } = require("../config/logger");
-const prodConfig = require("../config/webpack/prod");
+const wpConfig = require("../config/webpack/config");
 const buildConfig = require("../config/build.config").parseFromCLI();
 
 const formatUtil = require("./util/formatUtil");
@@ -30,7 +30,7 @@ function handleBuildSetup() {
     let config;
 
     try {
-      config = prodConfig(buildConfig);
+      config = wpConfig(buildConfig).toConfig();
     } catch (e) {
       return reject(e);
     }
