@@ -5,6 +5,13 @@ const paths = require("./paths");
 const nonOverridableKeys = ["isDev", "isWatch", "useAot"];
 const buildConfig = {
   outputDir: paths.devTmp,
+  /**
+   * This is a rather expensive source map w.r.t. rebuild performance, but also a really
+   * detailed one, which simplifies debugging.
+   * The rebuild performance loss is acceptable for dev mode. If you don't think so,
+   * you just have to switch to a cheaper one.
+   * See the docs: https://webpack.js.org/configuration/devtool/#devtool
+   */
   devtool: "inline-source-map",
   useAot: false,
   isDev: true,
