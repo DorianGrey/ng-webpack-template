@@ -1,19 +1,8 @@
+const Config = require("webpack-chain");
+const { NODE_CONFIG, DEFAULT_RESOLVE_EXTENSIONS } = require("./constants");
+
 const paths = require("../paths");
 const { DllPlugin } = require("webpack");
-const {
-  DEFAULT_RESOLVE_EXTENSIONS,
-  NODE_CONFIG,
-  PERFORMANCE_OPTIONS
-} = require("./factories/constants");
-
-const {
-  RULE_LIB_SOURCE_MAP_LOADING,
-  RULE_TS_LOADING
-} = require("./factories/rules");
-
-const {
-  PLUGIN_CONTEXT_REPLACEMENT_ANGULAR_CORE
-} = require("./factories/plugins");
 
 /**
  * This config is used to build so-called `DLLs`, `dynamically linked libraries.
@@ -28,9 +17,15 @@ const {
  * and just reference the DLL from your dev-bundle. This improves rebuild times by quite a
  * margin - in my case, they got reduced by more that 60% (!).
  */
-module.exports = {
-  entry: {
-    polyfills: [
+module.exports = () => {
+  const config = new Config();
+
+  config.resolve.extensions;
+
+  // Entry: Polyfills.
+  config
+    .entry("polyfills")
+    .merge([
       // Webpack polyfills and utilities
       "querystring-es3",
       "strip-ansi",
@@ -47,8 +42,11 @@ module.exports = {
       "zone.js/dist/zone",
       "zone.js/dist/long-stack-trace-zone",
       "@angularclass/hmr"
-    ],
-    vendor: [
+    ])
+    .end()
+    // Entry: Vendor.
+    .entry("vendor")
+    .merge([
       /**
        * List required libs here.
        * Note: If you add a library and forget to add it to this list,
@@ -68,27 +66,50 @@ module.exports = {
       "immutable",
       "@ngx-translate/core",
       "rxjs"
-    ]
-  },
-  mode: "development",
-  output: {
-    path: paths.resolveApp(".tmp"),
-    filename: "[name].dll.js",
-    library: "[name]"
-  },
-  resolve: {
-    extensions: DEFAULT_RESOLVE_EXTENSIONS
-  },
-  module: {
-    rules: [RULE_LIB_SOURCE_MAP_LOADING, RULE_TS_LOADING(true)]
-  },
-  plugins: [
-    PLUGIN_CONTEXT_REPLACEMENT_ANGULAR_CORE(),
-    new DllPlugin({
+    ])
+    .end();
+
+  // DLLs are always intended for development mode in our context.
+  config.mode("development");
+
+  // Destination: the .tmp folder, with names depending on the entry point names in use.
+  config.output
+    .path(paths.resolveApp(".tmp"))
+    .filename("[name].dll.js")
+    .library("[name]");
+
+  // Configure extensions to resolve.
+  config.resolve.extensions.merge(DEFAULT_RESOLVE_EXTENSIONS);
+
+  // Configure rules.
+  // prettier-ignore
+  config
+    .module
+    .rule("source-maps") // TODO: Extract to recipe.
+      .test(/\.js$/)
+      .use("sm-loader")
+        .loader(require.resolve("source-map-loader"))
+        .end()
+      .exclude
+        .add(paths.resolveApp("node_modules/@angular"))
+        .add(paths.resolveApp("node_modules/rxjs"))
+        .add(/\.ng(factory|style).js$/)
+        .end()
+      .end();
+
+  // Configure node options.
+  config.node.merge(NODE_CONFIG);
+
+  // No performance hints in development mode.
+  config.performance.hints(false);
+
+  // Configure DLL plugin.
+  config.plugin("DLL").use(DllPlugin, [
+    {
       name: "[name]",
       path: paths.resolveApp(".tmp/[name]-manifest.json")
-    })
-  ],
-  performance: PERFORMANCE_OPTIONS,
-  node: NODE_CONFIG
+    }
+  ]);
+
+  return config;
 };
