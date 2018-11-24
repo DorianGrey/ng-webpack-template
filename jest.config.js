@@ -16,8 +16,7 @@ module.exports = {
   ],
   "globals": {
     "ts-jest": {
-      "tsConfigFile": "tsconfig.spec.json",
-      "useBabelrc": true
+      "tsConfigFile": "tsconfig.spec.json"
     },
     "__TRANSFORM_HTML__": true
   },
@@ -37,8 +36,7 @@ module.exports = {
   ],
   "testURL": "http://localhost/",
   "transform": {
-    "^.+\\.(ts|html)$": "<rootDir>/node_modules/jest-preset-angular/preprocessor.js",
-    "^.+\\.js$": "babel-jest"
+    "^.+\\.(ts|html)$": "<rootDir>/node_modules/jest-preset-angular/preprocessor.js"
   },
   "transformIgnorePatterns": [
     "node_modules/(?!@ngrx)"
