@@ -10,7 +10,7 @@ const appRoutes: Routes = [
   },
   {
     path: "lazy-test",
-    // This one gets process by angular-router-loader (https://github.com/brandonroberts/angular-router-loader)
+    // This one gets process by angular-router-loader (https://github.com/brandonroberts/angular-router-loader) in dev mode
     loadChildren: "./+lazy-test/lazy-test.module#LazyTestModule"
   },
   {

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from "@angular/core";
-import { Observable } from "rxjs";
+import { interval, Observable, Subscription } from "rxjs";
 import { LazyTestService } from "./lazy-test.service";
 
 @Component({
@@ -10,19 +10,16 @@ import { LazyTestService } from "./lazy-test.service";
 })
 export class LazyTestComponent implements OnDestroy {
   watchTime: Observable<number>;
-  pendingInterval: number;
+  subscription: Subscription;
 
   constructor(private lazyTestService: LazyTestService) {
     this.watchTime = lazyTestService.watchTime;
-    // We're using the "as any" part on the interval because it might clash with the @types/node
-    // definition of "setInterval" otherwise.
-    this.pendingInterval = setInterval(
-      () => this.lazyTestService.updateSeconds(),
-      1000 as any
+    this.subscription = interval(1000).subscribe(() =>
+      this.lazyTestService.updateSeconds()
     );
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.pendingInterval);
+    this.subscription.unsubscribe();
   }
 }
