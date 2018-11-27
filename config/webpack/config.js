@@ -260,7 +260,6 @@ module.exports = env => {
    * Note that this loader automatically disables itself in production mode and leaves the code untouched in that case.
    * However - due to the docs - it should be removed manually for production builds, thus we make a difference here.
    */
-  const tsRule = config.module.rule("ts").test(/\.ts$/);
   config.when(
     env.useAot,
     () => {
