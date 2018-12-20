@@ -18,7 +18,7 @@ Since `webpack-dev-server` [switched to maintenance mode](https://github.com/web
 
 There is no "real" migration guide - the configurations are quite similar and thus should not make any problems. See the `webpack-serve` configuration guide: https://github.com/webpack-contrib/webpack-serve#webpack-serve-config
 
-**Note:** The `serve` for previewing your production build was updated to use `koa` as well to avoid additional depenencies on `express`. It's migration should be straight-forward as well, since the features in use are not that different for these two frameworks.
+**Note:** The `serve` for previewing your production build was updated to use `koa` as well to avoid additional dependencies on `express`. It's migration should be straight-forward as well, since the features in use are not that different for these two frameworks.
 
 
 # Migration of custom logger to `signale`
