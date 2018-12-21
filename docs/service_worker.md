@@ -10,62 +10,90 @@ Please note that the file name `service-worker.js` is not configurable for the m
 The script seems to be somewhat empty for the moment:
 
 ```javascript
-importScripts("$serviceWorkerLibAnchor");
+workbox.precaching.precacheAndRoute(self.__precacheManifest);
 
-const workboxSW = new self.WorkboxSW();
-workboxSW.precache([]);
-
-workboxSW.router.registerNavigationRoute("index.html", {
+workbox.routing.registerNavigationRoute("index.html", {
   whitelist: [/^(?!\/__).*/]
 });
 ```
-However, it gets modified during the build process in two steps:
-- The [workbox webpack plugin](https://workboxjs.org/reference-docs/latest/module-workbox-webpack-plugin.html) updates the content of the array in `precache` array to contain everything in the output directory of your build except the service worker script itself and source maps. This causes the service worker to pick up these contents and cache them, so it can serve them on request. Note that successive requests to these resources will be handled by the service worker once they are cached (i.e. offline first strategy). The corresponding glob and the currently selected file extensions are defined in `config/webpack/prod.js` - at the moment, we are using `["**/*.{html,js,css,jpg,eot,svg,woff2,woff,ttf,json}"]`. The glob used for ignoring the service worker script itself and potentially referenced source maps is `["**/*.map", "service-worker.js"]`. Note that with its current configuration, the generated precache entries will not contain a revision hash for the webpack output files, since these already contain a hash themselves.
-- The special string `$serviceWorkerLibAnchor` will be replaced with the resolved workbox file name, prefixed with the public path you defined for the build process.
+The `workbox.routing.registerNavigationRoute` statement is used for a proper implementation of history fallback - it redirects every navigation call the service worker has to handle (i.e. those not handled by angular's router) to `index.html`.
 
-The `workboxSW.router.registerNavigationRoute` statement is used for a proper implementation of history fallback - it redirects every navigation call the service worker has to handle (i.e. those not handled by angular's router) to `index.html`.
+During the build process, the [workbox webpack plugin](https://workboxjs.org/reference-docs/latest/module-workbox-webpack-plugin.html) does two things: 
+* Generate a so-called `precache-manifest` from `webpack`'s build output that contains the paths for the files to be cached and a particular revision number based on their content
+* Inject the required import statements in the provided `service-worker.js` script so that it imports `workbox` and the generated manifest.
 
-In the end of the build process, it roughly looks like this:
+Please note that atm., the script references a `workbox` version to import via a CDN. Since `workbox` is used on quite a lot of websites, this is favorable in terms of caching the required scripts. If you favor to host it yourself, you will have to add the following option to the plugin config:
+```
+importWorkboxFrom: "local"
+```
+
+In the end of the build process, the service worker script roughly looks like this:
 ```javascript
-importScripts("/workbox-sw.prod.v2.0.1.js");
+importScripts("/precache-manifest.3821706ddb1cd9ee3dbac1df2b3f219f.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
-const workboxSW = new self.WorkboxSW();
-workboxSW.precache([
-  {
-    "url": "/index.html",
-    "revision": "54f2b7e51ac8ef86e47728655fbb1969"
-  },
-  {
-    "url": "manifest.json",
-    "revision": "841de84e1a17dd635242ee929cf0c621"
-  },
-  {
-    "url": "/static/css/bundle.3319ab05b67e.css"
-  },
-  {
-    "url": "/static/js/0.chunk.6a9504e0befb.js"
-  },
-  {
-    "url": "/static/js/bundle.31778cf097f6.js"
-  },
-  {
-    "url": "/static/js/manifest.d41d8cd98f00.js"
-  },
-  {
-    "url": "/static/js/vendor.8097a7ff6839.js"
-  },
-  {
-    "url": "/static/media/testbild.b9456e128144.jpg"
-  },
-  {
-    "url": "workbox-sw.prod.v2.0.1.js",
-    "revision": "7b6749c71e3ba8b786ce6cb65e248ac8"
-  }
-]);
+workbox.precaching.precacheAndRoute(self.__precacheManifest);
 
-workboxSW.router.registerNavigationRoute("index.html", {
+workbox.routing.registerNavigationRoute("index.html", {
   whitelist: [/^(?!\/__).*/]
 });
+
+```
+While the generated manifest (in the example above: `precache-manifest.3821706ddb1cd9ee3dbac1df2b3f219f.js`) contains the information about the files to be cached:
+```javascript
+self.__precacheManifest = [
+  {
+    "revision": "874d63009e0d6006bf550787c44030da",
+    "url": "/static/media/testbild.874d63009e0d.jpg"
+  },
+  {
+    "revision": "aa493e56ee2f8560ebfd",
+    "url": "/static/css/bundle.7fb15ef0f2d8.css"
+  },
+  {
+    "revision": "97e934f7b6e2b4d11021",
+    "url": "/static/js/lazy-test.module.97e934f7b6e2.js"
+  },
+  {
+    "revision": "d41d8cd98f00b204e980",
+    "url": "/static/js/runtime.d41d8cd98f00.js"
+  },
+  {
+    "revision": "78669f179b20eb0a51b9",
+    "url": "/static/css/vendor.24bf1742e376.css"
+  },
+  {
+    "revision": "78669f179b20eb0a51b9",
+    "url": "/static/js/vendor.78669f179b20.js"
+  },
+  {
+    "revision": "aa493e56ee2f8560ebfd",
+    "url": "/static/js/bundle.aa493e56ee2f.js"
+  },
+  {
+    "revision": "09ff918ade2847455d5856a82f8119dc",
+    "url": "/manifest.webmanifest"
+  },
+  {
+    "revision": "ea6b7dfd9ba2e2b019ab6364cda34348",
+    "url": "/index.html"
+  },
+  {
+    "revision": "3c1edce38a8d91a157aca60dfc3ca022",
+    "url": "/favicon96x96.png"
+  },
+  {
+    "revision": "58dbe14d86976644052b4446c5b8f077",
+    "url": "/favicon64x64.png"
+  },
+  {
+    "revision": "f02490f57f87ca2c1167b5e8c4d0bd9e",
+    "url": "/favicon48x48.png"
+  },
+  {
+    "revision": "565a8ea92a8e743b5323f6dc29e0146d",
+    "url": "/favicon.png"
+  }
+];
 ```
 
 ## Extending or modifying the workbox plugin configuration

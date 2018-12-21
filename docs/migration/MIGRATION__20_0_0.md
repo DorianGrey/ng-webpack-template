@@ -3,7 +3,7 @@ Release 20 contained another huge amount of major updates, changes and library e
 Somewhat sorry that this list is quite long again, but I suppose the technical advantages are worth the work.
 
 # Recommended node version updated to 10.14
-As already announced in the README, I'm always aiming to support the most recent `node` LTS. Thus, the version recommended by the provided `.nvmrc` was updated to 10.14. CI still covers 8.x as well, though - yet I strongly recommend to update your environment to use the more recent version.
+As already announced in the README, I'm always aiming to support the most recent `node` LTS. Thus, the version recommended by the provided `.nvmrc` was updated to 10.14.
 
 # Migration of `webpack-serve` back to `webpack-dev-server`
 It seems that my migration to `webpack-serve` in version 19 was a bit ... premature. When I scheduled this migration, it seemed that `webpack-dev-server` gets deprecated, and `webpack-serve` being its successor. Now, it seems the circumstances went vice versa. As a result, I've decided to revert the migration. If you've used a version < 19 before, you only have you configuration from that one - it's a direct revert. The functionality of the server used for development and the one for the production preview are equivalent to the 18.x versions again.
