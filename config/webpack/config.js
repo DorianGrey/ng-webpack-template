@@ -55,7 +55,6 @@ function applyStyleLoaders(config, ruleName, env, test) {
     .loader(require.resolve("css-loader"))
     .options({
       importLoaders: 1,
-      minimize: !env.isDev,
       sourceMap: env.isDev
     })
     .end()

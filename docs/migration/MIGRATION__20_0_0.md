@@ -36,4 +36,7 @@ Just to note: The new way of writing a configuration also allows that you separa
 Additionally, there is a new task: `inspect`. This one allows you to generate a preview of the generated `webpack` configuration and might be helpful if you're not sure everything was configured correctly. Details about this task are already listed in the README.
 
 # Angular 7
-Version 20 includes angular 7, even though it does not yet included the new `ivy` compiler (sadly). Following the [official update guide](https://update.angular.io/) should cover most of your cases.
+Version 20 includes angular v7, even though it does not yet included the new `ivy` compiler (sadly). Following the [official update guide](https://update.angular.io/) should cover most of your cases.
+
+# ngrx 7
+Along with angular v7 comes another major update of the `ngrx` collection, also to v7. It includes a couple of breaking changes that, while not affecting this template, might affect your project. Most of them are related to the generated store events. Details can be found in the project's [changelog](https://github.com/ngrx/platform/blob/master/CHANGELOG.md) - all breaking changes are listed in the section for `7.0.0-beta.0`.
