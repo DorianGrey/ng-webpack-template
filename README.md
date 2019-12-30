@@ -7,6 +7,10 @@
 This project provides a template for an [angular](https://angular.io/) project setup with [webpack](https://webpack.js.org/).
 It started as a companion of [ng-jspm-template](https://github.com/flaviait/ng2-jspm-template), with the primary purpose to provide an almost identical codebase and feature set compared to its brother to make it easier to figure out which template fits better to the daily requirements of development with [angular](https://angular.io/).
 
+# Status notice
+
+I did not have enough time to keep this project up to date with the current [angular](https://angular.io/) development (esp. not in terms of features) for quite a while now, so I decided to officially stop maintaining it and put the repository in an archived state. Feel free to base your own project on it or use parts of it for other purposes.
+
 ## Setup
 
 To start using this template, you might either
